@@ -1,5 +1,5 @@
 ---
-import { useTranslations, type Lang } from '../i18n/ui';
+import { useTranslations, getRoute, type Lang } from '../i18n/ui';
 import { getOffices } from '../lib/data';
 import { countryList } from '../lib/countries';
 
@@ -13,6 +13,13 @@ const first = countries[0];
 const serviceLang = lang === 'fr' ? 'en' : lang;
 const closeLabel = { pt: 'Fechar', en: 'Close', es: 'Cerrar', fr: 'Fermer' }[lang];
 const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
+// RGPD: autorização explícita (nunca pré-marcada) para contacto por WhatsApp, inclusive lembretes.
+const consent = {
+  pt: { wa: 'Autorizo a SEVEN a entrar em contato comigo pelo WhatsApp sobre este pedido, inclusive com lembretes. Posso cancelar quando quiser.', privacy: 'Ao enviar, você declara que leu a', policy: 'Política de Privacidade' },
+  en: { wa: 'I authorise SEVEN to contact me on WhatsApp about this request, including reminders. I can withdraw at any time.', privacy: 'By sending, you confirm you have read the', policy: 'Privacy Policy' },
+  es: { wa: 'Autorizo a SEVEN a contactarme por WhatsApp sobre esta solicitud, incluso con recordatorios. Puedo retirarlo cuando quiera.', privacy: 'Al enviar, declaras que has leído la', policy: 'Política de Privacidad' },
+  fr: { wa: 'J’autorise SEVEN à me contacter sur WhatsApp au sujet de cette demande, y compris par des rappels. Je peux retirer mon accord à tout moment.', privacy: 'En envoyant, vous confirmez avoir lu la', policy: 'Politique de confidentialité' },
+}[lang];
 ---
 <div class="att" data-attendance hidden role="dialog" aria-modal="true" aria-labelledby="att-title">
   <div class="att-panel">
@@ -49,6 +56,7 @@ const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
           <input name="phone" type="tel" inputmode="tel" required autocomplete="tel-national" placeholder={t('attendance.phonePh')} aria-labelledby="att-phone-lbl" />
         </div>
       </div>
+      <label class="att-check"><input type="checkbox" name="whatsapp_consent" value="1" /><span>{consent.wa}</span></label>
       <label>{t('attendance.email')}
         <input name="email" type="email" required autocomplete="email" />
       </label>
@@ -75,6 +83,7 @@ const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 
       {turnstileKey && <div class="cf-turnstile" data-sitekey={turnstileKey}></div>}
 
+      <p class="att-privacy">{consent.privacy} <a href={getRoute('privacy', lang)} target="_blank" rel="noopener">{consent.policy}</a>.</p>
       <button type="submit" class="btn btn-gold btn-block" data-att-submit>{t('attendance.submit')}</button>
       <p class="att-msg" data-att-msg hidden></p>
     </form>
@@ -106,6 +115,10 @@ const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
   .att-form input:focus, .att-form select:focus, .att-form textarea:focus { border-color: var(--heading); background: var(--surface); }
   .att-hp { position: absolute; left: -9999px; width: 1px; height: 1px; }
   .att-msg { margin: 0; font-size: .9rem; padding: 10px 12px; border-radius: var(--r-md); }
+  .att-form .att-check { display: flex; gap: 10px; align-items: flex-start; font-size: .84rem; line-height: 1.45; font-weight: 400; color: var(--ink); cursor: pointer; }
+  .att-form .att-check input { width: 16px; height: 16px; margin-top: 2px; flex: none; accent-color: var(--heading); }
+  .att-privacy { font-size: .78rem; color: var(--ink-muted); }
+  .att-privacy a { text-decoration: underline; text-underline-offset: 2px; }
   .att-msg.ok { background: #DCFCE7; color: var(--ok); }
   .att-msg.err { background: #FEE2E2; color: var(--danger); }
   .att-field { display: grid; gap: 6px; }
@@ -221,6 +234,7 @@ const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
         unit_slug: String(fd.get('unit_slug') || ''),
         language: String(fd.get('language') || 'pt'),
         message: String(fd.get('message') || ''),
+        whatsapp_consent: fd.get('whatsapp_consent') === '1',
         turnstile_token: String(fd.get('cf-turnstile-response') || ''),
       });
       showMsg(form.dataset.successMsg || 'OK', true);

@@ -1,0 +1,147 @@
+---
+// Banner de cookies (RGPD). Recusar é tão fácil quanto aceitar, nada vem pré-marcado.
+// A escolha fica em localStorage "seven_consent" e alimenta o Consent Mode do Google
+// (ver Base.astro). O Pixel da Meta só carrega com consentimento de marketing.
+import { getRoute, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID || '';
+
+const copy = {
+  pt: {
+    title: 'Cookies e privacidade',
+    body: 'Usamos cookies necessários para o site funcionar e, só com a sua autorização, cookies de análise e de marketing para medir visitas e anúncios.',
+    policy: 'Saiba mais', accept: 'Aceitar todos', reject: 'Recusar', customize: 'Personalizar', save: 'Guardar escolhas',
+    necessary: 'Necessários', necessaryDesc: 'Guardam a sua escolha e protegem os formulários contra spam. Sempre ativos.',
+    analytics: 'Análise', analyticsDesc: 'Google Analytics: entender como o site é usado.',
+    marketing: 'Marketing', marketingDesc: 'Google Ads e Meta (Facebook/Instagram): medir e melhorar anúncios.',
+  },
+  en: {
+    title: 'Cookies and privacy',
+    body: 'We use cookies the site needs to work and, only with your permission, analytics and marketing cookies to measure visits and ads.',
+    policy: 'Learn more', accept: 'Accept all', reject: 'Reject', customize: 'Customise', save: 'Save choices',
+    necessary: 'Necessary', necessaryDesc: 'Store your choice and protect forms against spam. Always on.',
+    analytics: 'Analytics', analyticsDesc: 'Google Analytics: understand how the site is used.',
+    marketing: 'Marketing', marketingDesc: 'Google Ads and Meta (Facebook/Instagram): measure and improve ads.',
+  },
+  es: {
+    title: 'Cookies y privacidad',
+    body: 'Usamos cookies necesarias para que el sitio funcione y, solo con tu permiso, cookies de análisis y de marketing para medir visitas y anuncios.',
+    policy: 'Más información', accept: 'Aceptar todas', reject: 'Rechazar', customize: 'Personalizar', save: 'Guardar elección',
+    necessary: 'Necesarias', necessaryDesc: 'Guardan tu elección y protegen los formularios contra el spam. Siempre activas.',
+    analytics: 'Análisis', analyticsDesc: 'Google Analytics: entender cómo se usa el sitio.',
+    marketing: 'Marketing', marketingDesc: 'Google Ads y Meta (Facebook/Instagram): medir y mejorar anuncios.',
+  },
+  fr: {
+    title: 'Cookies et confidentialité',
+    body: 'Nous utilisons les cookies nécessaires au fonctionnement du site et, uniquement avec votre accord, des cookies de mesure d’audience et de marketing.',
+    policy: 'En savoir plus', accept: 'Tout accepter', reject: 'Refuser', customize: 'Personnaliser', save: 'Enregistrer',
+    necessary: 'Nécessaires', necessaryDesc: 'Mémorisent votre choix et protègent les formulaires contre le spam. Toujours actifs.',
+    analytics: 'Mesure d’audience', analyticsDesc: 'Google Analytics : comprendre comment le site est utilisé.',
+    marketing: 'Marketing', marketingDesc: 'Google Ads et Meta (Facebook/Instagram) : mesurer et améliorer les annonces.',
+  },
+}[lang];
+const policyHref = `${getRoute('privacy', lang)}#cookies`;
+---
+<div class="ck" data-cookie-banner data-pixel={pixelId} role="dialog" aria-modal="false" aria-labelledby="ck-title" hidden>
+  <div class="ck-in on-brand">
+    <div class="ck-text">
+      <h2 id="ck-title">{copy.title}</h2>
+      <p>{copy.body} <a href={policyHref}>{copy.policy}</a></p>
+    </div>
+    <div class="ck-prefs" data-ck-prefs hidden>
+      <label class="ck-opt"><input type="checkbox" checked disabled /><span><strong>{copy.necessary}</strong>{copy.necessaryDesc}</span></label>
+      <label class="ck-opt"><input type="checkbox" data-ck="analytics" /><span><strong>{copy.analytics}</strong>{copy.analyticsDesc}</span></label>
+      <label class="ck-opt"><input type="checkbox" data-ck="marketing" /><span><strong>{copy.marketing}</strong>{copy.marketingDesc}</span></label>
+    </div>
+    <div class="ck-actions">
+      <button type="button" class="btn btn-ghost btn-sm" data-ck-customize>{copy.customize}</button>
+      <button type="button" class="btn btn-ghost btn-sm" data-ck-save hidden>{copy.save}</button>
+      <button type="button" class="btn btn-gold btn-sm" data-ck-reject>{copy.reject}</button>
+      <button type="button" class="btn btn-gold btn-sm" data-ck-accept>{copy.accept}</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ck { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 90; display: flex; justify-content: center; pointer-events: none; }
+  .ck[hidden] { display: none; }
+  .ck-in { pointer-events: auto; width: min(980px, 100%); background: var(--surface-brand); color: var(--nevoa); border-top: 3px solid var(--accent); padding: 20px 22px; display: grid; gap: 14px; box-shadow: 0 10px 40px rgba(0,0,0,.25); }
+  .ck h2 { color: var(--branco); font-size: 1rem; margin-bottom: 6px; }
+  .ck p { font-size: .9rem; line-height: 1.55; color: var(--nevoa); }
+  .ck a { color: var(--areia); text-decoration: underline; text-underline-offset: 3px; }
+  .ck-prefs { display: grid; gap: 10px; }
+  .ck-prefs[hidden] { display: none; }
+  .ck-opt { display: flex; gap: 10px; align-items: flex-start; font-size: .86rem; line-height: 1.45; cursor: pointer; }
+  .ck-opt input { margin-top: 3px; accent-color: var(--accent); width: 16px; height: 16px; flex: none; }
+  .ck-opt strong { display: block; color: var(--branco); font-weight: 600; }
+  .ck-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
+  .ck-actions .btn-ghost { color: var(--nevoa); border-color: var(--complementar-2); }
+  .ck-actions [hidden] { display: none; }
+  @media (max-width: 560px) { .ck { left: 8px; right: 8px; bottom: 8px; } .ck-actions .btn { flex: 1 1 45%; } }
+</style>
+
+<script>
+  type Consent = { v: 1; analytics: boolean; marketing: boolean; ts: string };
+  const KEY = 'seven_consent';
+  const el = document.querySelector<HTMLElement>('[data-cookie-banner]');
+  const w = window as any;
+
+  function read(): Consent | null {
+    try { const c = JSON.parse(localStorage.getItem(KEY) || 'null'); return c && c.v === 1 ? c : null; } catch { return null; }
+  }
+
+  function loadPixel(id: string) {
+    if (!id || w.fbq) return;
+    /* Meta Pixel (código oficial), carregado só após consentimento de marketing */
+    const f: any = (w.fbq = function (...args: any[]) { f.callMethod ? f.callMethod(...args) : f.queue.push(args); });
+    if (!w._fbq) w._fbq = f;
+    f.push = f; f.loaded = true; f.version = '2.0'; f.queue = [];
+    const s = document.createElement('script'); s.async = true; s.src = 'https://connect.facebook.net/en_US/fbevents.js';
+    document.head.appendChild(s);
+    w.fbq('init', id);
+    w.fbq('track', 'PageView');
+  }
+
+  function apply(c: Consent) {
+    const m = c.marketing ? 'granted' : 'denied';
+    w.gtag?.('consent', 'update', { analytics_storage: c.analytics ? 'granted' : 'denied', ad_storage: m, ad_user_data: m, ad_personalization: m });
+    if (c.marketing) loadPixel(el?.dataset.pixel || '');
+    window.dispatchEvent(new CustomEvent('seven:consent', { detail: c }));
+  }
+
+  function save(analytics: boolean, marketing: boolean) {
+    const c: Consent = { v: 1, analytics, marketing, ts: new Date().toISOString() };
+    try { localStorage.setItem(KEY, JSON.stringify(c)); } catch {}
+    apply(c);
+    if (el) el.hidden = true;
+  }
+
+  function open(withPrefs = false) {
+    if (!el) return;
+    const c = read();
+    el.querySelectorAll<HTMLInputElement>('[data-ck]').forEach((i) => { i.checked = Boolean(c && (c as any)[i.dataset.ck!]); });
+    togglePrefs(withPrefs);
+    el.hidden = false;
+  }
+
+  function togglePrefs(show: boolean) {
+    el?.querySelector<HTMLElement>('[data-ck-prefs]')!.toggleAttribute('hidden', !show);
+    el?.querySelector<HTMLElement>('[data-ck-save]')!.toggleAttribute('hidden', !show);
+    el?.querySelector<HTMLElement>('[data-ck-customize]')!.toggleAttribute('hidden', show);
+  }
+
+  const current = read();
+  if (current) { if (current.marketing) loadPixel(el?.dataset.pixel || ''); }
+  else open();
+
+  el?.querySelector('[data-ck-accept]')?.addEventListener('click', () => save(true, true));
+  el?.querySelector('[data-ck-reject]')?.addEventListener('click', () => save(false, false));
+  el?.querySelector('[data-ck-customize]')?.addEventListener('click', () => togglePrefs(true));
+  el?.querySelector('[data-ck-save]')?.addEventListener('click', () => {
+    const v = (k: string) => Boolean(el.querySelector<HTMLInputElement>(`[data-ck="${k}"]`)?.checked);
+    save(v('analytics'), v('marketing'));
+  });
+  document.querySelectorAll('[data-cookie-prefs]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); open(true); }));
+</script>

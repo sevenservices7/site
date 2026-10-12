@@ -2,6 +2,8 @@ export interface LeadInput {
   name: string; email: string; phone: string;
   unit_slug?: string; language?: string; service_code?: string; message?: string; source?: string;
   nif?: string; won?: boolean;
+  /** RGPD: autorizou contacto por WhatsApp (undefined = não perguntado, ex.: leads criados por outros fluxos). */
+  whatsapp_consent?: boolean;
 }
 const TRANSPORT = Deno.env.get('KOMMO_TRANSPORT') || 'api';
 function firstLast(full: string): { first: string; last: string } {
@@ -57,10 +59,12 @@ export async function createKommoLead(lead: LeadInput): Promise<{ ok: boolean; l
   pushCF('KOMMO_FIELD_SERVICE', lead.service_code);
   pushCF('KOMMO_FIELD_SOURCE', lead.source || 'website');
   pushCF('KOMMO_FIELD_NIF', lead.nif);
+  if (lead.whatsapp_consent !== undefined) pushCF('KOMMO_FIELD_WHATSAPP_CONSENT', lead.whatsapp_consent ? 'sim' : 'nao');
   const contactCFV: any[] = [];
   if (lead.phone) contactCFV.push({ field_code: 'PHONE', values: [{ enum_code: 'MOB', value: lead.phone }] });
   if (lead.email) contactCFV.push({ field_code: 'EMAIL', values: [{ enum_code: 'WORK', value: lead.email }] });
-  const tags = [{ name: 'website' }, lead.unit_slug ? { name: `unidade:${lead.unit_slug}` } : null, lead.language ? { name: `idioma:${lead.language}` } : null].filter(Boolean);
+  const consentTag = lead.whatsapp_consent === undefined ? null : { name: lead.whatsapp_consent ? 'whatsapp:autorizado' : 'whatsapp:nao-autorizado' };
+  const tags = [{ name: 'website' }, lead.unit_slug ? { name: `unidade:${lead.unit_slug}` } : null, lead.language ? { name: `idioma:${lead.language}` } : null, consentTag].filter(Boolean);
   const leadBase: any = {
     name: `Atendimento Online — ${lead.name}`,
     ...(pipelineId ? { pipeline_id: pipelineId } : {}),
@@ -75,7 +79,7 @@ export async function createKommoLead(lead: LeadInput): Promise<{ ok: boolean; l
   let body: any[];
   if (existingContactId) {
     url = `https://${subdomain}.kommo.com/api/v4/leads`;
-    body = [{ ...leadBase, _embedded: { contacts: [{ id: existingContactId }] } }];
+    body = [{ ...leadBase, _embedded: { contacts: [{ id: existingContactId }], tags } }];
   } else {
     url = `https://${subdomain}.kommo.com/api/v4/leads/complex`;
     body = [{ ...leadBase, _embedded: { contacts: [{ first_name: first, last_name: last, custom_fields_values: contactCFV }], tags } }];

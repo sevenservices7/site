@@ -17,6 +17,7 @@ const footerSolutions = [...solutionsFor(lang)]
   .slice(0, 8);
 
 const unitHref = (slug: string) => unitPath(slug, lang);
+const cookiePrefs = { pt: 'Preferências de cookies', en: 'Cookie preferences', es: 'Preferencias de cookies', fr: 'Préférences de cookies' }[lang];
 ---
 <footer class="footer">
   <div class="container">
@@ -54,6 +55,7 @@ const unitHref = (slug: string) => unitPath(slug, lang);
           <li><a href={getRoute('contact', lang)}>{t('nav.contact')}</a></li>
           <li><a href={getRoute('terms', lang)}>{t('footer.terms')}</a></li>
           <li><a href={getRoute('privacy', lang)}>{t('footer.privacy')}</a></li>
+          <li><button type="button" class="footer-link" data-cookie-prefs>{cookiePrefs}</button></li>
         </ul>
       </div>
     </div>
@@ -75,7 +77,8 @@ const unitHref = (slug: string) => unitPath(slug, lang);
   .footer-col h5 { font-family: var(--font-head); font-weight: 500; font-size: .72rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--areia); margin-bottom: 16px; }
   .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
   .footer-col a { color: var(--nevoa); font-size: .92rem; transition: color var(--dur-fast) var(--ease-out); }
-  .footer-col a:hover { color: var(--areia); }
+  .footer-col a:hover, .footer-link:hover { color: var(--areia); }
+  .footer-link { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; color: var(--nevoa); font-size: .92rem; text-align: left; }
   .footer-fine { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 24px; border-top: 1px solid var(--complementar-1); font-size: .8rem; color: var(--complementar-2); }
   @media (max-width: 820px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
   @media (max-width: 520px) { .footer-grid { grid-template-columns: 1fr; } }

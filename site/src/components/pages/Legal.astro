@@ -12,6 +12,454 @@ const draftNote = {
   es: 'Texto preliminar — versión final en revisión jurídica.',
   fr: 'Texte provisoire — version finale en cours de révision juridique.',
 }[lang];
+
+// ---------------------------------------------------------------------------
+// Privacy Policy (with Cookies section)
+// Strings in `p` and `ul` are trusted static content and may contain simple
+// inline HTML (<strong>, <a>, <code>); they are rendered with set:html.
+// ---------------------------------------------------------------------------
+interface PolicySection { id?: string; h: string; p?: string[]; ul?: string[]; after?: string[]; }
+interface Policy { reviewNote: string; updated: string; intro: string[]; sections: PolicySection[]; }
+
+const EMAIL = 'albufeira@sevenservicess.com';
+const mail = `<a href="mailto:${EMAIL}">${EMAIL}</a>`;
+const cnpd = '<a href="https://www.cnpd.pt" target="_blank" rel="noopener">www.cnpd.pt</a>';
+
+const privacy: Record<Lang, Policy> = {
+  pt: {
+    reviewNote: 'Versão em revisão pela nossa advogada.',
+    updated: 'Última atualização: 12 de outubro de 2026.',
+    intro: [
+      'Esta Política de Privacidade explica, de forma simples, quais dados pessoais a SEVEN recolhe através deste site, para que os usa, com quem os partilha e quais são os seus direitos. Ela segue o Regulamento Geral sobre a Proteção de Dados (RGPD) e a legislação portuguesa aplicável.',
+    ],
+    sections: [
+      {
+        h: '1. Quem é o responsável pelos seus dados',
+        p: [
+          'O responsável pelo tratamento é a <strong>SANTOS JESUS Unipessoal Lda</strong>, NIPC 518 146 529, que opera com a marca <strong>SEVEN</strong>, com sede na Rua do MFA, 111 G, 8200-157 Albufeira, Portugal.',
+          'A SEVEN presta serviços de imigração, documentação, constituição de empresas e apoio contabilístico em Portugal, além de serviços consulares brasileiros online para clientes em qualquer país. Temos escritórios em Albufeira, Faro e Porto.',
+          `Para qualquer questão sobre privacidade, escreva para ${mail}.`,
+        ],
+      },
+      {
+        h: '2. Que dados recolhemos',
+        ul: [
+          '<strong>Formulário “Falar com especialista”:</strong> nome, e-mail, telefone/WhatsApp com indicativo do país, escritório preferido, idioma, mensagem e, se você marcar a opção, a autorização para contacto por WhatsApp.',
+          '<strong>Formulário de agendamento:</strong> nome, e-mail, telefone, horário escolhido e idioma. O pagamento é processado pela Stripe; a SEVEN não recebe nem guarda os dados do seu cartão.',
+          '<strong>Dados técnicos e cookies:</strong> informações do navegador e de utilização do site, conforme descrito na secção de cookies abaixo.',
+        ],
+        after: [
+          'Se você se tornar cliente, tratamos também os dados e documentos necessários para prestar o serviço contratado.',
+        ],
+      },
+      {
+        h: '3. Para que usamos os dados e com que base legal',
+        ul: [
+          '<strong>Responder ao seu pedido</strong> e tomar as diligências pré-contratuais que você solicitou (art. 6.º, n.º 1, al. b) do RGPD).',
+          '<strong>Contacto por WhatsApp</strong>, incluindo mensagens de acompanhamento e lembretes, apenas com o seu consentimento (art. 6.º, n.º 1, al. a)). Você pode retirá-lo a qualquer momento, respondendo à mensagem ou escrevendo para o nosso e-mail.',
+          '<strong>Execução do contrato e cumprimento de obrigações legais e fiscais</strong>, no caso de clientes (art. 6.º, n.º 1, als. b) e c)).',
+          '<strong>Cookies de análise e de publicidade</strong>, apenas com o seu consentimento (art. 6.º, n.º 1, al. a)).',
+          '<strong>Proteção contra spam</strong> nos formulários, com o Cloudflare Turnstile, com base no nosso interesse legítimo em manter o site seguro (art. 6.º, n.º 1, al. f)).',
+        ],
+      },
+      {
+        h: '4. Com quem partilhamos os dados',
+        p: ['Não vendemos os seus dados. Recorremos a prestadores de serviços que tratam dados em nosso nome:'],
+        ul: [
+          '<strong>Supabase</strong> — base de dados e funções de servidor, alojados na UE (região da Irlanda).',
+          '<strong>Kommo</strong> — CRM onde registamos os pedidos de contacto.',
+          '<strong>Stripe</strong> — processamento de pagamentos.',
+          '<strong>Google</strong> — Google Analytics e Google Ads, apenas com consentimento (usamos o Google Consent Mode).',
+          '<strong>Meta</strong> — pixel do Facebook/Instagram, apenas com consentimento, se e quando for ativado.',
+          '<strong>Cloudflare</strong> — Turnstile, proteção antispam.',
+          '<strong>GitHub Pages</strong> — alojamento do site.',
+          '<strong>WhatsApp (Meta)</strong> — troca de mensagens.',
+        ],
+      },
+      {
+        h: '5. Transferências para fora do Espaço Económico Europeu',
+        p: [
+          'Alguns destes prestadores podem transferir dados para fora do EEE. Nesses casos, as transferências são feitas ao abrigo do Quadro de Privacidade de Dados UE–EUA (Data Privacy Framework) ou de Cláusulas Contratuais-Tipo aprovadas pela Comissão Europeia.',
+        ],
+      },
+      {
+        h: '6. Durante quanto tempo guardamos os dados',
+        ul: [
+          '<strong>Pedidos de contacto que não se tornam clientes:</strong> até 24 meses após o último contacto; depois são apagados.',
+          '<strong>Dados de clientes:</strong> durante a prestação do serviço e, depois, pelos prazos exigidos pela legislação fiscal e contabilística portuguesa (em geral, 10 anos para documentos contabilísticos).',
+          '<strong>Registos de consentimento:</strong> enquanto o consentimento for válido e pelo tempo necessário para o comprovar.',
+        ],
+      },
+      {
+        id: 'cookies',
+        h: '7. Cookies',
+        p: ['Usamos cookies e tecnologias semelhantes em três categorias:'],
+        ul: [
+          '<strong>Estritamente necessários</strong> (sempre ativos): guardam a sua escolha de cookies no armazenamento local do navegador (localStorage), na chave <code>seven_consent</code>, e permitem a proteção antispam do Cloudflare Turnstile.',
+          '<strong>Análise</strong> (apenas com consentimento): Google Analytics 4 (ID G-QQBZL8K18D), com cookies como <code>_ga</code> e <code>_ga_*</code>, para percebermos como o site é usado.',
+          '<strong>Marketing</strong> (apenas com consentimento): Google Ads (AW-10789023252), para medir conversões, e Meta Pixel, quando ativado, com cookies como <code>_gcl_*</code> e <code>_fbp</code>.',
+        ],
+        after: [
+          'Você pode mudar a sua escolha a qualquer momento no link <strong>“Preferências de cookies”</strong>, no rodapé do site.',
+        ],
+      },
+      {
+        h: '8. Os seus direitos',
+        p: ['Nos termos do RGPD, você tem direito a:'],
+        ul: [
+          'aceder aos seus dados;',
+          'corrigir dados incorretos ou incompletos;',
+          'pedir o apagamento dos dados;',
+          'limitar o tratamento;',
+          'receber os seus dados num formato portátil;',
+          'opor-se ao tratamento;',
+          'retirar o consentimento a qualquer momento, sem afetar o tratamento feito antes.',
+        ],
+        after: [
+          `Para exercer estes direitos, escreva para ${mail}. Você também pode apresentar reclamação à autoridade de controlo portuguesa, a CNPD — Comissão Nacional de Proteção de Dados (${cnpd}).`,
+        ],
+      },
+      {
+        h: '9. Menores',
+        p: [
+          'Os nossos serviços não se destinam a crianças. Dados de menores (por exemplo, para passaportes ou registos de filhos) só são tratados quando fornecidos pelos pais ou representantes legais, no âmbito de um serviço que eles solicitaram.',
+        ],
+      },
+      {
+        h: '10. Alterações e contacto',
+        p: [
+          `Podemos atualizar esta política sempre que necessário; a data da última atualização fica indicada no topo. Dúvidas? Fale com a gente: ${mail}.`,
+        ],
+      },
+    ],
+  },
+
+  en: {
+    reviewNote: 'This version is being reviewed by our lawyer.',
+    updated: 'Last updated: 12 October 2026.',
+    intro: [
+      'This Privacy Policy explains, in plain terms, what personal data SEVEN collects through this website, what we use it for, who we share it with and what your rights are. It follows the General Data Protection Regulation (GDPR) and applicable Portuguese law.',
+    ],
+    sections: [
+      {
+        h: '1. Who is responsible for your data',
+        p: [
+          'The data controller is <strong>SANTOS JESUS Unipessoal Lda</strong>, NIPC 518 146 529, trading as <strong>SEVEN</strong>, registered at Rua do MFA, 111 G, 8200-157 Albufeira, Portugal.',
+          'SEVEN provides immigration, documentation, company formation and accounting support in Portugal, as well as online Brazilian consular services for clients anywhere in the world. We have offices in Albufeira, Faro and Porto.',
+          `For any privacy question, email ${mail}.`,
+        ],
+      },
+      {
+        h: '2. What data we collect',
+        ul: [
+          '<strong>“Talk to a specialist” form:</strong> name, email, WhatsApp phone number with country code, preferred office, language, message and, if you tick the box, your permission to contact you via WhatsApp.',
+          '<strong>Booking form:</strong> name, email, phone, chosen time slot and language. Payment is processed by Stripe; SEVEN does not receive or store your card details.',
+          '<strong>Technical data and cookies:</strong> browser and site usage information, as described in the cookies section below.',
+        ],
+        after: [
+          'If you become a client, we also process the data and documents needed to deliver the service you have engaged us for.',
+        ],
+      },
+      {
+        h: '3. Why we use your data and on what legal basis',
+        ul: [
+          '<strong>Answering your request</strong> and taking the pre-contractual steps you asked for (Art. 6(1)(b) GDPR).',
+          '<strong>Contact via WhatsApp</strong>, including follow-up and reminder messages, only with your consent (Art. 6(1)(a)). You can withdraw it at any time by replying to the message or emailing us.',
+          '<strong>Performing the contract and meeting legal and tax obligations</strong> for clients (Art. 6(1)(b) and (c)).',
+          '<strong>Analytics and advertising cookies</strong>, only with your consent (Art. 6(1)(a)).',
+          '<strong>Spam protection</strong> on our forms with Cloudflare Turnstile, based on our legitimate interest in keeping the site secure (Art. 6(1)(f)).',
+        ],
+      },
+      {
+        h: '4. Who we share your data with',
+        p: ['We do not sell your data. We use service providers that process data on our behalf:'],
+        ul: [
+          '<strong>Supabase</strong> — database and server functions, hosted in the EU (Ireland region).',
+          '<strong>Kommo</strong> — CRM where contact requests are recorded.',
+          '<strong>Stripe</strong> — payment processing.',
+          '<strong>Google</strong> — Google Analytics and Google Ads, only with consent (we use Google Consent Mode).',
+          '<strong>Meta</strong> — Facebook/Instagram pixel, only with consent, if and when activated.',
+          '<strong>Cloudflare</strong> — Turnstile anti-spam protection.',
+          '<strong>GitHub Pages</strong> — website hosting.',
+          '<strong>WhatsApp (Meta)</strong> — messaging.',
+        ],
+      },
+      {
+        h: '5. Transfers outside the European Economic Area',
+        p: [
+          'Some of these providers may transfer data outside the EEA. Where they do, transfers rely on the EU–US Data Privacy Framework or on Standard Contractual Clauses approved by the European Commission.',
+        ],
+      },
+      {
+        h: '6. How long we keep your data',
+        ul: [
+          '<strong>Contact requests that do not become clients:</strong> up to 24 months after the last contact, then deleted.',
+          '<strong>Client data:</strong> for the duration of the service and then for the periods required by Portuguese tax and accounting law (generally 10 years for accounting documents).',
+          '<strong>Consent records:</strong> while the consent is valid and for as long as needed to prove it.',
+        ],
+      },
+      {
+        id: 'cookies',
+        h: '7. Cookies',
+        p: ['We use cookies and similar technologies in three categories:'],
+        ul: [
+          '<strong>Strictly necessary</strong> (always on): store your cookie choice in your browser’s local storage (localStorage) under the key <code>seven_consent</code>, and enable Cloudflare Turnstile spam protection.',
+          '<strong>Analytics</strong> (only with consent): Google Analytics 4 (ID G-QQBZL8K18D), with cookies such as <code>_ga</code> and <code>_ga_*</code>, so we can understand how the site is used.',
+          '<strong>Marketing</strong> (only with consent): Google Ads (AW-10789023252) for conversion measurement, and the Meta Pixel when activated, with cookies such as <code>_gcl_*</code> and <code>_fbp</code>.',
+        ],
+        after: [
+          'You can change your choice at any time using the <strong>“Cookie preferences”</strong> link in the site footer.',
+        ],
+      },
+      {
+        h: '8. Your rights',
+        p: ['Under the GDPR, you have the right to:'],
+        ul: [
+          'access your data;',
+          'have inaccurate or incomplete data rectified;',
+          'have your data erased;',
+          'restrict processing;',
+          'receive your data in a portable format;',
+          'object to processing;',
+          'withdraw your consent at any time, without affecting processing carried out before.',
+        ],
+        after: [
+          `To exercise these rights, email ${mail}. You can also lodge a complaint with the Portuguese supervisory authority, the CNPD — Comissão Nacional de Proteção de Dados (${cnpd}).`,
+        ],
+      },
+      {
+        h: '9. Children',
+        p: [
+          'Our services are not directed at children. Data about minors (for example, for children’s passports or registrations) is only processed when provided by parents or legal guardians as part of a service they have requested.',
+        ],
+      },
+      {
+        h: '10. Changes and contact',
+        p: [
+          `We may update this policy when needed; the date of the latest update is shown at the top. Any questions? Get in touch: ${mail}.`,
+        ],
+      },
+    ],
+  },
+
+  es: {
+    reviewNote: 'Versión en revisión por nuestra abogada.',
+    updated: 'Última actualización: 12 de octubre de 2026.',
+    intro: [
+      'Esta Política de Privacidad te explica, de forma sencilla, qué datos personales recoge SEVEN a través de este sitio web, para qué los usa, con quién los comparte y cuáles son tus derechos. Se rige por el Reglamento General de Protección de Datos (RGPD) y la legislación portuguesa aplicable.',
+    ],
+    sections: [
+      {
+        h: '1. Quién es el responsable de tus datos',
+        p: [
+          'El responsable del tratamiento es <strong>SANTOS JESUS Unipessoal Lda</strong>, NIPC 518 146 529, que opera con la marca <strong>SEVEN</strong>, con domicilio en Rua do MFA, 111 G, 8200-157 Albufeira, Portugal.',
+          'SEVEN presta servicios de inmigración, documentación, constitución de empresas y apoyo contable en Portugal, además de servicios consulares brasileños en línea para clientes de cualquier país. Tenemos oficinas en Albufeira, Faro y Oporto.',
+          `Para cualquier consulta sobre privacidad, escríbenos a ${mail}.`,
+        ],
+      },
+      {
+        h: '2. Qué datos recogemos',
+        ul: [
+          '<strong>Formulario “Hablar con un especialista”:</strong> nombre, correo electrónico, teléfono de WhatsApp con prefijo del país, oficina preferida, idioma, mensaje y, si marcas la casilla, tu autorización para contactarte por WhatsApp.',
+          '<strong>Formulario de reserva:</strong> nombre, correo electrónico, teléfono, horario elegido e idioma. El pago lo procesa Stripe; SEVEN no recibe ni guarda los datos de tu tarjeta.',
+          '<strong>Datos técnicos y cookies:</strong> información del navegador y del uso del sitio, como se describe en la sección de cookies más abajo.',
+        ],
+        after: [
+          'Si te conviertes en cliente, también tratamos los datos y documentos necesarios para prestar el servicio contratado.',
+        ],
+      },
+      {
+        h: '3. Para qué usamos tus datos y con qué base legal',
+        ul: [
+          '<strong>Responder a tu solicitud</strong> y realizar las gestiones precontractuales que nos pidas (art. 6.1.b del RGPD).',
+          '<strong>Contacto por WhatsApp</strong>, incluidos mensajes de seguimiento y recordatorios, solo con tu consentimiento (art. 6.1.a). Puedes retirarlo en cualquier momento respondiendo al mensaje o escribiéndonos por correo electrónico.',
+          '<strong>Ejecución del contrato y cumplimiento de obligaciones legales y fiscales</strong>, en el caso de clientes (art. 6.1.b y c).',
+          '<strong>Cookies de análisis y de publicidad</strong>, solo con tu consentimiento (art. 6.1.a).',
+          '<strong>Protección contra spam</strong> en los formularios con Cloudflare Turnstile, basada en nuestro interés legítimo en mantener el sitio seguro (art. 6.1.f).',
+        ],
+      },
+      {
+        h: '4. Con quién compartimos tus datos',
+        p: ['No vendemos tus datos. Trabajamos con proveedores que tratan datos por cuenta nuestra:'],
+        ul: [
+          '<strong>Supabase</strong> — base de datos y funciones de servidor, alojadas en la UE (región de Irlanda).',
+          '<strong>Kommo</strong> — CRM donde registramos las solicitudes de contacto.',
+          '<strong>Stripe</strong> — procesamiento de pagos.',
+          '<strong>Google</strong> — Google Analytics y Google Ads, solo con consentimiento (usamos Google Consent Mode).',
+          '<strong>Meta</strong> — píxel de Facebook/Instagram, solo con consentimiento, si se activa y cuando se active.',
+          '<strong>Cloudflare</strong> — Turnstile, protección antispam.',
+          '<strong>GitHub Pages</strong> — alojamiento del sitio.',
+          '<strong>WhatsApp (Meta)</strong> — mensajería.',
+        ],
+      },
+      {
+        h: '5. Transferencias fuera del Espacio Económico Europeo',
+        p: [
+          'Algunos de estos proveedores pueden transferir datos fuera del EEE. En esos casos, las transferencias se amparan en el Marco de Privacidad de Datos UE–EE. UU. (Data Privacy Framework) o en Cláusulas Contractuales Tipo aprobadas por la Comisión Europea.',
+        ],
+      },
+      {
+        h: '6. Cuánto tiempo conservamos tus datos',
+        ul: [
+          '<strong>Solicitudes de contacto que no se convierten en clientes:</strong> hasta 24 meses después del último contacto; después se eliminan.',
+          '<strong>Datos de clientes:</strong> mientras dure el servicio y, después, durante los plazos que exige la legislación fiscal y contable portuguesa (en general, 10 años para los documentos contables).',
+          '<strong>Registros de consentimiento:</strong> mientras el consentimiento sea válido y durante el tiempo necesario para acreditarlo.',
+        ],
+      },
+      {
+        id: 'cookies',
+        h: '7. Cookies',
+        p: ['Usamos cookies y tecnologías similares en tres categorías:'],
+        ul: [
+          '<strong>Estrictamente necesarias</strong> (siempre activas): guardan tu elección de cookies en el almacenamiento local del navegador (localStorage), con la clave <code>seven_consent</code>, y permiten la protección antispam de Cloudflare Turnstile.',
+          '<strong>Análisis</strong> (solo con consentimiento): Google Analytics 4 (ID G-QQBZL8K18D), con cookies como <code>_ga</code> y <code>_ga_*</code>, para entender cómo se usa el sitio.',
+          '<strong>Marketing</strong> (solo con consentimiento): Google Ads (AW-10789023252), para medir conversiones, y Meta Pixel cuando esté activado, con cookies como <code>_gcl_*</code> y <code>_fbp</code>.',
+        ],
+        after: [
+          'Puedes cambiar tu elección en cualquier momento con el enlace <strong>“Preferencias de cookies”</strong> del pie de página.',
+        ],
+      },
+      {
+        h: '8. Tus derechos',
+        p: ['Según el RGPD, tienes derecho a:'],
+        ul: [
+          'acceder a tus datos;',
+          'rectificar datos inexactos o incompletos;',
+          'solicitar la supresión de tus datos;',
+          'limitar el tratamiento;',
+          'recibir tus datos en un formato portable;',
+          'oponerte al tratamiento;',
+          'retirar tu consentimiento en cualquier momento, sin que ello afecte al tratamiento realizado antes.',
+        ],
+        after: [
+          `Para ejercer estos derechos, escríbenos a ${mail}. También puedes presentar una reclamación ante la autoridad de control portuguesa, la CNPD — Comissão Nacional de Proteção de Dados (${cnpd}).`,
+        ],
+      },
+      {
+        h: '9. Menores',
+        p: [
+          'Nuestros servicios no están dirigidos a niños. Los datos de menores (por ejemplo, para pasaportes o registros de hijos) solo se tratan cuando los facilitan sus padres o tutores legales, en el marco de un servicio que ellos han solicitado.',
+        ],
+      },
+      {
+        h: '10. Cambios y contacto',
+        p: [
+          `Podemos actualizar esta política cuando sea necesario; la fecha de la última actualización aparece arriba. ¿Tienes dudas? Escríbenos: ${mail}.`,
+        ],
+      },
+    ],
+  },
+
+  fr: {
+    reviewNote: 'Version en cours de révision par notre avocate.',
+    updated: 'Dernière mise à jour : 12 octobre 2026.',
+    intro: [
+      'La présente Politique de confidentialité vous explique simplement quelles données personnelles SEVEN collecte via ce site, à quelles fins, avec qui elles sont partagées et quels sont vos droits. Elle respecte le Règlement général sur la protection des données (RGPD) et la législation portugaise applicable.',
+    ],
+    sections: [
+      {
+        h: '1. Responsable du traitement',
+        p: [
+          'Le responsable du traitement est <strong>SANTOS JESUS Unipessoal Lda</strong>, NIPC 518 146 529, exerçant sous la marque <strong>SEVEN</strong>, dont le siège est situé Rua do MFA, 111 G, 8200-157 Albufeira, Portugal.',
+          'SEVEN propose des services d’immigration, de documentation, de création d’entreprise et d’accompagnement comptable au Portugal, ainsi que des services consulaires brésiliens en ligne pour des clients du monde entier. Nous avons des bureaux à Albufeira, Faro et Porto.',
+          `Pour toute question relative à la confidentialité, écrivez-nous à ${mail}.`,
+        ],
+      },
+      {
+        h: '2. Données collectées',
+        ul: [
+          '<strong>Formulaire « Parler à un spécialiste » :</strong> nom, e-mail, numéro WhatsApp avec indicatif du pays, bureau préféré, langue, message et, si vous cochez la case, votre autorisation d’être contacté(e) via WhatsApp.',
+          '<strong>Formulaire de réservation :</strong> nom, e-mail, téléphone, créneau choisi et langue. Le paiement est traité par Stripe ; SEVEN ne reçoit ni ne conserve les données de votre carte.',
+          '<strong>Données techniques et cookies :</strong> informations sur le navigateur et l’utilisation du site, décrites dans la section cookies ci-dessous.',
+        ],
+        after: [
+          'Si vous devenez client, nous traitons également les données et documents nécessaires à la réalisation du service demandé.',
+        ],
+      },
+      {
+        h: '3. Finalités et bases légales',
+        ul: [
+          '<strong>Répondre à votre demande</strong> et prendre les mesures précontractuelles que vous avez sollicitées (art. 6, par. 1, b) du RGPD).',
+          '<strong>Contact via WhatsApp</strong>, y compris les messages de suivi et de rappel, uniquement avec votre consentement (art. 6, par. 1, a)). Vous pouvez le retirer à tout moment en répondant au message ou en nous écrivant par e-mail.',
+          '<strong>Exécution du contrat et respect des obligations légales et fiscales</strong> pour nos clients (art. 6, par. 1, b) et c)).',
+          '<strong>Cookies de mesure d’audience et publicitaires</strong>, uniquement avec votre consentement (art. 6, par. 1, a)).',
+          '<strong>Protection contre le spam</strong> sur nos formulaires avec Cloudflare Turnstile, fondée sur notre intérêt légitime à sécuriser le site (art. 6, par. 1, f)).',
+        ],
+      },
+      {
+        h: '4. Destinataires des données',
+        p: ['Nous ne vendons pas vos données. Nous faisons appel à des prestataires qui traitent des données pour notre compte :'],
+        ul: [
+          '<strong>Supabase</strong> — base de données et fonctions serveur, hébergées dans l’UE (région Irlande).',
+          '<strong>Kommo</strong> — CRM dans lequel les demandes de contact sont enregistrées.',
+          '<strong>Stripe</strong> — traitement des paiements.',
+          '<strong>Google</strong> — Google Analytics et Google Ads, uniquement avec consentement (nous utilisons Google Consent Mode).',
+          '<strong>Meta</strong> — pixel Facebook/Instagram, uniquement avec consentement, si et lorsqu’il est activé.',
+          '<strong>Cloudflare</strong> — Turnstile, protection anti-spam.',
+          '<strong>GitHub Pages</strong> — hébergement du site.',
+          '<strong>WhatsApp (Meta)</strong> — messagerie.',
+        ],
+      },
+      {
+        h: '5. Transferts hors de l’Espace économique européen',
+        p: [
+          'Certains de ces prestataires peuvent transférer des données hors de l’EEE. Dans ce cas, les transferts reposent sur le cadre de protection des données UE–États-Unis (Data Privacy Framework) ou sur des clauses contractuelles types approuvées par la Commission européenne.',
+        ],
+      },
+      {
+        h: '6. Durée de conservation',
+        ul: [
+          '<strong>Demandes de contact qui ne deviennent pas clients :</strong> jusqu’à 24 mois après le dernier contact, puis suppression.',
+          '<strong>Données des clients :</strong> pendant toute la durée du service, puis pendant les délais imposés par la législation fiscale et comptable portugaise (en général 10 ans pour les documents comptables).',
+          '<strong>Preuves de consentement :</strong> tant que le consentement est valable et aussi longtemps que nécessaire pour le prouver.',
+        ],
+      },
+      {
+        id: 'cookies',
+        h: '7. Cookies',
+        p: ['Nous utilisons des cookies et technologies similaires de trois catégories :'],
+        ul: [
+          '<strong>Strictement nécessaires</strong> (toujours actifs) : ils enregistrent votre choix en matière de cookies dans le stockage local du navigateur (localStorage), sous la clé <code>seven_consent</code>, et permettent la protection anti-spam Cloudflare Turnstile.',
+          '<strong>Mesure d’audience</strong> (uniquement avec consentement) : Google Analytics 4 (ID G-QQBZL8K18D), avec des cookies tels que <code>_ga</code> et <code>_ga_*</code>, pour comprendre comment le site est utilisé.',
+          '<strong>Marketing</strong> (uniquement avec consentement) : Google Ads (AW-10789023252) pour la mesure des conversions, et le Meta Pixel lorsqu’il est activé, avec des cookies tels que <code>_gcl_*</code> et <code>_fbp</code>.',
+        ],
+        after: [
+          'Vous pouvez modifier votre choix à tout moment via le lien <strong>« Préférences de cookies »</strong> en bas de page.',
+        ],
+      },
+      {
+        h: '8. Vos droits',
+        p: ['Conformément au RGPD, vous disposez des droits suivants :'],
+        ul: [
+          'accéder à vos données ;',
+          'faire rectifier des données inexactes ou incomplètes ;',
+          'demander l’effacement de vos données ;',
+          'demander la limitation du traitement ;',
+          'recevoir vos données dans un format portable ;',
+          'vous opposer au traitement ;',
+          'retirer votre consentement à tout moment, sans incidence sur les traitements effectués auparavant.',
+        ],
+        after: [
+          `Pour exercer ces droits, écrivez-nous à ${mail}. Vous pouvez également introduire une réclamation auprès de l’autorité de contrôle portugaise, la CNPD — Comissão Nacional de Proteção de Dados (${cnpd}).`,
+        ],
+      },
+      {
+        h: '9. Mineurs',
+        p: [
+          'Nos services ne s’adressent pas aux enfants. Les données de mineurs (par exemple pour des passeports ou des actes d’état civil d’enfants) ne sont traitées que lorsqu’elles sont fournies par les parents ou représentants légaux, dans le cadre d’un service qu’ils ont demandé.',
+        ],
+      },
+      {
+        h: '10. Modifications et contact',
+        p: [
+          `Nous pouvons mettre à jour cette politique si nécessaire ; la date de la dernière mise à jour figure en haut de page. Une question ? Écrivez-nous : ${mail}.`,
+        ],
+      },
+    ],
+  },
+};
+
+const policy = privacy[lang];
 ---
 <section class="bg-navy center">
   <div class="container" style="max-width:720px">
@@ -22,15 +470,39 @@ const draftNote = {
 
 <section>
   <div class="container" style="max-width:720px">
-    <p class="badge badge-soon">{draftNote}</p>
-    <div class="legal-body">
-      <p style="margin-top:20px">{t('footer.legalEntity')}</p>
-      <p>{t('footer.tagline')}</p>
-      <p class="muted">Lorem ipsum — conteúdo legal a ser fornecido e revisado (ver pendência no plano).</p>
-    </div>
+    {kind === 'privacy' ? (
+      <>
+        <p class="badge badge-soon">{policy.reviewNote}</p>
+        <div class="legal-body">
+          <p class="muted" style="margin-top:20px">{policy.updated}</p>
+          {policy.intro.map((para) => <p set:html={para} />)}
+          {policy.sections.map((s) => (
+            <>
+              <h2 id={s.id}>{s.h}</h2>
+              {s.p?.map((para) => <p set:html={para} />)}
+              {s.ul && <ul>{s.ul.map((li) => <li set:html={li} />)}</ul>}
+              {s.after?.map((para) => <p set:html={para} />)}
+            </>
+          ))}
+        </div>
+      </>
+    ) : (
+      <>
+        <p class="badge badge-soon">{draftNote}</p>
+        <div class="legal-body">
+          <p style="margin-top:20px">{t('footer.legalEntity')}</p>
+          <p>{t('footer.tagline')}</p>
+          <p class="muted">Lorem ipsum — conteúdo legal a ser fornecido e revisado (ver pendência no plano).</p>
+        </div>
+      </>
+    )}
   </div>
 </section>
 
 <style>
   .legal-body p { margin-bottom: 14px; }
+  .legal-body h2 { font-size: 1.25rem; margin: 32px 0 12px; scroll-margin-top: 96px; }
+  .legal-body ul { margin: 0 0 14px; padding-left: 22px; }
+  .legal-body li { margin-bottom: 8px; }
+  .legal-body code { font-size: 0.9em; }
 </style>

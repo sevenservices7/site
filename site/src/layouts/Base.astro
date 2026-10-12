@@ -4,6 +4,7 @@ import Seo from '../components/Seo.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import AttendanceForm from '../components/AttendanceForm.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 import { getLangFromUrl, type Lang, type RouteKey } from '../i18n/ui';
 
 interface Props {
@@ -28,11 +29,24 @@ const htmlLang = lang === 'pt' ? 'pt-BR' : lang;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#01203F" />
-    <!-- Google tag (gtag.js): Google Analytics + Google Ads -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-QQBZL8K18D"></script>
+    <!-- RGPD: Consent Mode v2. Tudo começa negado; a escolha guardada (ou o banner) libera. -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied', functionality_storage: 'granted', security_storage: 'granted', wait_for_update: 500 });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+      try {
+        var c = JSON.parse(localStorage.getItem('seven_consent') || 'null');
+        if (c && c.v === 1) {
+          var m = c.marketing ? 'granted' : 'denied';
+          gtag('consent', 'update', { analytics_storage: c.analytics ? 'granted' : 'denied', ad_storage: m, ad_user_data: m, ad_personalization: m });
+        }
+      } catch (e) {}
+    </script>
+    <!-- Google tag (gtag.js): Google Analytics + Google Ads -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-QQBZL8K18D"></script>
+    <script is:inline>
       gtag('js', new Date());
       gtag('config', 'G-QQBZL8K18D');
       gtag('config', 'AW-10789023252');
@@ -53,5 +67,6 @@ const htmlLang = lang === 'pt' ? 'pt-BR' : lang;
     </main>
     {!bare && <Footer lang={lang} />}
     {!bare && <AttendanceForm lang={lang} />}
+    <CookieBanner lang={lang} />
   </body>
 </html>

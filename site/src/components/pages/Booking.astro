@@ -13,6 +13,13 @@ const copy = {
 }[lang];
 // Consultas são feitas em PT/EN/ES; para FR, o idioma inicial sugerido é o inglês.
 const consultLang = lang === 'fr' ? 'en' : lang;
+// RGPD: autorização explícita, nunca pré-marcada, para contacto e lembretes por WhatsApp.
+const waConsent = {
+  pt: 'Autorizo a SEVEN a entrar em contato comigo pelo WhatsApp sobre este agendamento, inclusive com lembretes. Posso cancelar quando quiser.',
+  en: 'I authorise SEVEN to contact me on WhatsApp about this booking, including reminders. I can withdraw at any time.',
+  es: 'Autorizo a SEVEN a contactarme por WhatsApp sobre esta cita, incluso con recordatorios. Puedo retirarlo cuando quiera.',
+  fr: 'J’autorise SEVEN à me contacter sur WhatsApp au sujet de ce rendez-vous, y compris par des rappels. Je peux retirer mon accord à tout moment.',
+}[lang];
 ---
 <section class="bg-navy center">
   <div class="container" style="max-width:720px">
@@ -49,6 +56,7 @@ const consultLang = lang === 'fr' ? 'en' : lang;
         <input data-b-name placeholder={copy.name} autocomplete="name" />
         <input data-b-email type="email" placeholder={copy.email} autocomplete="email" />
         <input data-b-phone type="tel" placeholder={copy.phone} autocomplete="tel" />
+        <label class="book-check"><input type="checkbox" data-b-wa /><span>{waConsent}</span></label>
       </div>
       <button class="btn btn-gold btn-block" style="margin-top:14px" data-book-pay>{copy.book}</button>
     </div>
@@ -65,6 +73,8 @@ const consultLang = lang === 'fr' ? 'en' : lang;
   }
   .lang-opt[aria-pressed='true'], .slot-opt[aria-pressed='true'] { background: var(--g1); border-color: var(--g2); }
   .book-fields { display: grid; gap: 10px; }
+  .book-check { display: flex; gap: 10px; align-items: flex-start; font-size: .84rem; line-height: 1.45; cursor: pointer; }
+  .book-fields .book-check input { width: 16px; height: 16px; padding: 0; margin-top: 2px; flex: none; accent-color: var(--heading); }
   .book-fields input { font: inherit; padding: 11px 12px; border: 1px solid var(--b2); border-radius: var(--r-md); background: var(--off); }
 </style>
 
@@ -119,6 +129,7 @@ const consultLang = lang === 'fr' ? 'en' : lang;
       service_code: 'CONSULT',
       slot_start: selectedSlot.start,
       slot_end: selectedSlot.end,
+      whatsapp_consent: (document.querySelector('[data-b-wa]') as HTMLInputElement)?.checked ?? false,
       customer: {
         name: (document.querySelector('[data-b-name]') as HTMLInputElement).value,
         email: (document.querySelector('[data-b-email]') as HTMLInputElement).value,

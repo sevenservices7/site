@@ -71,6 +71,7 @@ export function createBooking(input: {
   language: string;
   service_code?: string;
   slot_start: string;
+  whatsapp_consent?: boolean;
   slot_end: string;
   customer: { name: string; email: string; phone?: string };
   unit_slug?: string;
@@ -97,6 +98,7 @@ export function sendLead(input: {
   language: string;
   service_code?: string;
   message?: string;
+  whatsapp_consent?: boolean;
   turnstile_token?: string;
 }): Promise<{ ok: boolean; lead_id?: number }> {
   return callFn('kommo-lead', { ...input, source: 'website' });

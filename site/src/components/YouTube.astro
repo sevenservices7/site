@@ -15,7 +15,7 @@ const { id, title } = Astro.props;
   .yt-btn img { width: 100%; height: 100%; object-fit: cover; max-width: none; }
   .yt-play { position: absolute; inset: 0; display: grid; place-items: center; }
   .yt-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-  .yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .yt :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 </style>
 <script>
   document.querySelectorAll<HTMLElement>('[data-yt]').forEach((el) => {
