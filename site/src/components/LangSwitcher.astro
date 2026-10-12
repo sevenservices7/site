@@ -4,16 +4,18 @@ import { languages, getRoute, type Lang, type RouteKey } from '../i18n/ui';
 interface Props {
   lang: Lang;
   routeKey?: RouteKey;
+  alternates?: Partial<Record<Lang, string>>;
 }
-const { lang, routeKey } = Astro.props;
+const { lang, routeKey, alternates } = Astro.props;
 
 // Sem routeKey conhecida, alterna para a home do idioma.
 function hrefFor(target: Lang): string {
+  if (alternates) return alternates[target] ?? getRoute('solutions', target);
   if (routeKey) return getRoute(routeKey, target);
   return getRoute('home', target);
 }
 ---
-<div class="langsw" aria-label="Idioma">
+<div class="langsw" aria-label={{ pt: 'Idioma', en: 'Language', es: 'Idioma', fr: 'Langue' }[lang]}>
   {(Object.keys(languages) as Lang[]).map((l) => (
     <a
       href={hrefFor(l)}

@@ -10,11 +10,12 @@ const draftNote = {
   pt: 'Texto preliminar — versão final em revisão jurídica.',
   en: 'Preliminary text — final version under legal review.',
   es: 'Texto preliminar — versión final en revisión jurídica.',
+  fr: 'Texte provisoire — version finale en cours de révision juridique.',
 }[lang];
 ---
 <section class="bg-navy center">
   <div class="container" style="max-width:720px">
-    <span class="eyebrow">{lang === 'en' ? 'Legal' : 'Legal'}</span>
+    <span class="eyebrow">{lang === 'fr' ? 'Mentions légales' : 'Legal'}</span>
     <h1>{title}</h1>
   </div>
 </section>

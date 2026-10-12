@@ -1,66 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
-import WhatsAppButton from '../components/WhatsAppButton.astro';
-import { STAGES, solutionsByStage, sortedSolutions } from '../data/solucoes';
-import { SITE_URL, breadcrumbLd, mainWhatsapp, waText } from '../lib/site';
-
-const wa = await mainWhatsapp();
-const stages = STAGES.map((st) => ({ ...st, items: solutionsByStage(st.id) })).filter((st) => st.items.length > 0);
-const jsonLd = [
-  breadcrumbLd([{ name: 'Início', path: '/' }, { name: 'Soluções', path: '/solucoes' }]),
-  {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: 'Soluções SEVEN',
-    itemListElement: sortedSolutions().map((s, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE_URL}/${s.slug}`, name: s.navLabel })),
-  },
-];
+import SolutionsHub from '../components/pages/SolutionsHub.astro';
+import { getUi } from '../data/ui';
+import { hubJsonLd } from '../lib/hub-page';
+const u = getUi('pt');
 ---
-<Base
-  title="Soluções para morar e empreender em Portugal | SEVEN"
-  description="Imigração, documentos, impostos, empresa e contabilidade em Portugal. A SEVEN acompanha a sua jornada inteira, do Brasil à nacionalidade. Do jeito certo."
-  jsonLd={jsonLd}
->
-  <section class="pg-hero">
-    <div class="container">
-      <nav aria-label="Você está em"><ol class="crumbs"><li><a href="/">Início</a></li><li aria-current="page">Soluções</li></ol></nav>
-      <span class="eyebrow">Soluções</span>
-      <h1>Tudo que a sua vida lá fora precisa, <em>num só lugar.</em></h1>
-      <p class="lede">A gente não vende papel. A gente acompanha a sua jornada: da decisão de sair do Brasil à nacionalidade portuguesa e ao seu próprio negócio. Encontre abaixo a etapa em que você está.</p>
-      <div class="ctas">
-        <a href="/agendamento" class="btn btn-gold">Falar com um especialista</a>
-        <WhatsAppButton whatsapp={wa} text={waText()} label="Conversar no WhatsApp" />
-      </div>
-    </div>
-    <div class="pg-hero-mark" aria-hidden="true"></div>
-  </section>
-
-  {stages.map((st, i) => (
-    <section class={i % 2 ? 'bg-off' : 'bg-white'} id={st.id}>
-      <div class="container">
-        <div class="sec-head">
-          <span class="eyebrow">{st.step === '+' ? 'Em qualquer etapa' : `Etapa ${st.step}`}</span>
-          <h2>{st.title}</h2>
-          <p class="lead">{st.summary}</p>
-        </div>
-        <div class="link-cards">
-          {st.items.map((s) => (
-            <a href={`/${s.slug}`} class="link-card"><h3>{s.navLabel}</h3><p>{s.cardSummary}</p><span class="go">Saiba mais</span></a>
-          ))}
-        </div>
-      </div>
-    </section>
-  ))}
-
-  <section class="sign-band">
-    <div class="container">
-      <p class="statement">Não sabe por onde começar?</p>
-      <h2>É para isso que existe a consultoria.</h2>
-      <p>Numa conversa com um especialista, a gente entende o seu caso e mostra o caminho, dentro da lei. Se você seguir com o serviço, o valor da consultoria é descontado.</p>
-      <div class="ctas">
-        <a href="/agendamento" class="btn btn-gold">Falar com um especialista</a>
-        <WhatsAppButton whatsapp={wa} text={waText()} label="Conversar no WhatsApp" />
-      </div>
-    </div>
-  </section>
+<Base title={u.hub.metaTitle} description={u.hub.metaDescription} jsonLd={hubJsonLd('pt')} routeKey="solutions">
+  <SolutionsHub lang="pt" />
 </Base>

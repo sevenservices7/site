@@ -1,27 +1,33 @@
 ---
-// Home em PT-BR, contada como jornada (decidir → chegar → morar → ser português → empreender).
+// Home contada como jornada (decidir → chegar → morar → ser português → empreender), em todos os idiomas.
+// Blog, podcast e depoimentos só existem em português e só aparecem na versão PT.
 import { getCollection } from 'astro:content';
 import { getOffices } from '../../lib/data';
-import { STAGES, solutionsByStage } from '../../data/solucoes';
+import { STAGES, solutionsByStageFor, solutionFor, solutionPath } from '../../data/solucoes';
+import { getUi } from '../../data/ui';
+import { getRoute, type Lang } from '../../i18n/ui';
 import { mainWhatsapp, waText } from '../../lib/site';
 import UnitCard from '../UnitCard.astro';
 import TrustBadges from '../TrustBadges.astro';
 import WhatsAppButton from '../WhatsAppButton.astro';
 
+interface Props { lang?: Lang; }
+const { lang = 'pt' } = Astro.props;
+const isPt = lang === 'pt';
+const u = getUi(lang);
+const h = u.home;
+const booking = getRoute('booking', lang);
+const hub = getRoute('solutions', lang);
 const offices = await getOffices();
 const wa = await mainWhatsapp();
-const journey = STAGES.filter((s) => s.id !== 'apoio').map((s) => ({ ...s, items: solutionsByStage(s.id) }));
+const journey = STAGES.filter((s) => s.id !== 'apoio').map((s) => ({ ...s, ...u.stages[s.id], items: solutionsByStageFor(lang, s.id) }));
+const bizLinks = ['abrir-empresa-em-portugal', 'contabilidade-em-portugal'].map((k) => solutionFor(lang, k));
 
 const byDate = <T extends { data: { pubDate: Date } }>(a: T, b: T) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(byDate).slice(0, 3);
-const episodes = (await getCollection('podcast', ({ data }) => !data.draft)).sort(byDate).slice(0, 2);
+const posts = isPt ? (await getCollection('blog', ({ data }) => !data.draft)).sort(byDate).slice(0, 3) : [];
+const episodes = isPt ? (await getCollection('podcast', ({ data }) => !data.draft)).sort(byDate).slice(0, 2) : [];
 const dateFmt = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
 
-const principles = [
-  ['01', 'Traduz sempre', 'Termo técnico vem com tradução ao lado. NIF é o CPF português; Finanças é a Receita Federal de lá. Você entende cada passo do seu processo.'],
-  ['02', 'Honesta até no "não"', 'Se por um caminho não dá, a gente diz o porquê. E mostra outro, dentro da lei. Sem jeitinho.'],
-  ['03', 'Acompanha a jornada inteira', 'Da decisão de sair do Brasil à nacionalidade e ao seu próprio negócio. A gente lembra do próximo passo antes de você precisar.'],
-];
 
 // Palavras dos clientes, sem edição.
 const testimonials = [
@@ -32,18 +38,15 @@ const testimonials = [
 ---
 <section class="pg-hero home-hero">
   <div class="container">
-    <span class="eyebrow">Imigração · Empresas · Contabilidade</span>
-    <h1>Sempre existe um <em>caminho.</em></h1>
-    <p class="lede">A SEVEN transforma a complexidade de viver e empreender em Portugal em caminho claro. Do Brasil à nacionalidade, do primeiro documento ao seu próprio negócio. Do jeito certo.</p>
+    <span class="eyebrow">{h.eyebrow}</span>
+    <h1>{h.h1} <em>{h.h1Em}</em></h1>
+    <p class="lede">{h.lede}</p>
     <div class="ctas">
-      <a href="/agendamento" class="btn btn-gold">Falar com um especialista</a>
-      <a href="/solucoes" class="btn btn-light">Ver soluções</a>
+      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={hub} class="btn btn-light">{h.ctaSecondary}</a>
     </div>
     <div class="pg-highlights">
-      <div><strong>~2.000</strong><span>clientes atendidos desde 2022</span></div>
-      <div><strong>4,9</strong><span>no Google, em 178 avaliações</span></div>
-      <div><strong>3</strong><span>unidades: Albufeira, Faro e Porto</span></div>
-      <div><strong>Online</strong><span>ou presencial, de onde você estiver</span></div>
+      {h.highlights.map((x) => <div><strong>{x.value}</strong><span>{x.label}</span></div>)}
     </div>
   </div>
   <div class="pg-hero-mark" aria-hidden="true"></div>
@@ -53,9 +56,9 @@ const testimonials = [
 <section class="bg-white">
   <div class="container">
     <div class="sec-head">
-      <span class="eyebrow">A sua jornada</span>
-      <h2>A vida lá fora tem etapas. A gente acompanha todas.</h2>
-      <p class="lead">Você não precisa saber o nome do processo. Diga onde está, e a gente mostra o próximo passo.</p>
+      <span class="eyebrow">{h.journeyEyebrow}</span>
+      <h2>{h.journeyTitle}</h2>
+      <p class="lead">{h.journeyLead}</p>
     </div>
     <ol class="journey">
       {journey.map((st) => (
@@ -64,12 +67,12 @@ const testimonials = [
           <h3>{st.title}</h3>
           <p>{st.summary}</p>
           {st.items.length > 0 && (
-            <ul>{st.items.map((it) => <li><a href={`/${it.slug}`}>{it.navLabel}</a></li>)}</ul>
+            <ul>{st.items.map((it) => <li><a href={solutionPath(lang, it)}>{it.navLabel}</a></li>)}</ul>
           )}
         </li>
       ))}
     </ol>
-    <p style="margin-top:28px"><a href="/solucoes" class="btn btn-ghost">Ver todas as soluções</a></p>
+    <p style="margin-top:28px"><a href={hub} class="btn btn-ghost">{u.common.seeAllSolutions}</a></p>
   </div>
 </section>
 
@@ -77,12 +80,12 @@ const testimonials = [
 <section class="bg-off">
   <div class="container home-split">
     <div class="sec-head">
-      <span class="eyebrow">O jeito SEVEN</span>
-      <h2>Sem jeitinho. Com caminho.</h2>
-      <p class="lead">A gente vende o que você precisa, não o que você pede. E prefere perder uma venda a perder um cliente.</p>
+      <span class="eyebrow">{h.wayEyebrow}</span>
+      <h2>{h.wayTitle}</h2>
+      <p class="lead">{h.wayLead}</p>
     </div>
     <ol class="steps-list">
-      {principles.map(([n, ti, d]) => <li><span class="n">{n}</span><div><h3>{ti}</h3><p>{d}</p></div></li>)}
+      {h.principles.map(([n, ti, d]) => <li><span class="n">{n}</span><div><h3>{ti}</h3><p>{d}</p></div></li>)}
     </ol>
   </div>
 </section>
@@ -92,24 +95,25 @@ const testimonials = [
   <div class="container">
     <div class="biz">
       <div class="biz-main">
-        <span class="eyebrow">SEVEN para empresas</span>
-        <h2>Vai empreender em Portugal? A burocracia fica com a gente.</h2>
-        <p class="lead">Abertura da empresa, enquadramento nas Finanças (a Receita Federal de Portugal) e contabilidade todo mês, com quem entende o empresário brasileiro.</p>
+        <span class="eyebrow">{h.bizEyebrow}</span>
+        <h2>{h.bizTitle}</h2>
+        <p class="lead">{h.bizLead}</p>
       </div>
       <div class="link-cards">
-        <a href="/abrir-empresa-em-portugal" class="link-card"><h3>Abrir empresa em Portugal</h3><p>Do tipo de empresa certo ao registro, sem surpresa.</p><span class="go">Saiba mais</span></a>
-        <a href="/contabilidade-em-portugal" class="link-card"><h3>Contabilidade</h3><p>Impostos e obrigações em dia, com contabilista certificado.</p><span class="go">Saiba mais</span></a>
+        {h.bizCards.map((c, i) => bizLinks[i] && (
+          <a href={solutionPath(lang, bizLinks[i]!)} class="link-card"><h3>{c.title}</h3><p>{c.body}</p><span class="go">{u.common.learnMore}</span></a>
+        ))}
       </div>
     </div>
   </div>
 </section>
 
-<!-- DEPOIMENTOS -->
-<section class="testimonial">
+<!-- DEPOIMENTOS (palavras dos clientes, em português: só na versão PT) -->
+{isPt && <section class="testimonial">
   <div class="container">
     <div class="sec-head">
-      <span class="eyebrow">Quem já fez o caminho</span>
-      <h2>Resolvido. Do jeito certo.</h2>
+      <span class="eyebrow">{h.testimonialsEyebrow}</span>
+      <h2>{h.testimonialsTitle}</h2>
     </div>
     <div class="tgrid">
       {testimonials.map((tm) => (
@@ -117,24 +121,24 @@ const testimonials = [
       ))}
     </div>
   </div>
-</section>
+</section>}
 
 <!-- UNIDADES -->
 <section id="unidades" class="bg-off">
   <div class="container">
     <div class="sec-head">
-      <span class="eyebrow">Unidades</span>
-      <h2>Perto de você, em Portugal.</h2>
-      <p class="lead">Atendimento presencial em Albufeira, Faro e Porto, ou online, de onde você estiver.</p>
+      <span class="eyebrow">{h.unitsEyebrow}</span>
+      <h2>{h.unitsTitle}</h2>
+      <p class="lead">{h.unitsLead}</p>
     </div>
     <div class="grid cols-3">
-      {offices.map((o) => <UnitCard office={o} lang="pt" />)}
+      {offices.map((o) => <UnitCard office={o} lang={lang} />)}
     </div>
   </div>
 </section>
 
-<!-- CONTEÚDO: CAST + BLOG -->
-<section class="bg-white">
+<!-- CONTEÚDO: PODCAST + BLOG (só PT) -->
+{isPt && <section class="bg-white">
   <div class="container">
     <div class="cast">
       <div>
@@ -166,18 +170,18 @@ const testimonials = [
       </div>
     )}
   </div>
-</section>
+</section>}
 
-<section class="bg-off"><div class="container"><TrustBadges lang="pt" /></div></section>
+<section class="bg-off"><div class="container"><TrustBadges lang={lang} /></div></section>
 
 <section class="sign-band">
   <div class="container">
-    <p class="statement">Clareza para ir além.</p>
-    <h2>Conte o seu caso para um especialista.</h2>
-    <p>Na consultoria, a gente entende onde você está e mostra o caminho, dentro da lei. Se você seguir com o serviço, o valor da consultoria é descontado.</p>
+    <p class="statement">{h.closingStatement}</p>
+    <h2>{h.closingTitle}</h2>
+    <p>{h.closingBody}</p>
     <div class="ctas">
-      <a href="/agendamento" class="btn btn-gold">Falar com um especialista</a>
-      <WhatsAppButton whatsapp={wa} text={waText()} label="Conversar no WhatsApp" />
+      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
     </div>
   </div>
 </section>

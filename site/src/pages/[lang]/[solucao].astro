@@ -1,0 +1,21 @@
+---
+// Páginas de solução traduzidas: /en/<slug>, /es/<slug>, /fr/<slug>.
+import Base from '../../layouts/Base.astro';
+import SolutionPage from '../../components/pages/SolutionPage.astro';
+import { keyOf, solutionsFor, solutionAlternates } from '../../data/solucoes';
+import type { Solution } from '../../data/solution-types';
+import type { Lang } from '../../i18n/ui';
+import { solutionJsonLd } from '../../lib/solution-page';
+
+export function getStaticPaths() {
+  return (['en', 'es', 'fr'] as Lang[]).flatMap((lang) =>
+    solutionsFor(lang).map((solution) => ({ params: { lang, solucao: solution.slug }, props: { solution, lang } })),
+  );
+}
+
+interface Props { solution: Solution; lang: Lang; }
+const { solution: s, lang } = Astro.props;
+---
+<Base title={s.seoTitle} description={s.metaDescription} jsonLd={solutionJsonLd(lang, s)} alternates={solutionAlternates(keyOf(s))}>
+  <SolutionPage solution={s} lang={lang} />
+</Base>

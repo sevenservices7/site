@@ -12,17 +12,21 @@ interface Props {
   noindex?: boolean;
   /** Blocos JSON-LD extra desta página (Service, FAQPage, BreadcrumbList, Article…). */
   jsonLd?: Record<string, unknown>[];
+  alternates?: Partial<Record<Lang, string>>;
 }
-const { title, description, lang, routeKey, ogImage = '/brand/og-image.png', ogType = 'website', noindex = false, jsonLd = [] } = Astro.props;
+const { title, description, lang, routeKey, ogImage = '/brand/og-image.png', ogType = 'website', noindex = false, jsonLd = [], alternates: altPaths } = Astro.props;
 const site = Astro.site?.toString().replace(/\/$/, '') ?? 'https://seveneu.com';
-const ogLocale = lang === 'pt' ? 'pt_BR' : lang === 'es' ? 'es_ES' : 'en_GB';
-const hreflang = { pt: 'pt-BR', en: 'en', es: 'es' } as const;
+const ogLocale = { pt: 'pt_BR', en: 'en_GB', es: 'es_ES', fr: 'fr_FR' }[lang];
+const hreflang = { pt: 'pt-BR', en: 'en', es: 'es', fr: 'fr' } as const;
 const canonical = site + Astro.url.pathname;
 
 // Alternates hreflang quando a rota é conhecida nos 3 idiomas.
-const alternates = routeKey
-  ? (['pt', 'en', 'es'] as Lang[]).map((l) => ({ lang: hreflang[l], href: site + getRoute(routeKey, l) }))
-  : [];
+const alternates = altPaths
+  ? (Object.entries(altPaths) as [Lang, string][]).map(([l, p]) => ({ lang: hreflang[l], href: site + p }))
+  : routeKey
+    ? (['pt', 'en', 'es', 'fr'] as Lang[]).map((l) => ({ lang: hreflang[l], href: site + getRoute(routeKey, l) }))
+    : [];
+const xDefault = altPaths ? (altPaths.pt ? site + altPaths.pt : '') : routeKey ? site + getRoute(routeKey, 'pt') : '';
 
 // Organização + unidades (LocalBusiness) em todas as páginas.
 const offices = await getOffices();
@@ -56,8 +60,8 @@ const blocks = [org, ...jsonLd];
 <meta name="description" content={description} />
 {noindex && <meta name="robots" content="noindex, follow" />}
 <link rel="canonical" href={canonical} />
-{alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
-{alternates.length > 0 && <link rel="alternate" hreflang="x-default" href={site + getRoute(routeKey!, 'pt')} />}
+{alternates.length > 1 && alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
+{alternates.length > 1 && xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
 
 <meta property="og:type" content={ogType} />
 <meta property="og:site_name" content="SEVEN" />

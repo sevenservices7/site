@@ -1,4 +1,6 @@
 import { getOffices } from './data';
+import { getUi } from '../data/ui';
+import type { Lang } from '../i18n/ui';
 
 export const SITE_URL = 'https://seveneu.com';
 
@@ -9,10 +11,9 @@ export async function mainWhatsapp(): Promise<string> {
 }
 
 /** Mensagem pré-preenchida do WhatsApp para uma página. */
-export function waText(topic?: string): string {
-  return topic
-    ? `Olá, SEVEN! Vim pelo site e quero falar com um especialista sobre ${topic}.`
-    : 'Olá, SEVEN! Vim pelo site e quero falar com um especialista.';
+export function waText(topic?: string, lang: Lang = 'pt'): string {
+  const c = getUi(lang).common;
+  return topic ? c.waTopic.replace('{topic}', topic) : c.waGeneric;
 }
 
 /** Breadcrumb JSON-LD. */

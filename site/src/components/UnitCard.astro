@@ -1,5 +1,5 @@
 ---
-import { useTranslations, type Lang } from '../i18n/ui';
+import { useTranslations, unitPath, type Lang } from '../i18n/ui';
 import { mapsLink, dateLong } from '../lib/format';
 import type { Office } from '../lib/data';
 import WhatsAppButton from './WhatsAppButton.astro';
@@ -11,14 +11,13 @@ interface Props {
 }
 const { office, lang, compact = false } = Astro.props;
 const t = useTranslations(lang);
-const unitHref =
-  lang === 'en' ? `/en/units/${office.slug}` : lang === 'es' ? `/es/unidades/${office.slug}` : `/unidades/${office.slug}`;
-const waText =
-  lang === 'en'
-    ? `Hello! I'd like information from the ${office.name} unit.`
-    : lang === 'es'
-      ? `¡Hola! Quisiera información de la sede ${office.name}.`
-      : `Olá! Gostaria de informações da unidade ${office.name}.`;
+const unitHref = unitPath(office.slug, lang);
+const waText = {
+  pt: `Olá! Gostaria de informações da unidade ${office.name}.`,
+  en: `Hi! I'd like some information about the ${office.name} location.`,
+  es: `¡Hola! Me gustaría recibir información de la sede ${office.name}.`,
+  fr: `Bonjour ! J'aimerais avoir des informations sur l'agence de ${office.name}.`,
+}[lang];
 ---
 <article class:list={['unit-card card', { compact }]}>
   <div class="unit-top">

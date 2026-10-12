@@ -1,0 +1,66 @@
+import type { UiStrings } from './types';
+
+export const ui: UiStrings = {
+  stages: {
+    decisao: { title: "Décider", summary: "Encore dans votre pays, vous choisissez le bon chemin pour vivre au Portugal." },
+    chegada: { title: "Arriver", summary: "Les premiers documents : NIF, NISS, permis de conduire et véhicule." },
+    residencia: { title: "Vivre en règle", summary: "Titre de séjour, renouvellement, famille et déclaration d'impôt chaque année." },
+    nacionalidade: { title: "Devenir portugais", summary: "La demande de nationalité, quand le moment est venu." },
+    empresa: { title: "Entreprendre", summary: "Créer votre entreprise et tenir une comptabilité à jour." },
+    apoio: { title: "Appui juridique", summary: "Quand le dossier demande une avocate : recours, refus et cas complexes." },
+  },
+  common: {
+    home: "Accueil", solutions: "Solutions", talkToExpert: "Parler à un spécialiste", whatsapp: "Discuter sur WhatsApp",
+    learnMore: "En savoir plus", seeAllSolutions: "Voir toutes les solutions", breadcrumbAria: "Vous êtes ici",
+    anyStage: "À toutes les étapes", stage: "Étape",
+    waGeneric: "Bonjour SEVEN ! Je viens du site et je souhaite parler à un spécialiste.",
+    waTopic: "Bonjour SEVEN ! Je viens du site et je souhaite parler à un spécialiste au sujet de : {topic}.",
+  },
+  solution: {
+    forWho: "Pour qui", dictionary: "Le dictionnaire SEVEN", whatWeDo: "Ce que nous faisons", howItWorks: "Comment ça marche",
+    faqEyebrow: "Questions", faqTitle: "Ce que l'on nous demande avant de commencer.",
+    nextSteps: "Les prochaines étapes", nextStepsTitle: "Nous vous accompagnons sur tout le chemin.",
+    statement: "Il y a toujours un chemin.",
+  },
+  hub: {
+    metaTitle: "Solutions pour vivre et entreprendre au Portugal | SEVEN",
+    metaDescription: "Immigration, documents, impôts, entreprise et comptabilité au Portugal. SEVEN vous accompagne de la décision de partir à la nationalité. Dans les règles.",
+    eyebrow: "Solutions", h1: "Tout ce dont votre nouvelle vie a besoin,", h1Em: "au même endroit.",
+    lede: "Nous ne vendons pas des papiers. Nous accompagnons votre parcours : de la décision de vous installer au Portugal jusqu'à la nationalité portugaise et à votre propre entreprise. Trouvez ci-dessous l'étape où vous en êtes.",
+    ctaStatement: "Vous ne savez pas par où commencer ?", ctaTitle: "C'est à ça que sert la consultation.",
+    ctaBody: "Lors d'un échange avec un spécialiste, nous comprenons votre situation et vous montrons le chemin, dans le respect de la loi. La consultation coûte 80 €, déduite si vous poursuivez avec le service.",
+  },
+  home: {
+    metaTitle: "SEVEN | Immigration, entreprises et comptabilité au Portugal",
+    metaDescription: "Accompagnement pour s'installer au Portugal : titre de séjour, AIMA, NIF, IRS, nationalité, création d'entreprise et comptabilité. Il y a toujours un chemin.",
+    eyebrow: "Immigration · Entreprises · Comptabilité", h1: "Il y a toujours un", h1Em: "chemin.",
+    lede: "SEVEN transforme la complexité de vivre et d'entreprendre au Portugal en un chemin clair. Du premier document à la nationalité, de votre arrivée à votre propre entreprise. Réglé. Dans les règles.",
+    ctaSecondary: "Voir les solutions",
+    highlights: [
+      { value: "~2 000", label: "clients accompagnés depuis 2022" },
+      { value: "4,9", label: "sur Google, 178 avis" },
+      { value: "3", label: "agences : Albufeira, Faro et Porto" },
+      { value: "En ligne", label: "ou sur place, où que vous soyez" },
+    ],
+    journeyEyebrow: "Votre parcours", journeyTitle: "S'installer au Portugal se fait par étapes. Nous les suivons toutes.",
+    journeyLead: "Pas besoin de connaître le nom de la démarche. Dites-nous où vous en êtes, et nous vous montrons la prochaine étape.",
+    wayEyebrow: "La méthode SEVEN", wayTitle: "Pas de raccourcis. Un chemin.",
+    wayLead: "Nous vous proposons ce dont vous avez besoin, pas seulement ce que vous demandez. Et nous préférons perdre une vente que perdre un client.",
+    principles: [
+      ["01", "Nous traduisons toujours", "Chaque terme technique est expliqué. Le NIF, c'est votre numéro fiscal portugais ; les Finanças, c'est l'administration fiscale. Vous comprenez chaque étape de votre dossier."],
+      ["02", "Honnêtes, même pour dire non", "Si un chemin est fermé, nous vous disons pourquoi. Et nous vous en montrons un autre, dans le respect de la loi."],
+      ["03", "Tout le parcours, pas un seul papier", "De la décision de partir à la nationalité et à votre propre entreprise. Nous pensons à la prochaine étape avant que vous en ayez besoin."],
+    ],
+    bizEyebrow: "SEVEN pour les entreprises", bizTitle: "Vous voulez entreprendre au Portugal ? La bureaucratie, c'est pour nous.",
+    bizLead: "Création de l'entreprise, enregistrement auprès des Finanças (l'administration fiscale portugaise) et comptabilité chaque mois, avec une équipe qui connaît la réalité des entrepreneurs étrangers.",
+    bizCards: [
+      { title: "Créer une entreprise au Portugal", body: "Du bon type de société à l'immatriculation, sans mauvaise surprise." },
+      { title: "Comptabilité", body: "Impôts et obligations à jour, avec un expert-comptable certifié." },
+    ],
+    testimonialsEyebrow: "Ils ont fait le chemin", testimonialsTitle: "Réglé. Dans les règles.",
+    unitsEyebrow: "Agences", unitsTitle: "Près de vous, au Portugal.",
+    unitsLead: "Rendez-vous sur place à Albufeira, Faro et Porto, ou en ligne, où que vous soyez.",
+    closingStatement: "La clarté pour aller plus loin.", closingTitle: "Expliquez votre situation à un spécialiste.",
+    closingBody: "Lors de la consultation, nous comprenons où vous en êtes et nous vous montrons le chemin, dans le respect de la loi. La consultation coûte 80 €, déduite si vous poursuivez avec le service.",
+  },
+};

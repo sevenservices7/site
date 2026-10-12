@@ -1,0 +1,9 @@
+---
+import Base from '../../layouts/Base.astro';
+import Booking from '../../components/pages/Booking.astro';
+import { useTranslations } from '../../i18n/ui';
+const t = useTranslations('fr');
+---
+<Base title={`${t('nav.booking')} — ${t('site.name')}`} description={t('home.cta.body')} routeKey="booking">
+  <Booking lang="fr" />
+</Base>

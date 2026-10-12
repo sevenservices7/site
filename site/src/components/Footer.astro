@@ -1,7 +1,8 @@
 ---
-import { useTranslations, getRoute, type Lang } from '../i18n/ui';
+import { useTranslations, getRoute, unitPath, type Lang } from '../i18n/ui';
 import { getOffices } from '../lib/data';
-import { sortedSolutions } from '../data/solucoes';
+import { STAGES, solutionsFor, solutionPath } from '../data/solucoes';
+import { getUi } from '../data/ui';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
@@ -9,13 +10,13 @@ const t = useTranslations(lang);
 const offices = await getOffices();
 const year = new Date().getFullYear();
 const isPt = lang === 'pt';
-const footerSolutions = isPt ? sortedSolutions().slice(0, 8) : [];
+const u = getUi(lang);
+const stageOrder = new Map(STAGES.map((st, i) => [st.id, i]));
+const footerSolutions = [...solutionsFor(lang)]
+  .sort((a, b) => (stageOrder.get(a.stage)! - stageOrder.get(b.stage)!) || a.navLabel.localeCompare(b.navLabel))
+  .slice(0, 8);
 
-function unitHref(slug: string) {
-  if (lang === 'en') return `/en/units/${slug}`;
-  if (lang === 'es') return `/es/unidades/${slug}`;
-  return `/unidades/${slug}`;
-}
+const unitHref = (slug: string) => unitPath(slug, lang);
 ---
 <footer class="footer">
   <div class="container">
@@ -27,41 +28,29 @@ function unitHref(slug: string) {
         <p class="footer-legal">{t('footer.legalEntity')}</p>
       </div>
 
-      {isPt ? (
-        <div class="footer-col">
-          <h5>{t('footer.solutions')}</h5>
-          <ul>
-            {footerSolutions.map((x) => <li><a href={`/${x.slug}`}>{x.navLabel}</a></li>)}
-            <li><a href="/solucoes">Todas as soluções</a></li>
-          </ul>
-        </div>
-      ) : (
-        <div class="footer-col">
-          <h5>{t('footer.company')}</h5>
-          <ul>
-            <li><a href={getRoute('about', lang)}>{t('nav.about')}</a></li>
-            <li><a href={getRoute('team', lang)}>{t('nav.team')}</a></li>
-            <li><a href={getRoute('legalization', lang)}>{t('nav.legalization')}</a></li>
-            <li><a href={getRoute('booking', lang)}>{t('nav.booking')}</a></li>
-          </ul>
-        </div>
-      )}
-
       <div class="footer-col">
-        <h5>{isPt ? 'SEVEN' : t('footer.units')}</h5>
+        <h5>{t('footer.solutions')}</h5>
         <ul>
-          {isPt && <li><a href={getRoute('about', lang)}>{t('nav.about')}</a></li>}
-          {isPt && <li><a href={getRoute('team', lang)}>{t('nav.team')}</a></li>}
-          {isPt && <li><a href="/blog">{t('nav.blog')}</a></li>}
-          {isPt && <li><a href="/podcast">{t('nav.podcast')}</a></li>}
-          {!isPt && offices.map((o) => <li><a href={unitHref(o.slug)}>{o.name}</a></li>)}
+          {footerSolutions.map((x) => <li><a href={solutionPath(lang, x)}>{x.navLabel}</a></li>)}
+          <li><a href={getRoute('solutions', lang)}>{u.common.seeAllSolutions}</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
-        <h5>{isPt ? t('footer.units') : t('footer.links')}</h5>
+        <h5>SEVEN</h5>
         <ul>
-          {isPt && offices.map((o) => <li><a href={unitHref(o.slug)}>{o.name}</a></li>)}
+          <li><a href={getRoute('about', lang)}>{t('nav.about')}</a></li>
+          <li><a href={getRoute('team', lang)}>{t('nav.team')}</a></li>
+          <li><a href={getRoute('booking', lang)}>{t('nav.booking')}</a></li>
+          {isPt && <li><a href="/blog">{t('nav.blog')}</a></li>}
+          {isPt && <li><a href="/podcast">{t('nav.podcast')}</a></li>}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>{t('footer.units')}</h5>
+        <ul>
+          {offices.map((o) => <li><a href={unitHref(o.slug)}>{o.name}</a></li>)}
           <li><a href={getRoute('contact', lang)}>{t('nav.contact')}</a></li>
           <li><a href={getRoute('terms', lang)}>{t('footer.terms')}</a></li>
           <li><a href={getRoute('privacy', lang)}>{t('footer.privacy')}</a></li>

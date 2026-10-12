@@ -1,21 +1,26 @@
 ---
 import type { Solution } from '../../data/solution-types';
-import { getSolution, STAGES } from '../../data/solucoes';
+import { solutionFor, solutionPath } from '../../data/solucoes';
+import { getUi } from '../../data/ui';
+import { getRoute, type Lang } from '../../i18n/ui';
 import WhatsAppButton from '../WhatsAppButton.astro';
 import { mainWhatsapp, waText } from '../../lib/site';
 
-interface Props { solution: Solution; }
-const { solution: s } = Astro.props;
+interface Props { solution: Solution; lang?: Lang; }
+const { solution: s, lang = 'pt' } = Astro.props;
+const u = getUi(lang);
 const wa = await mainWhatsapp();
-const stage = STAGES.find((x) => x.id === s.stage);
-const related = s.related.map(getSolution).filter((x): x is Solution => Boolean(x));
+const related = s.related.map((k) => solutionFor(lang, k)).filter((x): x is Solution => Boolean(x));
+const booking = getRoute('booking', lang);
+const home = getRoute('home', lang);
+const hub = getRoute('solutions', lang);
 ---
 <section class="pg-hero">
   <div class="container">
-    <nav aria-label="Você está em">
+    <nav aria-label={u.common.breadcrumbAria}>
       <ol class="crumbs">
-        <li><a href="/">Início</a></li>
-        <li><a href="/solucoes">Soluções</a></li>
+        <li><a href={home}>{u.common.home}</a></li>
+        <li><a href={hub}>{u.common.solutions}</a></li>
         <li aria-current="page">{s.navLabel}</li>
       </ol>
     </nav>
@@ -23,8 +28,8 @@ const related = s.related.map(getSolution).filter((x): x is Solution => Boolean(
     <h1>{s.h1}</h1>
     <p class="lede">{s.lede}</p>
     <div class="ctas">
-      <a href="/agendamento" class="btn btn-gold">Falar com um especialista</a>
-      <WhatsAppButton whatsapp={wa} text={waText(s.navLabel)} label="Conversar no WhatsApp" />
+      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <WhatsAppButton whatsapp={wa} text={waText(s.navLabel, lang)} label={u.common.whatsapp} />
     </div>
     {s.highlights.length > 0 && (
       <div class="pg-highlights">
@@ -38,7 +43,7 @@ const related = s.related.map(getSolution).filter((x): x is Solution => Boolean(
 <section class="bg-white">
   <div class="container">
     <div class="sec-head">
-      <span class="eyebrow">Para quem é</span>
+      <span class="eyebrow">{u.solution.forWho}</span>
       <h2>{s.forWhoTitle}</h2>
     </div>
     <div class:list={['tiles', s.forWho.length % 3 === 0 ? 'tiles-3' : 'tiles-2']}>
@@ -46,7 +51,7 @@ const related = s.related.map(getSolution).filter((x): x is Solution => Boolean(
     </div>
     {s.dictionary && s.dictionary.length > 0 && (
       <aside class="dict" style="margin-top:32px">
-        <h2>Dicionário da SEVEN</h2>
+        <h2>{u.solution.dictionary}</h2>
         <dl>{s.dictionary.map((d) => <><dt>{d.term}</dt><dd>{d.meaning}</dd></>)}</dl>
       </aside>
     )}
@@ -56,7 +61,7 @@ const related = s.related.map(getSolution).filter((x): x is Solution => Boolean(
 <section class="bg-off">
   <div class="container">
     <div class="sec-head">
-      <span class="eyebrow">O que a gente faz</span>
+      <span class="eyebrow">{u.solution.whatWeDo}</span>
       <h2>{s.includedTitle}</h2>
     </div>
     <div class:list={['tiles', s.included.length % 3 === 0 ? 'tiles-3' : 'tiles-2']}>
@@ -68,7 +73,7 @@ const related = s.related.map(getSolution).filter((x): x is Solution => Boolean(
 <section class="bg-white">
   <div class="container">
     <div class="sec-head">
-      <span class="eyebrow">Como funciona</span>
+      <span class="eyebrow">{u.solution.howItWorks}</span>
       <h2>{s.stepsTitle}</h2>
     </div>
     <ol class="steps-list">
@@ -94,8 +99,8 @@ const related = s.related.map(getSolution).filter((x): x is Solution => Boolean(
 <section class="bg-off">
   <div class="container">
     <div class="sec-head">
-      <span class="eyebrow">Dúvidas</span>
-      <h2>O que perguntam antes de começar.</h2>
+      <span class="eyebrow">{u.solution.faqEyebrow}</span>
+      <h2>{u.solution.faqTitle}</h2>
     </div>
     <div class="faq-list">
       {s.faqs.map((f) => (
@@ -109,12 +114,12 @@ const related = s.related.map(getSolution).filter((x): x is Solution => Boolean(
   <section class="bg-white">
     <div class="container">
       <div class="sec-head">
-        <span class="eyebrow">{stage ? `Próximos passos da jornada` : 'Veja também'}</span>
-        <h2>A gente acompanha você no caminho inteiro.</h2>
+        <span class="eyebrow">{u.solution.nextSteps}</span>
+        <h2>{u.solution.nextStepsTitle}</h2>
       </div>
       <div class="link-cards">
         {related.map((r) => (
-          <a href={`/${r.slug}`} class="link-card"><h3>{r.navLabel}</h3><p>{r.cardSummary}</p><span class="go">Saiba mais</span></a>
+          <a href={solutionPath(lang, r)} class="link-card"><h3>{r.navLabel}</h3><p>{r.cardSummary}</p><span class="go">{u.common.learnMore}</span></a>
         ))}
       </div>
     </div>
@@ -123,12 +128,12 @@ const related = s.related.map(getSolution).filter((x): x is Solution => Boolean(
 
 <section class="sign-band">
   <div class="container">
-    <p class="statement">Sempre existe um caminho.</p>
+    <p class="statement">{u.solution.statement}</p>
     <h2>{s.ctaTitle}</h2>
     <p>{s.ctaBody}</p>
     <div class="ctas">
-      <a href="/agendamento" class="btn btn-gold">Falar com um especialista</a>
-      <WhatsAppButton whatsapp={wa} text={waText(s.navLabel)} label="Conversar no WhatsApp" />
+      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <WhatsAppButton whatsapp={wa} text={waText(s.navLabel, lang)} label={u.common.whatsapp} />
     </div>
   </div>
 </section>

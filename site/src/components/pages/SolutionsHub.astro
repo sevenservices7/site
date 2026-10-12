@@ -1,0 +1,56 @@
+---
+import WhatsAppButton from '../WhatsAppButton.astro';
+import { STAGES, solutionsByStageFor, solutionPath } from '../../data/solucoes';
+import { getUi } from '../../data/ui';
+import { getRoute, type Lang } from '../../i18n/ui';
+import { mainWhatsapp, waText } from '../../lib/site';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const u = getUi(lang);
+const wa = await mainWhatsapp();
+const booking = getRoute('booking', lang);
+const stages = STAGES.map((st) => ({ ...st, ...u.stages[st.id], items: solutionsByStageFor(lang, st.id) })).filter((st) => st.items.length > 0);
+---
+<section class="pg-hero">
+  <div class="container">
+    <nav aria-label={u.common.breadcrumbAria}><ol class="crumbs"><li><a href={getRoute('home', lang)}>{u.common.home}</a></li><li aria-current="page">{u.common.solutions}</li></ol></nav>
+    <span class="eyebrow">{u.hub.eyebrow}</span>
+    <h1>{u.hub.h1} <em>{u.hub.h1Em}</em></h1>
+    <p class="lede">{u.hub.lede}</p>
+    <div class="ctas">
+      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
+    </div>
+  </div>
+  <div class="pg-hero-mark" aria-hidden="true"></div>
+</section>
+
+{stages.map((st, i) => (
+  <section class={i % 2 ? 'bg-off' : 'bg-white'} id={st.id}>
+    <div class="container">
+      <div class="sec-head">
+        <span class="eyebrow">{st.step === '+' ? u.common.anyStage : `${u.common.stage} ${st.step}`}</span>
+        <h2>{st.title}</h2>
+        <p class="lead">{st.summary}</p>
+      </div>
+      <div class="link-cards">
+        {st.items.map((s) => (
+          <a href={solutionPath(lang, s)} class="link-card"><h3>{s.navLabel}</h3><p>{s.cardSummary}</p><span class="go">{u.common.learnMore}</span></a>
+        ))}
+      </div>
+    </div>
+  </section>
+))}
+
+<section class="sign-band">
+  <div class="container">
+    <p class="statement">{u.hub.ctaStatement}</p>
+    <h2>{u.hub.ctaTitle}</h2>
+    <p>{u.hub.ctaBody}</p>
+    <div class="ctas">
+      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
+    </div>
+  </div>
+</section>

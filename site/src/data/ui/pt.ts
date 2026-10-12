@@ -1,0 +1,66 @@
+import type { UiStrings } from './types';
+
+export const ui: UiStrings = {
+  stages: {
+    decisao: { title: 'Decidir', summary: 'Ainda no Brasil, escolhendo o caminho certo para morar em Portugal.' },
+    chegada: { title: 'Chegar', summary: 'Os primeiros documentos: NIF, NISS, carta e papéis do Brasil.' },
+    residencia: { title: 'Morar legalmente', summary: 'Autorização de residência, renovação, família e IRS todo ano.' },
+    nacionalidade: { title: 'Ser português', summary: 'O pedido de nacionalidade, quando chegar a hora.' },
+    empresa: { title: 'Empreender', summary: 'Abrir a empresa e manter a contabilidade em dia.' },
+    apoio: { title: 'Apoio jurídico', summary: 'Quando o caso pede advogada: recursos, indeferimentos e casos complexos.' },
+  },
+  common: {
+    home: 'Início', solutions: 'Soluções', talkToExpert: 'Falar com um especialista', whatsapp: 'Conversar no WhatsApp',
+    learnMore: 'Saiba mais', seeAllSolutions: 'Ver todas as soluções', breadcrumbAria: 'Você está em',
+    anyStage: 'Em qualquer etapa', stage: 'Etapa',
+    waGeneric: 'Olá, SEVEN! Vim pelo site e quero falar com um especialista.',
+    waTopic: 'Olá, SEVEN! Vim pelo site e quero falar com um especialista sobre {topic}.',
+  },
+  solution: {
+    forWho: 'Para quem é', dictionary: 'Dicionário da SEVEN', whatWeDo: 'O que a gente faz', howItWorks: 'Como funciona',
+    faqEyebrow: 'Dúvidas', faqTitle: 'O que perguntam antes de começar.',
+    nextSteps: 'Próximos passos da jornada', nextStepsTitle: 'A gente acompanha você no caminho inteiro.',
+    statement: 'Sempre existe um caminho.',
+  },
+  hub: {
+    metaTitle: 'Soluções para morar e empreender em Portugal | SEVEN',
+    metaDescription: 'Imigração, documentos, impostos, empresa e contabilidade em Portugal. A SEVEN acompanha a sua jornada inteira, do Brasil à nacionalidade. Do jeito certo.',
+    eyebrow: 'Soluções', h1: 'Tudo que a sua vida lá fora precisa,', h1Em: 'num só lugar.',
+    lede: 'A gente não vende papel. A gente acompanha a sua jornada: da decisão de sair do Brasil à nacionalidade portuguesa e ao seu próprio negócio. Encontre abaixo a etapa em que você está.',
+    ctaStatement: 'Não sabe por onde começar?', ctaTitle: 'É para isso que existe a consultoria.',
+    ctaBody: 'Numa conversa com um especialista, a gente entende o seu caso e mostra o caminho, dentro da lei. Se você seguir com o serviço, o valor da consultoria é descontado.',
+  },
+  home: {
+    metaTitle: 'SEVEN | Imigração, empresas e contabilidade em Portugal',
+    metaDescription: 'Assessoria para brasileiros em Portugal: residência, AIMA, NIF, IRS, nacionalidade, abertura de empresa e contabilidade. Sempre existe um caminho.',
+    eyebrow: 'Imigração · Empresas · Contabilidade', h1: 'Sempre existe um', h1Em: 'caminho.',
+    lede: 'A SEVEN transforma a complexidade de viver e empreender em Portugal em caminho claro. Do Brasil à nacionalidade, do primeiro documento ao seu próprio negócio. Do jeito certo.',
+    ctaSecondary: 'Ver soluções',
+    highlights: [
+      { value: '~2.000', label: 'clientes atendidos desde 2022' },
+      { value: '4,9', label: 'no Google, em 178 avaliações' },
+      { value: '3', label: 'unidades: Albufeira, Faro e Porto' },
+      { value: 'Online', label: 'ou presencial, de onde você estiver' },
+    ],
+    journeyEyebrow: 'A sua jornada', journeyTitle: 'A vida lá fora tem etapas. A gente acompanha todas.',
+    journeyLead: 'Você não precisa saber o nome do processo. Diga onde está, e a gente mostra o próximo passo.',
+    wayEyebrow: 'O jeito SEVEN', wayTitle: 'Sem jeitinho. Com caminho.',
+    wayLead: 'A gente vende o que você precisa, não o que você pede. E prefere perder uma venda a perder um cliente.',
+    principles: [
+      ['01', 'Traduz sempre', 'Termo técnico vem com tradução ao lado. NIF é o CPF português; Finanças é a Receita Federal de lá. Você entende cada passo do seu processo.'],
+      ['02', 'Honesta até no "não"', 'Se por um caminho não dá, a gente diz o porquê. E mostra outro, dentro da lei. Sem jeitinho.'],
+      ['03', 'Acompanha a jornada inteira', 'Da decisão de sair do Brasil à nacionalidade e ao seu próprio negócio. A gente lembra do próximo passo antes de você precisar.'],
+    ],
+    bizEyebrow: 'SEVEN para empresas', bizTitle: 'Vai empreender em Portugal? A burocracia fica com a gente.',
+    bizLead: 'Abertura da empresa, enquadramento nas Finanças (a Receita Federal de Portugal) e contabilidade todo mês, com quem entende o empresário brasileiro.',
+    bizCards: [
+      { title: 'Abrir empresa em Portugal', body: 'Do tipo de empresa certo ao registro, sem surpresa.' },
+      { title: 'Contabilidade', body: 'Impostos e obrigações em dia, com contabilista certificado.' },
+    ],
+    testimonialsEyebrow: 'Quem já fez o caminho', testimonialsTitle: 'Resolvido. Do jeito certo.',
+    unitsEyebrow: 'Unidades', unitsTitle: 'Perto de você, em Portugal.',
+    unitsLead: 'Atendimento presencial em Albufeira, Faro e Porto, ou online, de onde você estiver.',
+    closingStatement: 'Clareza para ir além.', closingTitle: 'Conte o seu caso para um especialista.',
+    closingBody: 'Na consultoria, a gente entende onde você está e mostra o caminho, dentro da lei. Se você seguir com o serviço, o valor da consultoria é descontado.',
+  },
+};

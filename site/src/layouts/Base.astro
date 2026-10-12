@@ -4,7 +4,7 @@ import Seo from '../components/Seo.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import AttendanceForm from '../components/AttendanceForm.astro';
-import { getLangFromUrl, type RouteKey } from '../i18n/ui';
+import { getLangFromUrl, type Lang, type RouteKey } from '../i18n/ui';
 
 interface Props {
   title: string;
@@ -14,9 +14,11 @@ interface Props {
   ogType?: 'website' | 'article';
   noindex?: boolean;
   jsonLd?: Record<string, unknown>[];
+  /** Caminhos da mesma página em outros idiomas (quando não é uma rota de ROUTES). */
+  alternates?: Partial<Record<Lang, string>>;
   bare?: boolean; // sem header/footer (ex.: páginas de retorno do checkout)
 }
-const { title, description, routeKey, ogImage, ogType, noindex, jsonLd, bare = false } = Astro.props;
+const { title, description, routeKey, ogImage, ogType, noindex, jsonLd, alternates, bare = false } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const htmlLang = lang === 'pt' ? 'pt-BR' : lang;
 ---
@@ -31,12 +33,12 @@ const htmlLang = lang === 'pt' ? 'pt-BR' : lang;
     <link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png" />
     <link rel="preload" href="/fonts/Poppins-400.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/Poppins-700.woff2" as="font" type="font/woff2" crossorigin />
-    <Seo title={title} description={description} lang={lang} routeKey={routeKey} ogImage={ogImage} ogType={ogType} noindex={noindex} jsonLd={jsonLd} />
+    <Seo title={title} description={description} lang={lang} routeKey={routeKey} ogImage={ogImage} ogType={ogType} noindex={noindex} jsonLd={jsonLd} alternates={alternates} />
     <slot name="head" />
   </head>
   <body>
     <a href="#main" class="skip-link">{lang === 'pt' ? 'Pular para o conteúdo' : lang === 'es' ? 'Saltar al contenido' : 'Skip to content'}</a>
-    {!bare && <Header lang={lang} routeKey={routeKey} />}
+    {!bare && <Header lang={lang} routeKey={routeKey} alternates={alternates} />}
     <main id="main">
       <slot />
     </main>

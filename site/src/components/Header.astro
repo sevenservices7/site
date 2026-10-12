@@ -1,38 +1,41 @@
 ---
 import { useTranslations, getRoute, type Lang, type RouteKey } from '../i18n/ui';
 import LangSwitcher from './LangSwitcher.astro';
-import { STAGES, solutionsByStage } from '../data/solucoes';
+import { STAGES, solutionsByStageFor, solutionFor, solutionPath } from '../data/solucoes';
+import { getUi } from '../data/ui';
 
 interface Props {
   lang: Lang;
   routeKey?: RouteKey;
+  /** Caminhos desta mesma página nos outros idiomas (páginas de solução). */
+  alternates?: Partial<Record<Lang, string>>;
 }
-const { lang, routeKey } = Astro.props;
+const { lang, routeKey, alternates } = Astro.props;
 const t = useTranslations(lang);
+const u = getUi(lang);
 const home = getRoute('home', lang);
+const hub = getRoute('solutions', lang);
 const isPt = lang === 'pt';
 
-// PT (site principal, PT-BR): navegação por soluções. EN/ES: navegação institucional enxuta.
-const links: { label: string; href: string }[] = isPt
-  ? [
-      { label: t('nav.companies'), href: '/abrir-empresa-em-portugal' },
-      { label: t('nav.accounting'), href: '/contabilidade-em-portugal' },
-      { label: t('nav.blog'), href: '/blog' },
-      { label: t('nav.podcast'), href: '/podcast' },
-      { label: t('nav.about'), href: getRoute('about', lang) },
-    ]
-  : [
-      { label: t('nav.about'), href: getRoute('about', lang) },
-      { label: t('nav.team'), href: getRoute('team', lang) },
-      { label: t('nav.units'), href: `${home}#unidades` },
-      { label: t('nav.legalization'), href: getRoute('legalization', lang) },
-      { label: t('nav.contact'), href: getRoute('contact', lang) },
-    ];
-const groups = isPt ? STAGES.map((st) => ({ ...st, items: solutionsByStage(st.id) })).filter((g) => g.items.length) : [];
+// Atalhos para as soluções de empresa e contabilidade, quando já existem no idioma.
+const shortcut = (key: string, label: string) => {
+  const s = solutionFor(lang, key);
+  return s ? [{ label, href: solutionPath(lang, s) }] : [];
+};
+const links: { label: string; href: string }[] = [
+  ...shortcut('abrir-empresa-em-portugal', t('nav.companies')),
+  ...shortcut('contabilidade-em-portugal', t('nav.accounting')),
+  ...(isPt ? [{ label: t('nav.blog'), href: '/blog' }, { label: t('nav.podcast'), href: '/podcast' }] : []),
+  { label: t('nav.about'), href: getRoute('about', lang) },
+  ...(isPt ? [] : [{ label: t('nav.contact'), href: getRoute('contact', lang) }]),
+];
+const groups = STAGES
+  .map((st) => ({ id: st.id, title: u.stages[st.id].title, items: solutionsByStageFor(lang, st.id) }))
+  .filter((g) => g.items.length);
 ---
 <header class="nav" data-header>
   <div class="container nav-inner">
-    <a href={home} class="nav-brand" aria-label="SEVEN — início">
+    <a href={home} class="nav-brand" aria-label={`SEVEN — ${u.common.home}`}>
       <img src="/brand/seven-horizontal-areia.svg" alt="SEVEN" width="196" height="40" />
       <span class="nav-slogan">{t('brand.slogan')}</span>
     </a>
@@ -43,26 +46,26 @@ const groups = isPt ? STAGES.map((st) => ({ ...st, items: solutionsByStage(st.id
 
     <nav class="nav-menu" data-nav>
       <ul class="nav-links">
-        {isPt && (
+        {groups.length > 0 && (
           <li class="nav-drop">
-            <a href="/solucoes" class="nav-drop-btn" aria-haspopup="true">{t('nav.solutions')}<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+            <a href={hub} class="nav-drop-btn" aria-haspopup="true">{t('nav.solutions')}<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
             <div class="nav-mega">
               <div class="nav-mega-in">
                 {groups.map((g) => (
                   <div class="nav-mega-col">
                     <span class="nav-mega-h">{g.title}</span>
-                    <ul>{g.items.map((it) => <li><a href={`/${it.slug}`}>{it.navLabel}</a></li>)}</ul>
+                    <ul>{g.items.map((it) => <li><a href={solutionPath(lang, it)}>{it.navLabel}</a></li>)}</ul>
                   </div>
                 ))}
               </div>
-              <a href="/solucoes" class="nav-mega-all">Ver todas as soluções</a>
+              <a href={hub} class="nav-mega-all">{u.common.seeAllSolutions}</a>
             </div>
           </li>
         )}
         {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
       </ul>
       <div class="nav-actions">
-        <LangSwitcher lang={lang} routeKey={routeKey} />
+        <LangSwitcher lang={lang} routeKey={routeKey} alternates={alternates} />
         <a href={getRoute('booking', lang)} class="btn btn-gold btn-sm">{t('nav.booking')}</a>
       </div>
     </nav>

@@ -1,0 +1,9 @@
+---
+import Base from '../../layouts/Base.astro';
+import Team from '../../components/pages/Team.astro';
+import { useTranslations } from '../../i18n/ui';
+const t = useTranslations('fr');
+---
+<Base title={`${t('nav.team')} — ${t('site.name')}`} description={t('team.title')} routeKey="team">
+  <Team lang="fr" />
+</Base>

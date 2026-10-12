@@ -1,0 +1,66 @@
+import type { UiStrings } from './types';
+
+export const ui: UiStrings = {
+  stages: {
+    decisao: { title: "Decide", summary: "Still at home, choosing the right way to move to Portugal." },
+    chegada: { title: "Arrive", summary: "The first documents: NIF, NISS, driving licence and your car." },
+    residencia: { title: "Live here legally", summary: "Residence permit, renewal, family and your tax return every year." },
+    nacionalidade: { title: "Become Portuguese", summary: "Your citizenship application, when the time comes." },
+    empresa: { title: "Build a business", summary: "Open your company and keep the accounts in order." },
+    apoio: { title: "Legal support", summary: "When your case needs a lawyer: appeals, refusals and complex cases." },
+  },
+  common: {
+    home: "Home", solutions: "Solutions", talkToExpert: "Talk to an expert", whatsapp: "Chat on WhatsApp",
+    learnMore: "Learn more", seeAllSolutions: "See all solutions", breadcrumbAria: "You are here",
+    anyStage: "At any stage", stage: "Stage",
+    waGeneric: "Hi SEVEN! I found you through your website and I'd like to talk to an expert.",
+    waTopic: "Hi SEVEN! I found you through your website and I'd like to talk to an expert about {topic}.",
+  },
+  solution: {
+    forWho: "Who it's for", dictionary: "SEVEN dictionary", whatWeDo: "What we do", howItWorks: "How it works",
+    faqEyebrow: "Questions", faqTitle: "What people ask before they start.",
+    nextSteps: "Next steps on your journey", nextStepsTitle: "We're with you the whole way.",
+    statement: "There's always a way.",
+  },
+  hub: {
+    metaTitle: "Solutions for living and working in Portugal | SEVEN",
+    metaDescription: "Immigration, documents, taxes, company formation and accounting in Portugal. SEVEN supports your whole journey, from the move to citizenship. Sorted. The right way.",
+    eyebrow: "Solutions", h1: "Everything your life abroad needs,", h1Em: "in one place.",
+    lede: "We don't sell paperwork. We walk the journey with you: from the decision to move to Portuguese citizenship and a business of your own. Find the stage you're at below.",
+    ctaStatement: "Not sure where to start?", ctaTitle: "That's what the consultation is for.",
+    ctaBody: "In one conversation with an expert, we understand your case and show you the way, within the law. If you go ahead with the service, the consultation fee is deducted.",
+  },
+  home: {
+    metaTitle: "SEVEN | Immigration, business and accounting in Portugal",
+    metaDescription: "Support for foreigners moving to Portugal: residence permits, AIMA, NIF, IRS, citizenship, company formation and accounting. There's always a way.",
+    eyebrow: "Immigration · Business · Accounting", h1: "There's always a", h1Em: "way.",
+    lede: "SEVEN turns the complexity of living and doing business in Portugal into a clear path. From your first document to citizenship and a business of your own. Sorted. The right way.",
+    ctaSecondary: "See solutions",
+    highlights: [
+      { value: "~2,000", label: "clients since 2022" },
+      { value: "4.9", label: "on Google, from 178 reviews" },
+      { value: "3", label: "locations: Albufeira, Faro and Porto" },
+      { value: "Online", label: "or in person, wherever you are" },
+    ],
+    journeyEyebrow: "Your journey", journeyTitle: "Life abroad comes in stages. We're with you for all of them.",
+    journeyLead: "You don't need to know what the process is called. Tell us where you are, and we'll show you the next step.",
+    wayEyebrow: "The SEVEN way", wayTitle: "No shortcuts. A clear path.",
+    wayLead: "We sell you what you need, not just what you ask for. And we'd rather lose a sale than lose a client.",
+    principles: [
+      ["01", "We always translate", "Every technical term comes with a plain explanation. The NIF is your Portuguese tax number; Finanças is the Tax Authority. You understand every step of your case."],
+      ["02", "Honest, even when it's a no", "If one route won't work, we tell you why. And we show you another one, within the law. No shortcuts."],
+      ["03", "With you the whole way", "From the decision to move to citizenship and a business of your own. We remind you of the next step before you need it."],
+    ],
+    bizEyebrow: "SEVEN for business", bizTitle: "Starting a business in Portugal? Leave the red tape to us.",
+    bizLead: "Company formation, registration with Finanças (the Portuguese Tax Authority) and monthly accounting, with people who understand founders who come from abroad.",
+    bizCards: [
+      { title: "Start a company in Portugal", body: "From the right company type to registration, with no surprises." },
+      { title: "Accounting", body: "Taxes and filings up to date, with a certified accountant." },
+    ],
+    testimonialsEyebrow: "People who've made the journey", testimonialsTitle: "Sorted. The right way.",
+    unitsEyebrow: "Locations", unitsTitle: "Close to you, in Portugal.",
+    unitsLead: "In person in Albufeira, Faro and Porto, or online, wherever you are.",
+    closingStatement: "Clarity to go further.", closingTitle: "Tell an expert about your case.",
+    closingBody: "In the consultation, we understand where you are and show you the way, within the law. If you go ahead with the service, the consultation fee is deducted.",
+  },
+};

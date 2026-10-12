@@ -31,3 +31,45 @@ export function solutionsByStage(stage: Stage): Solution[] {
 export function sortedSolutions(): Solution[] {
   return [...solutions].sort((a, b) => (order.get(a.stage)! - order.get(b.stage)!) || a.navLabel.localeCompare(b.navLabel));
 }
+
+// ---------- Multilíngue ----------
+import type { Lang } from '../../i18n/ui';
+
+const i18nModules = import.meta.glob<{ solution: Solution }>('../solucoes-i18n/*/*.ts', { eager: true });
+const byLang: Record<string, Solution[]> = { pt: solutions };
+for (const [path, m] of Object.entries(i18nModules)) {
+  const lang = path.split('/').at(-2)!;
+  if (m.solution) (byLang[lang] ||= []).push(m.solution);
+}
+
+/** Chave estável de uma solução (o slug em português). */
+export const keyOf = (s: Solution) => s.key ?? s.slug;
+
+/** Soluções publicadas num idioma. */
+export function solutionsFor(lang: Lang): Solution[] {
+  return byLang[lang] ?? [];
+}
+
+/** Versão de uma solução num idioma, pela chave (slug PT). */
+export function solutionFor(lang: Lang, key: string): Solution | undefined {
+  return solutionsFor(lang).find((s) => keyOf(s) === key);
+}
+
+/** Caminho da página de uma solução. */
+export function solutionPath(lang: Lang, s: Solution): string {
+  return lang === 'pt' ? `/${s.slug}` : `/${lang}/${s.slug}`;
+}
+
+/** Caminhos da mesma solução em todos os idiomas em que ela existe (para hreflang e seletor). */
+export function solutionAlternates(key: string): Partial<Record<Lang, string>> {
+  const out: Partial<Record<Lang, string>> = {};
+  for (const lang of ['pt', 'en', 'es', 'fr'] as Lang[]) {
+    const s = solutionFor(lang, key);
+    if (s) out[lang] = solutionPath(lang, s);
+  }
+  return out;
+}
+
+export function solutionsByStageFor(lang: Lang, stage: Stage): Solution[] {
+  return solutionsFor(lang).filter((s) => s.stage === stage);
+}

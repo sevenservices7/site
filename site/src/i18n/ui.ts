@@ -1,17 +1,18 @@
 import pt from './pt.json';
 import en from './en.json';
 import es from './es.json';
+import fr from './fr.json';
 
-export const languages = { pt: 'Português', en: 'English', es: 'Español' } as const;
+export const languages = { pt: 'Português', en: 'English', es: 'Español', fr: 'Français' } as const;
 export type Lang = keyof typeof languages;
 export const defaultLang: Lang = 'pt';
 
-const dictionaries: Record<Lang, Record<string, string>> = { pt, en, es };
+const dictionaries: Record<Lang, Record<string, string>> = { pt, en, es, fr };
 
-/** Detecta o idioma a partir da URL (PT na raiz; EN/ES prefixados). */
+/** Detecta o idioma a partir da URL (PT na raiz; EN/ES/FR prefixados). */
 export function getLangFromUrl(url: URL): Lang {
   const [, seg] = url.pathname.split('/');
-  if (seg === 'en' || seg === 'es') return seg;
+  if (seg === 'en' || seg === 'es' || seg === 'fr') return seg;
   return defaultLang;
 }
 
@@ -24,14 +25,14 @@ export function useTranslations(lang: Lang) {
 
 /** Mapa de rotas estáticas por idioma (slug localizado). */
 export const ROUTES = {
-  home: { pt: '/', en: '/en/', es: '/es/' },
-  about: { pt: '/sobre', en: '/en/about', es: '/es/sobre' },
-  team: { pt: '/equipa', en: '/en/team', es: '/es/equipo' },
-  legalization: { pt: '/legalizacao-de-veiculos', en: '/en/vehicle-legalization', es: '/es/legalizacion-de-vehiculos' },
-  booking: { pt: '/agendamento', en: '/en/booking', es: '/es/agenda' },
-  contact: { pt: '/contato', en: '/en/contact', es: '/es/contacto' },
-  terms: { pt: '/legal/termos', en: '/en/legal/terms', es: '/es/legal/terminos' },
-  privacy: { pt: '/legal/privacidade', en: '/en/legal/privacy', es: '/es/legal/privacidad' },
+  home: { pt: '/', en: '/en/', es: '/es/', fr: '/fr/' },
+  solutions: { pt: '/solucoes', en: '/en/solutions', es: '/es/soluciones', fr: '/fr/solutions' },
+  about: { pt: '/sobre', en: '/en/about', es: '/es/sobre', fr: '/fr/a-propos' },
+  team: { pt: '/equipa', en: '/en/team', es: '/es/equipo', fr: '/fr/equipe' },
+  booking: { pt: '/agendamento', en: '/en/booking', es: '/es/agenda', fr: '/fr/rendez-vous' },
+  contact: { pt: '/contato', en: '/en/contact', es: '/es/contacto', fr: '/fr/contact' },
+  terms: { pt: '/legal/termos', en: '/en/legal/terms', es: '/es/legal/terminos', fr: '/fr/legal/conditions' },
+  privacy: { pt: '/legal/privacidade', en: '/en/legal/privacy', es: '/es/legal/privacidad', fr: '/fr/legal/confidentialite' },
 } as const;
 export type RouteKey = keyof typeof ROUTES;
 
@@ -44,6 +45,7 @@ export function getRoute(key: RouteKey, lang: Lang): string {
 export function unitPath(slug: string, lang: Lang): string {
   if (lang === 'en') return `/en/units/${slug}`;
   if (lang === 'es') return `/es/unidades/${slug}`;
+  if (lang === 'fr') return `/fr/agences/${slug}`;
   return `/unidades/${slug}`;
 }
 

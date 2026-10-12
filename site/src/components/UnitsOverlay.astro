@@ -7,10 +7,11 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const offices = await getOffices();
+const closeLabel = { pt: 'Fechar', en: 'Close', es: 'Cerrar', fr: 'Fermer' }[lang];
 ---
 <div class="ovl" data-overlay hidden role="dialog" aria-modal="true" aria-labelledby="ovl-title">
   <div class="ovl-panel" role="document">
-    <button class="ovl-x" data-close aria-label="Fechar">&times;</button>
+    <button class="ovl-x" data-close aria-label={closeLabel}>&times;</button>
 
     <div class="ovl-head">
       <img src="/brand/seven-simbolo-oceano.svg" alt="" height="44" width="41" class="ovl-icon" />

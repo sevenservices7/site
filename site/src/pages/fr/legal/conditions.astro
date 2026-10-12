@@ -1,0 +1,9 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Legal from '../../../components/pages/Legal.astro';
+import { useTranslations } from '../../../i18n/ui';
+const t = useTranslations('fr');
+---
+<Base title={`${t('footer.terms')} — ${t('site.name')}`} description={t('footer.terms')} routeKey="terms">
+  <Legal lang="fr" kind="terms" />
+</Base>

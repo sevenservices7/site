@@ -8,7 +8,7 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const offices = await getOffices();
-const emailSubject = { pt: 'Pedido de contato', en: 'Contact request', es: 'Solicitud de contacto' }[lang];
+const emailSubject = { pt: 'Pedido de contato', en: 'Contact request', es: 'Solicitud de contacto', fr: 'Demande de contact' }[lang];
 ---
 <section class="bg-navy center">
   <div class="container" style="max-width:720px">

@@ -1,11 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
-import Home from '../../components/pages/Home.astro';
+import HomeJourney from '../../components/pages/HomeJourney.astro';
 import UnitsOverlay from '../../components/UnitsOverlay.astro';
-import { useTranslations } from '../../i18n/ui';
-const t = useTranslations('en');
+import { getUi } from '../../data/ui';
+const u = getUi('en');
 ---
-<Base title={`${t('site.name')} — ${t('site.tagline')}`} description={t('home.hero.subtitle')} routeKey="home">
+<Base title={u.home.metaTitle} description={u.home.metaDescription} routeKey="home">
   <UnitsOverlay lang="en" />
-  <Home lang="en" />
+  <HomeJourney lang="en" />
 </Base>

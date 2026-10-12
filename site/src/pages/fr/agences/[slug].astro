@@ -1,0 +1,14 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Unit from '../../../components/pages/Unit.astro';
+import { getOffices } from '../../../lib/data';
+
+export async function getStaticPaths() {
+  const offices = await getOffices();
+  return offices.map((o) => ({ params: { slug: o.slug }, props: { office: o } }));
+}
+const { office } = Astro.props;
+---
+<Base title={`${office.name} — SEVEN`} description={office.address}>
+  <Unit office={office} lang="fr" />
+</Base>

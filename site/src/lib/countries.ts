@@ -29,7 +29,7 @@ const DIAL: Record<string, string> = {
 export interface Country { iso: string; name: string; dial: string; }
 
 /** Portugal primeiro, Brasil em segundo, depois todos os países em ordem alfabética. */
-export function countryList(lang: 'pt' | 'en' | 'es'): Country[] {
+export function countryList(lang: 'pt' | 'en' | 'es' | 'fr'): Country[] {
   const locale = lang === 'pt' ? 'pt-BR' : lang;
   const dn = new Intl.DisplayNames([locale], { type: 'region' });
   const all = Object.entries(DIAL).map(([iso, dial]) => ({ iso, dial: `+${dial}`, name: dn.of(iso) || iso }));

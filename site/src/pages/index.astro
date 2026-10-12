@@ -1,13 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
-import HomePt from '../components/pages/HomePt.astro';
+import HomeJourney from '../components/pages/HomeJourney.astro';
 import UnitsOverlay from '../components/UnitsOverlay.astro';
+import { getUi } from '../data/ui';
+const u = getUi('pt');
 ---
-<Base
-  title="SEVEN | Imigração, empresas e contabilidade em Portugal"
-  description="Assessoria para brasileiros em Portugal: residência, AIMA, NIF, IRS, nacionalidade, abertura de empresa e contabilidade. Sempre existe um caminho."
-  routeKey="home"
->
+<Base title={u.home.metaTitle} description={u.home.metaDescription} routeKey="home">
   <UnitsOverlay lang="pt" />
-  <HomePt />
+  <HomeJourney lang="pt" />
 </Base>

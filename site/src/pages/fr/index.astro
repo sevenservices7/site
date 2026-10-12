@@ -1,0 +1,11 @@
+---
+import Base from '../../layouts/Base.astro';
+import HomeJourney from '../../components/pages/HomeJourney.astro';
+import UnitsOverlay from '../../components/UnitsOverlay.astro';
+import { getUi } from '../../data/ui';
+const u = getUi('fr');
+---
+<Base title={u.home.metaTitle} description={u.home.metaDescription} routeKey="home">
+  <UnitsOverlay lang="fr" />
+  <HomeJourney lang="fr" />
+</Base>

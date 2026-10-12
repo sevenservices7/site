@@ -1,0 +1,66 @@
+import type { UiStrings } from './types';
+
+export const ui: UiStrings = {
+  stages: {
+    decisao: { title: 'Decidir', summary: 'Todavía en tu país, eligiendo el camino correcto para vivir en Portugal.' },
+    chegada: { title: 'Llegar', summary: 'Los primeros trámites: NIF, NISS, licencia de conducir y vehículo.' },
+    residencia: { title: 'Vivir legalmente', summary: 'Autorización de residencia, renovación, familia y el IRS de cada año.' },
+    nacionalidade: { title: 'Ser portugués', summary: 'La solicitud de nacionalidad, cuando llegue el momento.' },
+    empresa: { title: 'Emprender', summary: 'Abrir tu empresa y mantener la contabilidad al día.' },
+    apoio: { title: 'Apoyo jurídico', summary: 'Cuando el caso pide abogada: recursos, denegaciones y casos complejos.' },
+  },
+  common: {
+    home: 'Inicio', solutions: 'Soluciones', talkToExpert: 'Hablar con un especialista', whatsapp: 'Escribir por WhatsApp',
+    learnMore: 'Saber más', seeAllSolutions: 'Ver todas las soluciones', breadcrumbAria: 'Estás en',
+    anyStage: 'En cualquier etapa', stage: 'Etapa',
+    waGeneric: '¡Hola, SEVEN! Vengo de la web y quiero hablar con un especialista.',
+    waTopic: '¡Hola, SEVEN! Vengo de la web y quiero hablar con un especialista sobre {topic}.',
+  },
+  solution: {
+    forWho: 'Para quién es', dictionary: 'Diccionario SEVEN', whatWeDo: 'Lo que hacemos', howItWorks: 'Cómo funciona',
+    faqEyebrow: 'Dudas', faqTitle: 'Lo que preguntan antes de empezar.',
+    nextSteps: 'Próximos pasos del camino', nextStepsTitle: 'Te acompañamos en todo el camino.',
+    statement: 'Siempre hay un camino.',
+  },
+  hub: {
+    metaTitle: 'Soluciones para vivir y emprender en Portugal | SEVEN',
+    metaDescription: 'Inmigración, trámites, impuestos, empresa y contabilidad en Portugal. SEVEN te acompaña en todo el camino, de la decisión a la nacionalidad. Como debe ser.',
+    eyebrow: 'Soluciones', h1: 'Todo lo que tu vida en Portugal necesita,', h1Em: 'en un solo lugar.',
+    lede: 'No vendemos papeles. Te acompañamos en todo el camino: desde la decisión de mudarte hasta la nacionalidad portuguesa y tu propio negocio. Encuentra abajo la etapa en la que estás.',
+    ctaStatement: '¿No sabes por dónde empezar?', ctaTitle: 'Para eso existe la consultoría.',
+    ctaBody: 'En una conversación con un especialista entendemos tu caso y te mostramos el camino, dentro de la ley. Si sigues con el servicio, el valor de la consultoría se descuenta.',
+  },
+  home: {
+    metaTitle: 'SEVEN | Inmigración, empresas y contabilidad en Portugal',
+    metaDescription: 'Asesoría para vivir y emprender en Portugal: residencia, AIMA, NIF, IRS, nacionalidad, apertura de empresa y contabilidad. Siempre hay un camino.',
+    eyebrow: 'Inmigración · Empresas · Contabilidad', h1: 'Siempre hay un', h1Em: 'camino.',
+    lede: 'SEVEN transforma la complejidad de vivir y emprender en Portugal en un camino claro. De la decisión a la nacionalidad, del primer documento a tu propio negocio. Como debe ser.',
+    ctaSecondary: 'Ver soluciones',
+    highlights: [
+      { value: '~2.000', label: 'clientes atendidos desde 2022' },
+      { value: '4,9', label: 'en Google, con 178 reseñas' },
+      { value: '3', label: 'sedes: Albufeira, Faro y Oporto' },
+      { value: 'Online', label: 'o presencial, estés donde estés' },
+    ],
+    journeyEyebrow: 'Tu camino', journeyTitle: 'La vida en otro país tiene etapas. Te acompañamos en todas.',
+    journeyLead: 'No necesitas saber cómo se llama el trámite. Dinos dónde estás y te mostramos el siguiente paso.',
+    wayEyebrow: 'El estilo SEVEN', wayTitle: 'Sin atajos. Con camino.',
+    wayLead: 'Te ofrecemos lo que necesitas, no solo lo que pides. Y preferimos perder una venta antes que perder un cliente.',
+    principles: [
+      ['01', 'Siempre traducimos', 'Cada término técnico viene con su explicación. El NIF es tu número fiscal portugués; Finanças es la Autoridad Tributaria. Entiendes cada paso de tu trámite.'],
+      ['02', 'Honestos hasta en el «no»', 'Si por un camino no se puede, te decimos por qué. Y te mostramos otro, dentro de la ley. Sin atajos.'],
+      ['03', 'Te acompañamos en todo el camino', 'De la decisión de mudarte a la nacionalidad y a tu propio negocio. Te recordamos el siguiente paso antes de que lo necesites.'],
+    ],
+    bizEyebrow: 'SEVEN para empresas', bizTitle: '¿Vas a emprender en Portugal? La burocracia queda en nuestras manos.',
+    bizLead: 'Apertura de la empresa, alta en Finanças (la Autoridad Tributaria portuguesa) y contabilidad todos los meses, con quien entiende al emprendedor que viene de fuera.',
+    bizCards: [
+      { title: 'Abrir empresa en Portugal', body: 'Del tipo de empresa correcto al registro, sin sorpresas.' },
+      { title: 'Contabilidad', body: 'Impuestos y obligaciones al día, con contable certificado.' },
+    ],
+    testimonialsEyebrow: 'Quienes ya hicieron el camino', testimonialsTitle: 'Resuelto. Como debe ser.',
+    unitsEyebrow: 'Sedes', unitsTitle: 'Cerca de ti, en Portugal.',
+    unitsLead: 'Atención presencial en Albufeira, Faro y Oporto, u online, estés donde estés.',
+    closingStatement: 'Claridad para ir más allá.', closingTitle: 'Cuéntale tu caso a un especialista.',
+    closingBody: 'En la consultoría entendemos dónde estás y te mostramos el camino, dentro de la ley. Si sigues con el servicio, el valor de la consultoría se descuenta.',
+  },
+};

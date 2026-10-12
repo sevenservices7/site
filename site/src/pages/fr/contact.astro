@@ -1,0 +1,9 @@
+---
+import Base from '../../layouts/Base.astro';
+import Contact from '../../components/pages/Contact.astro';
+import { useTranslations } from '../../i18n/ui';
+const t = useTranslations('fr');
+---
+<Base title={`${t('nav.contact')} — ${t('site.name')}`} description={t('overlay.subtitle')} routeKey="contact">
+  <Contact lang="fr" />
+</Base>

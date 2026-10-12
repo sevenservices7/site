@@ -16,13 +16,13 @@ const redirectPaths = ['/lander/', '/servicos/', '/carrinho/', '/en/services/', 
 
 // Site institucional SEVEN.
 // i18n: PT é o idioma padrão e fica nas URLs limpas (/, /sobre, ...).
-// EN/ES ficam prefixados (/en/..., /es/...).
+// EN/ES/FR ficam prefixados (/en/..., /es/..., /fr/...).
 export default defineConfig({
   site: 'https://seveneu.com',
   trailingSlash: 'ignore',
   i18n: {
     defaultLocale: 'pt',
-    locales: ['pt', 'en', 'es'],
+    locales: ['pt', 'en', 'es', 'fr'],
     routing: {
       prefixDefaultLocale: false,
       redirectToDefaultLocale: true,
@@ -33,20 +33,22 @@ export default defineConfig({
     '/lander': '/',
     '/servicos': '/solucoes',
     '/carrinho': '/solucoes',
-    '/en/services': '/en/',
-    '/en/cart': '/en/',
-    '/es/servicios': '/es/',
-    '/es/carrito': '/es/',
+    '/en/services': '/en/solutions',
+    '/en/cart': '/en/solutions',
+    '/es/servicios': '/es/soluciones',
+    '/es/carrito': '/es/soluciones',
+    '/en/vehicle-legalization': '/en/solutions',
+    '/es/legalizacion-de-vehiculos': '/es/soluciones',
   },
   integrations: [
     sitemap({
       filter: (page) => {
         const path = new URL(page).pathname;
-        return !draftPaths.includes(path) && !redirectPaths.includes(path) && !path.startsWith('/checkout') && !path.startsWith('/en/checkout') && !path.startsWith('/es/checkout') && !/\/(pagar|pay)\/?$/.test(path);
+        return !draftPaths.includes(path) && !redirectPaths.includes(path) && !path.startsWith('/checkout') && !path.startsWith('/en/checkout') && !path.startsWith('/es/checkout') && !path.startsWith('/fr/checkout') && !/\/(pagar|pay)\/?$/.test(path);
       },
       i18n: {
         defaultLocale: 'pt',
-        locales: { pt: 'pt-BR', en: 'en-GB', es: 'es-ES' },
+        locales: { pt: 'pt-BR', en: 'en-GB', es: 'es-ES', fr: 'fr-FR' },
       },
     }),
   ],

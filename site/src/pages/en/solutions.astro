@@ -1,0 +1,10 @@
+---
+import Base from '../../layouts/Base.astro';
+import SolutionsHub from '../../components/pages/SolutionsHub.astro';
+import { getUi } from '../../data/ui';
+import { hubJsonLd } from '../../lib/hub-page';
+const u = getUi('en');
+---
+<Base title={u.hub.metaTitle} description={u.hub.metaDescription} jsonLd={hubJsonLd('en')} routeKey="solutions">
+  <SolutionsHub lang="en" />
+</Base>

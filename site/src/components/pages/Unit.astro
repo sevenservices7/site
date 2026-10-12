@@ -12,12 +12,14 @@ const coordinator = team.find((m) => m.code && m.code === office.coordinator_cod
 const coordName = office.coordinator_name || coordinator?.name || '';
 const coordRole = office.coordinator_role || coordinator?.role_label || '';
 const coordPhoto = coordinator?.photo_url || '';
-const waText =
-  lang === 'en'
-    ? `Hello! I'd like information from the ${office.name} unit.`
-    : lang === 'es'
-      ? `¡Hola! Quisiera información de la sede ${office.name}.`
-      : `Olá! Gostaria de informações da unidade ${office.name}.`;
+const waText = {
+  pt: `Olá! Gostaria de informações da unidade ${office.name}.`,
+  en: `Hi! I'd like some information about the ${office.name} location.`,
+  es: `¡Hola! Me gustaría recibir información de la sede ${office.name}.`,
+  fr: `Bonjour ! J'aimerais avoir des informations sur l'agence de ${office.name}.`,
+}[lang];
+const hoursLabel = { pt: 'Horário', en: 'Opening hours', es: 'Horario', fr: 'Horaires' }[lang];
+const mapLabel = { pt: 'Mapa', en: 'Map', es: 'Mapa', fr: 'Carte' }[lang];
 ---
 <section class="bg-navy">
   <div class="container unit-hero">
@@ -57,7 +59,7 @@ const waText =
       )}
       {office.hours && Object.keys(office.hours).length > 0 && (
         <div class="card" style="padding:20px;margin-top:18px">
-          <h3 style="margin:0 0 8px">{lang === 'en' ? 'Hours' : lang === 'es' ? 'Horario' : 'Horário'}</h3>
+          <h3 style="margin:0 0 8px">{hoursLabel}</h3>
           {Object.entries(office.hours).map(([k, v]) => <p style="margin:2px 0"><strong>{k}:</strong> {v}</p>)}
         </div>
       )}
@@ -66,7 +68,7 @@ const waText =
 
     <div class="unit-map">
       <iframe
-        title={`Mapa — ${office.name}`}
+        title={`${mapLabel} — ${office.name}`}
         src={mapEmbed(office)}
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"

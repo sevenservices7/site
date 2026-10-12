@@ -8,8 +8,10 @@ export interface TextItem { title: string; body: string; }
 export interface Faq { q: string; a: string; }
 
 export interface Solution {
-  /** Slug da URL, sem barras: a página fica em /<slug>. */
+  /** Slug da URL, sem barras: a página fica em /<slug> (PT) ou /<lang>/<slug> (EN/ES/FR). */
   slug: string;
+  /** Só nas traduções: o slug da versão em português (liga as versões entre idiomas). */
+  key?: string;
   stage: Stage;
   /** Nome curto para menus e cartões (2–4 palavras). */
   navLabel: string;
