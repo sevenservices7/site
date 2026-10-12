@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Renovación de residencia",
   cardSummary: "¿Tu tarjeta está por vencer o ya venció? La renovamos en la AIMA, online o presencial, y la seguimos hasta que sale.",
   seoTitle: "Renovación de residencia en Portugal (AIMA) | SEVEN",
-  metaDescription: "Renovación de la tarjeta de residencia en Portugal: SEVEN revisa tus documentos, presenta la solicitud en la AIMA, online o presencial, y la sigue hasta la nueva.",
+  metaDescription: "Renovación de la tarjeta de residencia en Portugal: SEVEN revisa tus documentos y presenta la solicitud en la AIMA, online o presencial, y la sigue de cerca.",
   eyebrow: "Inmigración · Residencia",
   h1: "Renovación de la tarjeta de residencia en Portugal, sin perder el plazo",
   lede: "La tarjeta vence y la vida no puede parar. Vemos qué canal de la AIMA sirve para tu caso, revisamos los documentos y presentamos la renovación por ti.",

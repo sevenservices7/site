@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Renouvellement du titre",
   cardSummary: "Votre titre de séjour expire ou a expiré ? Nous le renouvelons auprès de l'AIMA, en ligne ou sur place, et suivons tout.",
   seoTitle: "Renouveler son titre de séjour au Portugal | SEVEN",
-  metaDescription: "Renouvellement du titre de séjour au Portugal : SEVEN vérifie vos documents, dépose la demande auprès de l'AIMA, en ligne ou sur place, et suit jusqu'au nouveau titre.",
+  metaDescription: "Renouvellement du titre de séjour au Portugal : SEVEN vérifie vos documents, dépose la demande à l'AIMA, en ligne ou sur place, et suit jusqu'au nouveau titre.",
   eyebrow: "Immigration · Résidence",
   h1: "Renouveler votre titre de séjour au Portugal, sans laisser passer le délai",
   lede: "Le titre expire et la vie ne peut pas s'arrêter. Nous identifions le canal de l'AIMA adapté à votre cas, vérifions les documents et déposons la demande de renouvellement pour vous.",

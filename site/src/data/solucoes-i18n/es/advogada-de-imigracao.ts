@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Abogada de inmigración",
   cardSummary: "Denegación, audiencia previa o demora de la AIMA: la abogada del equipo analiza tu caso y te muestra el camino.",
   seoTitle: "Abogada de inmigración en Portugal | SEVEN",
-  metaDescription: "¿Recibiste una denegación, una audiencia previa o tu proceso está parado en la AIMA? La abogada de SEVEN analiza tu caso y te muestra el camino jurídico, dentro de la ley.",
+  metaDescription: "¿Te denegaron la residencia, recibiste una audiencia previa o tu proceso está parado en la AIMA? La abogada de SEVEN analiza tu caso y te muestra el camino.",
   eyebrow: "Jurídico · Inmigración",
   h1: "Abogada de inmigración en Portugal",
   lede: "Cuando el proceso se traba, la respuesta es técnica, no un atajo. La abogada del equipo SEVEN analiza tu caso con calma y te dice, con honestidad, lo que se puede y lo que no se puede hacer.",

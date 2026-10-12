@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Nacionalidad portuguesa",
   cardSummary: "Por residencia, matrimonio, hijos o nietos: comprobamos tu derecho con la ley nueva y presentamos la solicitud.",
   seoTitle: "Nacionalidad portuguesa: cómo pedirla en 2026 | SEVEN",
-  metaDescription: "Nacionalidad portuguesa con la ley de 2026: por residencia, matrimonio, unión de hecho o ascendencia. SEVEN cuenta tu tiempo de residencia y prepara tu solicitud.",
+  metaDescription: "Nacionalidad portuguesa con la ley de 2026: por residencia, matrimonio, unión de hecho o ascendencia. SEVEN cuenta tu tiempo y prepara tu solicitud.",
   eyebrow: "Nacionalidad · Portugal",
   h1: "Nacionalidad portuguesa: el paso que cierra tu camino",
   lede: "La ley de nacionalidad cambió en 2026. Comprobamos por qué camino tienes derecho, contamos tu tiempo y nos ocupamos de la solicitud, con abogada en el equipo.",

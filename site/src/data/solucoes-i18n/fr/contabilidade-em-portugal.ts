@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Comptabilité",
   cardSummary: "Comptabilité pour sociétés et indépendants, avec un expert-comptable certifié et des explications claires.",
   seoTitle: "Comptabilité au Portugal pour les étrangers | SEVEN",
-  metaDescription: "Comptabilité au Portugal pour sociétés et indépendants, avec un expert-comptable certifié. SEVEN gère la TVA et les déclarations et vous explique chaque chiffre.",
+  metaDescription: "Comptabilité au Portugal pour sociétés et indépendants, avec un expert-comptable certifié. SEVEN gère la TVA et les déclarations et explique chaque chiffre.",
   eyebrow: "Comptabilité · Portugal",
   h1: "Comptabilité au Portugal, avec une équipe qui vous explique tout",
   lede: "Vous vous occupez de votre activité. Nous nous occupons des comptes, des déclarations et des délais, et nous expliquons chaque chiffre sans jargon.",

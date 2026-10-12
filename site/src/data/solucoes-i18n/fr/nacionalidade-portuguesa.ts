@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Nationalité portugaise",
   cardSummary: "Par la résidence, le mariage, les enfants ou les petits-enfants : nous vérifions votre droit selon la nouvelle loi.",
   seoTitle: "Nationalité portugaise : la demander en 2026 | SEVEN",
-  metaDescription: "Nationalité portugaise selon la loi de 2026 : par la résidence, le mariage, l'union de fait ou l'ascendance. SEVEN calcule votre durée de résidence et monte la demande.",
+  metaDescription: "Nationalité portugaise selon la loi de 2026 : résidence, mariage, union de fait ou ascendance. SEVEN calcule votre durée de résidence et monte la demande.",
   eyebrow: "Nationalité · Portugal",
   h1: "Nationalité portugaise : l'étape qui achève votre parcours",
   lede: "La loi sur la nationalité a changé en 2026. Nous vérifions par quel chemin vous y avez droit, calculons votre durée de résidence et gérons la demande, avec une avocate dans l'équipe.",

@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Immatriculer un véhicule",
   cardSummary: "Du calcul de l'ISV à la plaque portugaise : nous immatriculons la voiture que vous avez amenée au Portugal.",
   seoTitle: "Immatriculer un véhicule au Portugal | SEVEN",
-  metaDescription: "Vous avez amené une voiture au Portugal ? SEVEN simule l'ISV, gère l'inspection, le dédouanement, l'immatriculation à l'IMT et l'enregistrement. Le coût, connu avant.",
+  metaDescription: "Voiture amenée au Portugal ? SEVEN simule l'ISV, gère l'inspection, le dédouanement, l'immatriculation à l'IMT et l'enregistrement. Le coût, connu avant.",
   eyebrow: "Véhicules · Portugal",
   h1: "Immatriculer votre véhicule au Portugal",
   lede: "Vous avez amené votre voiture, ou vous allez le faire ? Nous gérons toute la régularisation, du calcul de l'impôt à la plaque portugaise et à l'enregistrement à votre nom. Vous savez combien vous allez payer avant de commencer.",

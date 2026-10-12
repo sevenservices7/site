@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Regroupement familial",
   cardSummary: "Faire venir votre conjoint et vos enfants au Portugal, avec la bonne demande auprès de l'AIMA et les nouvelles règles.",
   seoTitle: "Regroupement familial au Portugal | SEVEN",
-  metaDescription: "Regroupement familial au Portugal : faites venir conjoint et enfants dans les règles. SEVEN explique la loi de 2025, monte la demande à l'AIMA et suit la décision.",
+  metaDescription: "Regroupement familial au Portugal : faites venir conjoint et enfants dans les règles. SEVEN explique la loi de 2025, monte la demande et suit la décision.",
   eyebrow: "Immigration · Famille",
   h1: "Regroupement familial au Portugal : la famille réunie, dans les règles",
   lede: "Vous vivez légalement au Portugal et voulez faire venir ceux qui sont restés au pays. Nous vérifions si vous pouvez déjà faire la demande, organisons les documents de la famille et suivons le dossier auprès de l'AIMA.",

@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Permis de conduire",
   cardSummary: "Votre permis étranger au Portugal : nous vérifions s'il faut l'échanger et gérons la demande auprès de l'IMT.",
   seoTitle: "Échanger son permis de conduire au Portugal | SEVEN",
-  metaDescription: "Permis de conduire au Portugal : faut-il l'échanger, qui le peut, documents, certificat médical. SEVEN vérifie votre cas et gère la demande auprès de l'IMT pour vous.",
+  metaDescription: "Permis de conduire au Portugal : faut-il l'échanger, documents, certificat médical, délais. SEVEN vérifie votre cas et gère la demande auprès de l'IMT.",
   eyebrow: "Permis de conduire · Portugal",
   h1: "Échanger votre permis de conduire contre un permis portugais",
   lede: "Votre permis peut être valable au Portugal, mais les règles dépendent du pays qui l'a délivré. Nous vous disons s'il faut l'échanger et gérons la demande auprès de l'IMT, de bout en bout.",

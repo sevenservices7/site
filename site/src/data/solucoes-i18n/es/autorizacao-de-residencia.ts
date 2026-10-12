@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Autorización de residencia",
   cardSummary: "Solicitud en la AIMA, documentos, cita y seguimiento del proceso hasta que llegue tu tarjeta de residencia.",
   seoTitle: "Permiso de residencia en Portugal (AIMA) | SEVEN",
-  metaDescription: "Permiso de residencia en Portugal: SEVEN organiza tus documentos, presenta la solicitud en la AIMA y sigue el proceso hasta la decisión. Con abogada en el equipo.",
+  metaDescription: "Permiso de residencia en Portugal: SEVEN organiza tus documentos, presenta la solicitud en la AIMA y la sigue hasta la decisión. Con abogada en el equipo.",
   eyebrow: "Inmigración · Residencia",
   h1: "Permiso de residencia en Portugal, con la AIMA seguida de cerca",
   lede: "Llegaste con visado y ahora necesitas el documento que te permite vivir legalmente. Organizamos la solicitud en la AIMA, seguimos el proceso y respondemos por ti cuando pida algo.",

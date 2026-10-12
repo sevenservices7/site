@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Canje de licencia",
   cardSummary: "Canjea tu licencia de conducir extranjera por la carta de condução portuguesa en el IMT, sin idas y vueltas.",
   seoTitle: "Canje de licencia de conducir en Portugal (IMT) | SEVEN",
-  metaDescription: "Cómo canjear tu licencia de conducir extranjera por la portuguesa en el IMT: quién puede, documentos, certificado médico y plazos. SEVEN se ocupa del trámite por ti.",
+  metaDescription: "Cómo canjear tu licencia de conducir extranjera por la portuguesa en el IMT: quién puede, documentos, certificado médico y plazos. SEVEN hace el trámite.",
   eyebrow: "Licencia de conducir · Portugal",
   h1: "Canje de tu licencia de conducir por la carta de condução portuguesa",
   lede: "Tu licencia extranjera puede servir en Portugal, pero con límites que dependen del país que la emitió. Te mostramos cuándo conviene canjearla y nos ocupamos del trámite en el IMT, de principio a fin.",

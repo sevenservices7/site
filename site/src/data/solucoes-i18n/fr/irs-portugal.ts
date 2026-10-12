@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "IRS au Portugal",
   cardSummary: "Déclarez l'IRS, l'impôt sur le revenu portugais, et ouvrez ou fermez une activité aux Finanças avec un conseil clair.",
   seoTitle: "IRS Portugal : déclaration et recibos verdes | SEVEN",
-  metaDescription: "L'IRS au Portugal sans mauvaise surprise : SEVEN dépose votre déclaration annuelle, ouvre ou ferme votre activité aux Finanças et vous explique les recibos verdes.",
+  metaDescription: "L'IRS au Portugal sans mauvaise surprise : SEVEN dépose votre déclaration annuelle, ouvre ou ferme votre activité aux Finanças et explique les recibos verdes.",
   eyebrow: "Finanças · Résidence",
   h1: "IRS Portugal : votre déclaration annuelle, faite dans les règles",
   lede: "L'IRS est l'impôt sur le revenu portugais. Il y a une déclaration chaque année, et les indépendants gèrent en plus les recibos verdes. Nous expliquons, déclarons et suivons.",

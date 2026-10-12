@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Titre de séjour",
   cardSummary: "Demande auprès de l'AIMA, documents, rendez-vous et suivi du dossier jusqu'à la remise du titre.",
   seoTitle: "Titre de séjour au Portugal (AIMA) | SEVEN",
-  metaDescription: "Titre de séjour au Portugal : SEVEN prépare vos documents, dépose la demande auprès de l'AIMA et suit le dossier jusqu'à la décision. Citoyens UE : on vous guide.",
+  metaDescription: "Titre de séjour au Portugal : SEVEN prépare vos documents, dépose la demande auprès de l'AIMA et suit le dossier jusqu'à la décision. En ligne ou sur place.",
   eyebrow: "Immigration · Résidence",
   h1: "Titre de séjour au Portugal, avec un suivi rapproché de l'AIMA",
   lede: "Vous êtes arrivé avec un visa et il vous faut maintenant le titre qui vous permet de vivre légalement au Portugal. Nous préparons la demande auprès de l'AIMA, suivons le dossier et répondons pour vous quand elle demande quelque chose.",

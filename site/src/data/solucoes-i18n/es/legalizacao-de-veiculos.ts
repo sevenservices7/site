@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Legalización de vehículos",
   cardSummary: "Del cálculo del ISV a la matrícula portuguesa: legalizamos el vehículo que trajiste a Portugal.",
   seoTitle: "Legalización de vehículos en Portugal | SEVEN",
-  metaDescription: "¿Trajiste un vehículo a Portugal? SEVEN simula el ISV y se ocupa de la inspección, el despacho aduanero, la matrícula en el IMT y el registro. Sabes el costo antes.",
+  metaDescription: "¿Trajiste un vehículo a Portugal? SEVEN simula el ISV y se ocupa de la inspección, la aduana, la matrícula en el IMT y el registro. Sabes el costo antes.",
   eyebrow: "Vehículos · Portugal",
   h1: "Legalización de vehículos en Portugal",
   lede: "¿Trajiste tu vehículo, o vas a traerlo? Nos ocupamos de toda la legalización, del cálculo del impuesto a la matrícula portuguesa y al registro a tu nombre. Sabes cuánto vas a pagar antes de empezar.",

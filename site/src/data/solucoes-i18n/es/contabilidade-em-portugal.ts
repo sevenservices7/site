@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Contabilidad",
   cardSummary: "Contabilidad para empresas y recibos verdes, con contable certificado y explicaciones claras.",
   seoTitle: "Contabilidad en Portugal para extranjeros | SEVEN",
-  metaDescription: "Contabilidad en Portugal para empresas y autónomos con recibos verdes, con contable certificado. SEVEN se ocupa del IVA y las declaraciones y te lo explica todo claro.",
+  metaDescription: "Contabilidad en Portugal para empresas y autónomos, con contable certificado. SEVEN se ocupa del IVA y de las declaraciones y te explica cada número claramente.",
   eyebrow: "Contabilidad · Portugal",
   h1: "Contabilidad en Portugal, explicada con claridad",
   lede: "Tú te ocupas del negocio. Nosotros nos ocupamos de las cuentas, las declaraciones y los plazos, y te explicamos cada número sin tecnicismos.",

@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Visas pour le Portugal",
   cardSummary: "Encore dans votre pays ? Nous vous aidons à savoir si un visa est nécessaire, à choisir le bon et à monter la demande.",
   seoTitle: "Visa pour le Portugal : lequel choisir | SEVEN",
-  metaDescription: "Visa pour le Portugal : travail, D7 revenus propres, nomade numérique D8, études. SEVEN analyse votre profil et vous montre le bon chemin selon la loi en vigueur.",
+  metaDescription: "Visa pour le Portugal : travail, D7 revenus propres, nomade numérique D8, études. SEVEN analyse votre profil et vous montre le bon chemin, selon la loi.",
   eyebrow: "Immigration · Avant le départ",
   h1: "Visa pour le Portugal : le bon chemin commence avant les valises",
   lede: "Si vous n'êtes pas citoyen de l'UE, de l'EEE ou de Suisse, vivre au Portugal suppose aujourd'hui de partir avec le bon visa en poche. Nous analysons votre profil, vous expliquons les options qui existent vraiment et préparons la demande avec vous.",

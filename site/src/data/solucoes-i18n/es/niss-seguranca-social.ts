@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "NISS y Seguridad Social",
   cardSummary: "Pide el NISS, tu número de la seguridad social portuguesa, y organiza tu Segurança Social Direta sin complicaciones.",
   seoTitle: "NISS: cómo pedirlo en la Seguridad Social | SEVEN",
-  metaDescription: "Cómo pedir el NISS en Portugal, tu número de la seguridad social portuguesa. SEVEN presenta la solicitud, organiza tu Segurança Social Direta y sigue tus aportes.",
+  metaDescription: "Cómo pedir el NISS en Portugal, tu número de la seguridad social. SEVEN hace la solicitud, organiza tu Segurança Social Direta y sigue tus cotizaciones.",
   eyebrow: "Seguridad Social · Llegada",
   h1: "NISS: cómo pedir el número de la Seguridad Social en Portugal",
   lede: "El NISS es tu número de la seguridad social portuguesa. Sin él, no puedes trabajar con contrato, darte de alta como autónomo ni pedir ayudas sociales. Lo pedimos, lo organizamos y te explicamos cada paso.",

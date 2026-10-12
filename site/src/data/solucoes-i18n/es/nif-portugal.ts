@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "NIF en Portugal",
   cardSummary: "Obtén el NIF, tu número fiscal portugués, en Portugal o desde tu país, con quien conoce el camino en Finanças.",
   seoTitle: "NIF en Portugal: cómo obtener tu número fiscal | SEVEN",
-  metaDescription: "Cómo obtener el NIF en Portugal, incluso desde tu país. SEVEN solicita tu número de contribuyente con un poder notarial y te orienta sobre el representante fiscal.",
+  metaDescription: "Cómo obtener el NIF en Portugal, incluso desde tu país. SEVEN pide tu número de contribuyente con un poder y te orienta sobre el representante fiscal.",
   eyebrow: "Finanças · Llegada",
   h1: "NIF en Portugal: cómo obtener tu número fiscal, aquí o desde tu país",
   lede: "Es el primer paso de casi todo en Portugal: obtener el NIF, tu número de identificación fiscal. Lo pedimos por ti, con un poder, y te explicamos lo que viene después.",

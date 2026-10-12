@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Créer une entreprise",
   cardSummary: "Créez votre entreprise au Portugal, Lda, Unipessoal ou en nom propre, avec le bon cadre fiscal.",
   seoTitle: "Créer une entreprise au Portugal : le guide | SEVEN",
-  metaDescription: "Créer une entreprise au Portugal en tant qu'étranger : SEVEN vous aide à choisir entre Lda, Unipessoal ou nom propre, constitue la société et gère la partie fiscale.",
+  metaDescription: "Créer une entreprise au Portugal : SEVEN vous aide à choisir entre Lda, Unipessoal ou nom propre, constitue la société et gère la partie fiscale.",
   eyebrow: "Entreprises · Portugal",
   h1: "Créer une entreprise au Portugal : du projet à la première facture",
   lede: "Vous apportez l'idée et l'envie d'entreprendre. Nous choisissons avec vous le type de société, la constituons et préparons tout auprès des Finanças, sans raccourci.",

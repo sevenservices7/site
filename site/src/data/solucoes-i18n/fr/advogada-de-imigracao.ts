@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Avocate en immigration",
   cardSummary: "Refus, audiência prévia ou lenteur de l'AIMA : l'avocate de l'équipe analyse votre dossier et montre le chemin.",
   seoTitle: "Avocate en droit de l'immigration au Portugal | SEVEN",
-  metaDescription: "Vous avez reçu un refus, une audiência prévia ou votre dossier est bloqué à l'AIMA ? L'avocate de SEVEN analyse votre cas et montre le chemin juridique, dans la loi.",
+  metaDescription: "Refus, audiência prévia ou dossier bloqué à l'AIMA ? L'avocate de SEVEN analyse votre cas et vous montre le chemin juridique, dans le respect de la loi.",
   eyebrow: "Juridique · Immigration",
   h1: "Avocate en droit de l'immigration au Portugal",
   lede: "Quand le dossier bloque, la réponse est technique, pas un arrangement. L'avocate de l'équipe SEVEN analyse votre cas avec calme et vous dit honnêtement ce qui est possible et ce qui ne l'est pas.",

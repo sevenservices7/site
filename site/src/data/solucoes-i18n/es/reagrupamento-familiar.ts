@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Reagrupación familiar",
   cardSummary: "Traer a tu pareja y a tus hijos a vivir contigo en Portugal, con la solicitud correcta en la AIMA y las reglas nuevas al día.",
   seoTitle: "Reagrupación familiar en Portugal | SEVEN",
-  metaDescription: "Reagrupación familiar en Portugal: trae a tu pareja y a tus hijos dentro de la ley. SEVEN te explica las reglas de 2025, prepara la solicitud en la AIMA y la sigue.",
+  metaDescription: "Reagrupación familiar en Portugal: trae a tu pareja y a tus hijos dentro de la ley. SEVEN te explica las reglas de 2025 y prepara la solicitud en la AIMA.",
   eyebrow: "Inmigración · Familia",
   h1: "Reagrupación familiar en Portugal: la familia junta, como debe ser",
   lede: "Ya vives legalmente en Portugal y quieres traer a quien se quedó en tu país. Comprobamos si ya puedes pedirlo, organizamos los documentos de la familia y seguimos el proceso en la AIMA.",
