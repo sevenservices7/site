@@ -224,6 +224,8 @@ const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
         turnstile_token: String(fd.get('cf-turnstile-response') || ''),
       });
       showMsg(form.dataset.successMsg || 'OK', true);
+      // Conversão "Contato" do Google Ads: lead enviado com sucesso.
+      (window as any).gtag?.('event', 'conversion', { send_to: 'AW-10789023252/z_q5CP3zn48YEJTczZgo' });
       form.reset();
       setDdi(defaultOpt);
     } catch {

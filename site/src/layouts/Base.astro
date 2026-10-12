@@ -28,6 +28,15 @@ const htmlLang = lang === 'pt' ? 'pt-BR' : lang;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#01203F" />
+    <!-- Google tag (gtag.js): Google Analytics + Google Ads -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-QQBZL8K18D"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-QQBZL8K18D');
+      gtag('config', 'AW-10789023252');
+    </script>
     <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png" />
@@ -37,7 +46,7 @@ const htmlLang = lang === 'pt' ? 'pt-BR' : lang;
     <slot name="head" />
   </head>
   <body>
-    <a href="#main" class="skip-link">{lang === 'pt' ? 'Pular para o conteúdo' : lang === 'es' ? 'Saltar al contenido' : 'Skip to content'}</a>
+    <a href="#main" class="skip-link">{({ pt: 'Pular para o conteúdo', en: 'Skip to content', es: 'Saltar al contenido', fr: 'Aller au contenu' } as const)[lang]}</a>
     {!bare && <Header lang={lang} routeKey={routeKey} alternates={alternates} />}
     <main id="main">
       <slot />
