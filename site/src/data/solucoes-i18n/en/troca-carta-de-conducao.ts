@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Driving licence exchange",
   cardSummary: "Exchange your foreign driving licence for a Portuguese one at IMT, without the back and forth.",
   seoTitle: "Exchange your driving licence in Portugal | SEVEN",
-  metaDescription: "How to exchange a foreign driving licence for a Portuguese one at IMT: who can, documents, medical certificate and timing. SEVEN handles the application for you.",
+  metaDescription: "How to exchange a foreign driving licence for a Portuguese one at IMT: who can, documents, medical certificate and timing. SEVEN handles the application.",
   eyebrow: "Driving licence · Portugal",
   h1: "Exchanging your foreign driving licence for a Portuguese one",
   lede: "Your licence may be valid in Portugal, but there are limits, and the rules depend on the country that issued it. We tell you when it's worth exchanging and handle the application at IMT, start to finish.",

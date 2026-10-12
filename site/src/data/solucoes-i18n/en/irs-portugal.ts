@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "IRS tax return",
   cardSummary: "File your IRS, the Portuguese income tax return, and register or close self-employed activity with clear guidance.",
   seoTitle: "Portugal IRS tax return and recibos verdes | SEVEN",
-  metaDescription: "Your IRS tax return in Portugal without the stress: SEVEN files your annual return, registers or closes self-employed activity and explains recibos verdes clearly.",
+  metaDescription: "Your Portugal IRS tax return without the stress: SEVEN files it, registers or closes your self-employed activity and explains recibos verdes in plain words.",
   eyebrow: "Finanças · Residence",
   h1: "Portugal IRS: your annual tax return, done the right way",
   lede: "IRS is Portuguese personal income tax. There's a return every year, and if you're self-employed you also deal with recibos verdes. We explain, file and follow up.",

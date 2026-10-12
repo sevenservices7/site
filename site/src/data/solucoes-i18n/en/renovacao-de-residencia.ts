@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Residence renewal",
   cardSummary: "Card about to expire, or already expired? We renew it with AIMA, online or in person, and follow it through.",
   seoTitle: "Portugal residence permit renewal (AIMA) | SEVEN",
-  metaDescription: "Renewing your residence card in Portugal: SEVEN checks your documents, files the renewal with AIMA, online or in person, and follows it until your new card is out.",
+  metaDescription: "Renewing your residence card in Portugal: SEVEN checks your documents, files the renewal with AIMA, online or in person, and follows it until your new card.",
   eyebrow: "Immigration · Residence",
   h1: "Renewing your residence card in Portugal, without missing the deadline",
   lede: "Your card expires and life can't stop. We check which AIMA channel fits your case, review the documents and file the renewal for you.",

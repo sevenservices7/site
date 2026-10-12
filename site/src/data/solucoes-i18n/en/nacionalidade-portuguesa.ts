@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Portuguese citizenship",
   cardSummary: "Through residence, marriage, children or grandparents: we check your right under the new law and file your application.",
   seoTitle: "Portuguese citizenship: how to apply in 2026 | SEVEN",
-  metaDescription: "Portuguese citizenship under the 2026 law: through residence, marriage, de facto union or descent. SEVEN counts your time and prepares your application with you.",
+  metaDescription: "Portuguese citizenship under the 2026 law: through residence, marriage, de facto union or descent. SEVEN counts your time and prepares your application.",
   eyebrow: "Citizenship · Portugal",
   h1: "Portuguese citizenship: the step that completes your journey",
   lede: "The citizenship law changed in 2026. We check which route you're entitled to, count your time and take care of the application, with a lawyer on the team.",

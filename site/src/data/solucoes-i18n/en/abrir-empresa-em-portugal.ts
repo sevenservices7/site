@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Start a company",
   cardSummary: "Set up your company in Portugal, as an Lda, a single-member company or a sole trader, with the right tax setup.",
   seoTitle: "Start a company in Portugal: guide for foreigners | SEVEN",
-  metaDescription: "Starting a company in Portugal as a foreigner: SEVEN helps you choose between an Lda, a single-member company or sole trader, sets it up and registers it for tax.",
+  metaDescription: "Starting a company in Portugal as a foreigner: SEVEN helps you choose between an Lda, a single-member company or sole trader, then sets it up and registers it.",
   eyebrow: "Business · Portugal",
   h1: "Start a company in Portugal: from the plan to your first invoice",
   lede: "You bring the idea and the drive to build something. We choose the right company type with you, set it up and get everything ready with Finanças, the Portuguese Tax Authority. No shortcuts.",

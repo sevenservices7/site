@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Accounting",
   cardSummary: "Accounting for companies and the self-employed, with a certified accountant and plain-language explanations.",
   seoTitle: "Accountant in Portugal for foreigners | SEVEN",
-  metaDescription: "Accounting in Portugal for companies and self-employed people, with a certified accountant. SEVEN handles your VAT and tax filings and explains it all in plain words.",
+  metaDescription: "Accounting in Portugal for companies and the self-employed, with a certified accountant. SEVEN handles your VAT and tax filings and explains it all clearly.",
   eyebrow: "Accounting · Portugal",
   h1: "Accounting in Portugal, explained in words you understand",
   lede: "You run the business. We take care of the accounts, the filings and the deadlines, and explain every number without jargon.",

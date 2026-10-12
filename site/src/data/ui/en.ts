@@ -24,7 +24,7 @@ export const ui: UiStrings = {
   },
   hub: {
     metaTitle: "Solutions for living and working in Portugal | SEVEN",
-    metaDescription: "Immigration, documents, taxes, company formation and accounting in Portugal. SEVEN supports your whole journey, from the move to citizenship. Sorted. The right way.",
+    metaDescription: "Immigration, documents, taxes, company formation and accounting in Portugal. SEVEN supports your whole journey, from the move to citizenship. The right way.",
     eyebrow: "Solutions", h1: "Everything your life abroad needs,", h1Em: "in one place.",
     lede: "We don't sell paperwork. We walk the journey with you: from the decision to move to Portuguese citizenship and a business of your own. Find the stage you're at below.",
     ctaStatement: "Not sure where to start?", ctaTitle: "That's what the consultation is for.",

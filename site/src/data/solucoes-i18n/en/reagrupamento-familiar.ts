@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "Family reunification",
   cardSummary: "Bring your spouse and children to live with you in Portugal, with the right AIMA application and the new rules covered.",
   seoTitle: "Family reunification in Portugal | SEVEN",
-  metaDescription: "Family reunification in Portugal: bring your spouse and children within the law. SEVEN explains the 2025 rules, prepares your AIMA application and follows it through.",
+  metaDescription: "Family reunification in Portugal: bring your spouse and children within the law. SEVEN explains the 2025 rules, prepares your AIMA application and follows it.",
   eyebrow: "Immigration · Family",
   h1: "Family reunification in Portugal: your family together, the right way",
   lede: "You already live in Portugal legally and want to bring the people who stayed behind. We check whether you can apply yet, organise your family's documents and follow the process with AIMA.",

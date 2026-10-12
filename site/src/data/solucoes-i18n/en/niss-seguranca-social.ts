@@ -7,7 +7,7 @@ export const solution: Solution = {
   navLabel: "NISS and Social Security",
   cardSummary: "Get your NISS, the Portuguese social security number, and set up Segurança Social Direta without the headache.",
   seoTitle: "NISS: Portugal social security number | SEVEN",
-  metaDescription: "How to get a NISS, your Portuguese social security number. SEVEN applies for you, sets up your Segurança Social Direta account and keeps your contributions on track.",
+  metaDescription: "How to get a NISS, your Portuguese social security number. SEVEN applies for you, sets up Segurança Social Direta and keeps your contributions on track.",
   eyebrow: "Social Security · Arrival",
   h1: "NISS: how to get your social security number in Portugal",
   lede: "The NISS is your Portuguese social security number. Without it, you can't work on a contract, register as self-employed or apply for social support. We apply, organise and explain every step.",
