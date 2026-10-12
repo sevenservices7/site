@@ -27,7 +27,6 @@ const links: { label: string; href: string }[] = [
   ...shortcut('contabilidade-em-portugal', t('nav.accounting')),
   ...(isPt ? [{ label: t('nav.blog'), href: '/blog' }, { label: t('nav.podcast'), href: '/podcast' }] : []),
   { label: t('nav.about'), href: getRoute('about', lang) },
-  ...(isPt ? [] : [{ label: t('nav.contact'), href: getRoute('contact', lang) }]),
 ];
 const groups = STAGES
   .map((st) => ({ id: st.id, title: u.stages[st.id].title, items: solutionsByStageFor(lang, st.id) }))
@@ -82,13 +81,14 @@ const groups = STAGES
   .nav-links { display: flex; gap: 28px; list-style: none; }
   .nav-links a {
     color: var(--nevoa); font-family: var(--font-head); font-weight: 500; font-size: .76rem;
-    text-transform: uppercase; letter-spacing: 0.12em;
+    text-transform: uppercase; letter-spacing: 0.12em; white-space: nowrap;
     transition: color var(--dur-fast) var(--ease-out);
   }
   .nav-links a:hover { color: var(--g1); }
   .nav-actions { display: flex; align-items: center; gap: 16px; }
   .nav-actions .btn { white-space: nowrap; }
-  @media (max-width: 1360px) { .nav-slogan { display: none; } .nav-menu, .nav-links { gap: 22px; } }
+  @media (max-width: 1500px) { .nav-slogan { display: none; } }
+  @media (max-width: 1360px) { .nav-menu, .nav-links { gap: 22px; } }
   .nav-drop { position: relative; }
   .nav-drop-btn { display: inline-flex; align-items: center; gap: 6px; }
   .nav-mega {

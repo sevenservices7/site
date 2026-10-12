@@ -38,7 +38,7 @@ export default defineConfig({
     '/es/servicios': '/es/soluciones',
     '/es/carrito': '/es/soluciones',
     '/en/vehicle-legalization': '/en/import-car-to-portugal',
-    '/es/legalizacion-de-vehiculos': '/es/soluciones',
+    '/es/legalizacion-de-vehiculos': '/es/legalizacion-de-vehiculos-en-portugal',
   },
   integrations: [
     sitemap({
