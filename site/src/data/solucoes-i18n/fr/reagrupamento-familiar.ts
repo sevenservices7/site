@@ -12,7 +12,7 @@ export const solution: Solution = {
   h1: "Regroupement familial au Portugal : la famille réunie, dans les règles",
   lede: "Vous vivez légalement au Portugal et voulez faire venir ceux qui sont restés au pays. Nous vérifions si vous pouvez déjà faire la demande, organisons les documents de la famille et suivons le dossier auprès de l'AIMA.",
   highlights: [
-    { value: "~2 000", label: "clients accompagnés depuis 2022" },
+    { value: "+5 000", label: "clients accompagnés depuis 2022" },
     { value: "4,9", label: "sur Google, 178 avis" },
     { value: "Avocate", label: "dans l'équipe pour le juridique" },
     { value: "En ligne", label: "ou sur place" },

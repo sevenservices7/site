@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "El IRS es el impuesto sobre la renta portugués. Cada año hay declaración, y quien trabaja por cuenta propia además lidia con los recibos verdes. Te lo explicamos, lo declaramos y lo seguimos.",
   highlights: [
     { value: "Desde 2022", label: "acompañando a quienes viven en Portugal" },
-    { value: "Cerca de 2.000", label: "clientes atendidos" },
+    { value: "+5.000", label: "clientes atendidos" },
     { value: "4,9 en Google", label: "con 178 reseñas" },
     { value: "Online", label: "o presencial en Albufeira, Faro y Oporto" },
   ],

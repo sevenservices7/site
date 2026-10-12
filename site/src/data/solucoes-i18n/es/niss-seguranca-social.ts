@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "El NISS es tu número de la seguridad social portuguesa. Sin él, no puedes trabajar con contrato, darte de alta como autónomo ni pedir ayudas sociales. Lo pedimos, lo organizamos y te explicamos cada paso.",
   highlights: [
     { value: "Desde 2022", label: "al lado de quienes llegan a Portugal" },
-    { value: "Cerca de 2.000", label: "clientes atendidos" },
+    { value: "+5.000", label: "clientes atendidos" },
     { value: "4,9 en Google", label: "con 178 reseñas" },
     { value: "3 sedes", label: "Albufeira, Faro y Oporto, u online" },
   ],

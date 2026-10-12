@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "You bring the idea and the drive to build something. We choose the right company type with you, set it up and get everything ready with Finanças, the Portuguese Tax Authority. No shortcuts.",
   highlights: [
     { value: "Since 2022", label: "alongside people building businesses in Portugal" },
-    { value: "Around 2,000", label: "clients served" },
+    { value: "5,000+", label: "clients served" },
     { value: "4.9 on Google", label: "from 178 reviews" },
     { value: "3 locations", label: "Albufeira, Faro and Porto, or online" },
   ],

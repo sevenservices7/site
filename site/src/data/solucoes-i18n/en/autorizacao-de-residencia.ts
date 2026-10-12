@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "You arrived on a visa and now you need the document that lets you live here legally. We organise your AIMA application, follow the process and reply for you when AIMA asks for something.",
   highlights: [
     { value: "3", label: "locations: Albufeira, Faro and Porto" },
-    { value: "~2,000", label: "clients since 2022" },
+    { value: "5,000+", label: "clients since 2022" },
     { value: "Online", label: "or in person" },
     { value: "Lawyer", label: "on the team for legal matters" },
   ],

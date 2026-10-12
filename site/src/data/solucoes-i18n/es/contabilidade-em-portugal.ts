@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "Tú te ocupas del negocio. Nosotros nos ocupamos de las cuentas, las declaraciones y los plazos, y te explicamos cada número sin tecnicismos.",
   highlights: [
     { value: "Desde 2022", label: "al lado de quienes emprenden en Portugal" },
-    { value: "Cerca de 2.000", label: "clientes atendidos" },
+    { value: "+5.000", label: "clientes atendidos" },
     { value: "4,9 en Google", label: "con 178 reseñas" },
     { value: "Online", label: "o presencial en Albufeira, Faro y Oporto" },
   ],

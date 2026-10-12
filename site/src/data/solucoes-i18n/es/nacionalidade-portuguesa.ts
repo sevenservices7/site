@@ -14,7 +14,7 @@ export const solution: Solution = {
   highlights: [
     { value: "Abogada", label: "en el equipo para lo jurídico" },
     { value: "3", label: "sedes: Albufeira, Faro y Oporto" },
-    { value: "~2.000", label: "clientes atendidos desde 2022" },
+    { value: "+5.000", label: "clientes atendidos desde 2022" },
     { value: "4,9", label: "en Google, con 178 reseñas" },
   ],
   forWhoTitle: "Para quien quiere ser también portugués",

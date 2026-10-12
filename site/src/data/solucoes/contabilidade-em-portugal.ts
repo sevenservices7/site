@@ -12,7 +12,7 @@ export const solution: Solution = {
   lede: "Você cuida do negócio. A gente cuida das contas, das declarações e dos prazos, e explica cada número sem juridiquês.",
   highlights: [
     { value: "Desde 2022", label: "ao lado de quem empreende em Portugal" },
-    { value: "Cerca de 2 mil", label: "clientes atendidos" },
+    { value: "+5.000", label: "clientes atendidos" },
     { value: "4,9 no Google", label: "em 178 avaliações" },
     { value: "Online", label: "ou presencial em Albufeira, Faro e Porto" },
   ],

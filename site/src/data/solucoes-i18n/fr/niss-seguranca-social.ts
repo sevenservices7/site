@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "Le NISS est votre numéro de sécurité sociale portugais. Sans lui, impossible de travailler sous contrat, de démarrer une activité ou de demander une aide sociale. Nous le demandons, nous organisons et nous expliquons chaque étape.",
   highlights: [
     { value: "Depuis 2022", label: "aux côtés de ceux qui s'installent au Portugal" },
-    { value: "Environ 2 000", label: "clients accompagnés" },
+    { value: "+5 000", label: "clients accompagnés" },
     { value: "4,9 sur Google", label: "178 avis" },
     { value: "3 agences", label: "Albufeira, Faro et Porto, ou en ligne" },
   ],

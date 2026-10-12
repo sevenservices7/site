@@ -15,7 +15,7 @@ export const solution: Solution = {
   highlights: [
     { value: 'Advogada', label: 'na equipe para o que é jurídico' },
     { value: '3', label: 'unidades: Albufeira, Faro e Porto' },
-    { value: '~2.000', label: 'clientes atendidos desde 2022' },
+    { value: '+5.000', label: 'clientes atendidos desde 2022' },
     { value: '4,9', label: 'no Google, em 178 avaliações' },
   ],
   forWhoTitle: 'Para quem quer ser português também',

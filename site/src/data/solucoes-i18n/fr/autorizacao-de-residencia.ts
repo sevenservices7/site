@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "Vous êtes arrivé avec un visa et il vous faut maintenant le titre qui vous permet de vivre légalement au Portugal. Nous préparons la demande auprès de l'AIMA, suivons le dossier et répondons pour vous quand elle demande quelque chose.",
   highlights: [
     { value: "3", label: "agences : Albufeira, Faro et Porto" },
-    { value: "~2 000", label: "clients accompagnés depuis 2022" },
+    { value: "+5 000", label: "clients accompagnés depuis 2022" },
     { value: "En ligne", label: "ou sur place" },
     { value: "Avocate", label: "dans l'équipe pour le juridique" },
   ],

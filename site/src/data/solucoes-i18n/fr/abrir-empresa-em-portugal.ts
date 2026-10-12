@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "Vous apportez l'idée et l'envie d'entreprendre. Nous choisissons avec vous le type de société, la constituons et préparons tout auprès des Finanças, sans raccourci.",
   highlights: [
     { value: "Depuis 2022", label: "aux côtés de ceux qui entreprennent au Portugal" },
-    { value: "Environ 2 000", label: "clients accompagnés" },
+    { value: "+5 000", label: "clients accompagnés" },
     { value: "4,9 sur Google", label: "178 avis" },
     { value: "3 agences", label: "Albufeira, Faro et Porto, ou en ligne" },
   ],

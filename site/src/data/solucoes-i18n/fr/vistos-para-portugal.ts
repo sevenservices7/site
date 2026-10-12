@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "Si vous n'êtes pas citoyen de l'UE, de l'EEE ou de Suisse, vivre au Portugal suppose aujourd'hui de partir avec le bon visa en poche. Nous analysons votre profil, vous expliquons les options qui existent vraiment et préparons la demande avec vous.",
   highlights: [
     { value: "2022", label: "aux côtés de nos clients depuis août" },
-    { value: "~2 000", label: "clients accompagnés" },
+    { value: "+5 000", label: "clients accompagnés" },
     { value: "En ligne", label: "accompagnement à distance, depuis chez vous" },
     { value: "4,9", label: "sur Google, 178 avis" },
   ],

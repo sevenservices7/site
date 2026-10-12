@@ -12,7 +12,7 @@ export const solution: Solution = {
   lede: "Primeiro passo de quase tudo em Portugal: tirar o NIF, que é o CPF português. A gente pede por você, com procuração, e explica o que vem depois.",
   highlights: [
     { value: "Desde 2022", label: "orientando brasileiros em Portugal" },
-    { value: "Cerca de 2 mil", label: "clientes atendidos" },
+    { value: "+5.000", label: "clientes atendidos" },
     { value: "4,9 no Google", label: "em 178 avaliações" },
     { value: "Online", label: "ou presencial em Albufeira, Faro e Porto" },
   ],

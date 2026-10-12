@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "Today, if you're from outside the EU and want to live in Portugal, you need to arrive with the right visa in hand. We look at your profile, explain the options that really exist and prepare the application with you.",
   highlights: [
     { value: "2022", label: "guiding people since August" },
-    { value: "~2,000", label: "clients served" },
+    { value: "5,000+", label: "clients served" },
     { value: "Online", label: "support from wherever you are" },
     { value: "4.9", label: "on Google, from 178 reviews" },
   ],

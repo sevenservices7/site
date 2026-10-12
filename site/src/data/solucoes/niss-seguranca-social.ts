@@ -12,7 +12,7 @@ export const solution: Solution = {
   lede: "O NISS é o número do INSS de lá. Sem ele, não dá para trabalhar com contrato, abrir atividade nem pedir apoio social. A gente pede, organiza e explica cada passo.",
   highlights: [
     { value: "Desde 2022", label: "ao lado de brasileiros em Portugal" },
-    { value: "Cerca de 2 mil", label: "clientes atendidos" },
+    { value: "+5.000", label: "clientes atendidos" },
     { value: "4,9 no Google", label: "em 178 avaliações" },
     { value: "3 unidades", label: "Albufeira, Faro e Porto, ou online" },
   ],

@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "C'est la première étape de presque tout au Portugal : obtenir le NIF, votre numéro d'identification fiscale. Nous le demandons pour vous, par procuration, et nous vous expliquons la suite.",
   highlights: [
     { value: "Depuis 2022", label: "aux côtés de ceux qui s'installent au Portugal" },
-    { value: "Environ 2 000", label: "clients accompagnés" },
+    { value: "+5 000", label: "clients accompagnés" },
     { value: "4,9 sur Google", label: "178 avis" },
     { value: "En ligne", label: "ou sur place à Albufeira, Faro et Porto" },
   ],

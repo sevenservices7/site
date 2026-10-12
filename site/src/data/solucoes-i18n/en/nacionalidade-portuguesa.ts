@@ -14,7 +14,7 @@ export const solution: Solution = {
   highlights: [
     { value: "Lawyer", label: "on the team for legal matters" },
     { value: "3", label: "locations: Albufeira, Faro and Porto" },
-    { value: "~2,000", label: "clients since 2022" },
+    { value: "5,000+", label: "clients since 2022" },
     { value: "4.9", label: "on Google, from 178 reviews" },
   ],
   forWhoTitle: "For people who want to be Portuguese too",

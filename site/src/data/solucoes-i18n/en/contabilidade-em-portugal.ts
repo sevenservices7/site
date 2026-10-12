@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "You run the business. We take care of the accounts, the filings and the deadlines, and explain every number without jargon.",
   highlights: [
     { value: "Since 2022", label: "alongside people building businesses in Portugal" },
-    { value: "Around 2,000", label: "clients served" },
+    { value: "5,000+", label: "clients served" },
     { value: "4.9 on Google", label: "from 178 reviews" },
     { value: "Online", label: "or in person in Albufeira, Faro and Porto" },
   ],

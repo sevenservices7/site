@@ -12,7 +12,7 @@ export const solution: Solution = {
   lede: "O IRS é o imposto de renda português. Todo ano tem declaração, e quem trabalha por conta própria ainda lida com recibos verdes. A gente explica, declara e acompanha.",
   highlights: [
     { value: "Desde 2022", label: "cuidando de brasileiros em Portugal" },
-    { value: "Cerca de 2 mil", label: "clientes atendidos" },
+    { value: "+5.000", label: "clientes atendidos" },
     { value: "4,9 no Google", label: "em 178 avaliações" },
     { value: "Online", label: "ou presencial em Albufeira, Faro e Porto" },
   ],

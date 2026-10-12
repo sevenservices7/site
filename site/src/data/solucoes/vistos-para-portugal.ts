@@ -14,7 +14,7 @@ export const solution: Solution = {
     'Hoje, quem quer morar em Portugal precisa sair do Brasil com o visto certo na mão. A gente olha o seu perfil, explica as opções que existem de verdade e prepara o pedido com você.',
   highlights: [
     { value: '2022', label: 'orientando brasileiros desde agosto' },
-    { value: '~2.000', label: 'clientes atendidos' },
+    { value: '+5.000', label: 'clientes atendidos' },
     { value: 'Online', label: 'atendimento do Brasil, sem sair de casa' },
     { value: '4,9', label: 'no Google, em 178 avaliações' },
   ],

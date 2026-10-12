@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "Llegaste con visado y ahora necesitas el documento que te permite vivir legalmente. Organizamos la solicitud en la AIMA, seguimos el proceso y respondemos por ti cuando pida algo.",
   highlights: [
     { value: "3", label: "sedes: Albufeira, Faro y Oporto" },
-    { value: "~2.000", label: "clientes atendidos desde 2022" },
+    { value: "+5.000", label: "clientes atendidos desde 2022" },
     { value: "Online", label: "o presencial" },
     { value: "Abogada", label: "en el equipo para lo jurídico" },
   ],

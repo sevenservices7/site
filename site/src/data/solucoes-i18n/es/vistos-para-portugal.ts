@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "Hoy, quien quiere vivir en Portugal necesita salir de su país con el visado correcto en la mano. Miramos tu perfil, te explicamos las opciones que existen de verdad y preparamos la solicitud contigo.",
   highlights: [
     { value: "2022", label: "orientando desde agosto" },
-    { value: "~2.000", label: "clientes atendidos" },
+    { value: "+5.000", label: "clientes atendidos" },
     { value: "Online", label: "atención a distancia, sin salir de casa" },
     { value: "4,9", label: "en Google, con 178 reseñas" },
   ],

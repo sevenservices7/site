@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "IRS is Portuguese personal income tax. There's a return every year, and if you're self-employed you also deal with recibos verdes. We explain, file and follow up.",
   highlights: [
     { value: "Since 2022", label: "looking after foreigners in Portugal" },
-    { value: "Around 2,000", label: "clients served" },
+    { value: "5,000+", label: "clients served" },
     { value: "4.9 on Google", label: "from 178 reviews" },
     { value: "Online", label: "or in person in Albufeira, Faro and Porto" },
   ],

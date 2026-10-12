@@ -12,7 +12,7 @@ export const solution: Solution = {
   lede: "Você traz a ideia e a vontade de empreender. A gente escolhe com você o tipo de empresa, constitui e deixa tudo pronto nas Finanças, sem atalho.",
   highlights: [
     { value: "Desde 2022", label: "ao lado de quem empreende em Portugal" },
-    { value: "Cerca de 2 mil", label: "clientes atendidos" },
+    { value: "+5.000", label: "clientes atendidos" },
     { value: "4,9 no Google", label: "em 178 avaliações" },
     { value: "3 unidades", label: "Albufeira, Faro e Porto, ou online" },
   ],

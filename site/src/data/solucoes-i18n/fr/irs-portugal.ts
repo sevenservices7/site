@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "L'IRS est l'impôt sur le revenu portugais. Il y a une déclaration chaque année, et les indépendants gèrent en plus les recibos verdes. Nous expliquons, déclarons et suivons.",
   highlights: [
     { value: "Depuis 2022", label: "aux côtés de ceux qui vivent au Portugal" },
-    { value: "Environ 2 000", label: "clients accompagnés" },
+    { value: "+5 000", label: "clients accompagnés" },
     { value: "4,9 sur Google", label: "178 avis" },
     { value: "En ligne", label: "ou sur place à Albufeira, Faro et Porto" },
   ],

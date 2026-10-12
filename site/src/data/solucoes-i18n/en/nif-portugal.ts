@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "The first step for almost everything in Portugal: getting your NIF, the Portuguese tax identification number. We apply for you, with a power of attorney, and explain what comes next.",
   highlights: [
     { value: "Since 2022", label: "guiding foreigners in Portugal" },
-    { value: "Around 2,000", label: "clients served" },
+    { value: "5,000+", label: "clients served" },
     { value: "4.9 on Google", label: "from 178 reviews" },
     { value: "Online", label: "or in person in Albufeira, Faro and Porto" },
   ],

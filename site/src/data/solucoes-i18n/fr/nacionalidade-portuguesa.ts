@@ -14,7 +14,7 @@ export const solution: Solution = {
   highlights: [
     { value: "Avocate", label: "dans l'équipe pour le juridique" },
     { value: "3", label: "agences : Albufeira, Faro et Porto" },
-    { value: "~2 000", label: "clients accompagnés depuis 2022" },
+    { value: "+5 000", label: "clients accompagnés depuis 2022" },
     { value: "4,9", label: "sur Google, 178 avis" },
   ],
   forWhoTitle: "Pour ceux qui veulent devenir portugais aussi",

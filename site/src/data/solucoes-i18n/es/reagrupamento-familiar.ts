@@ -12,7 +12,7 @@ export const solution: Solution = {
   h1: "Reagrupación familiar en Portugal: la familia junta, como debe ser",
   lede: "Ya vives legalmente en Portugal y quieres traer a quien se quedó en tu país. Comprobamos si ya puedes pedirlo, organizamos los documentos de la familia y seguimos el proceso en la AIMA.",
   highlights: [
-    { value: "~2.000", label: "clientes atendidos desde 2022" },
+    { value: "+5.000", label: "clientes atendidos desde 2022" },
     { value: "4,9", label: "en Google, con 178 reseñas" },
     { value: "Abogada", label: "en el equipo para lo jurídico" },
     { value: "Online", label: "o presencial" },

@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "Vous vous occupez de votre activité. Nous nous occupons des comptes, des déclarations et des délais, et nous expliquons chaque chiffre sans jargon.",
   highlights: [
     { value: "Depuis 2022", label: "aux côtés de ceux qui entreprennent au Portugal" },
-    { value: "Environ 2 000", label: "clients accompagnés" },
+    { value: "+5 000", label: "clients accompagnés" },
     { value: "4,9 sur Google", label: "178 avis" },
     { value: "En ligne", label: "ou sur place à Albufeira, Faro et Porto" },
   ],

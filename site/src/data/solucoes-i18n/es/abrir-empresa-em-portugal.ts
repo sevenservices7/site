@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "Tú traes la idea y las ganas de emprender. Elegimos contigo el tipo de empresa, la constituimos y dejamos todo listo en Finanças, sin atajos.",
   highlights: [
     { value: "Desde 2022", label: "al lado de quienes emprenden en Portugal" },
-    { value: "Cerca de 2.000", label: "clientes atendidos" },
+    { value: "+5.000", label: "clientes atendidos" },
     { value: "4,9 en Google", label: "con 178 reseñas" },
     { value: "3 sedes", label: "Albufeira, Faro y Oporto, u online" },
   ],

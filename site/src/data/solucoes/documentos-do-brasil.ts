@@ -15,7 +15,7 @@ export const solution: Solution = {
   highlights: [
     { value: 'Sem viajar', label: 'pedido feito à distância' },
     { value: 'Desde 2022', label: 'cuidando da papelada de brasileiros' },
-    { value: '~2.000', label: 'clientes atendidos' },
+    { value: '+5.000', label: 'clientes atendidos' },
     { value: '4,9', label: 'no Google, em 178 avaliações' },
   ],
   forWhoTitle: 'O papel é do Brasil. O processo é em Portugal.',
@@ -131,7 +131,7 @@ export const solution: Solution = {
       a: 'Não. O documento brasileiro já está em português e Portugal aceita sem tradução. O que costuma faltar é a apostila ou a versão de inteiro teor.',
     },
   ],
-  related: ['nacionalidade-portuguesa', 'autorizacao-de-residencia', 'vistos-para-portugal', 'advogada-de-imigracao'],
+  related: ['servicos-consulares-brasileiros', 'nacionalidade-portuguesa', 'autorizacao-de-residencia', 'vistos-para-portugal'],
   ctaTitle: 'O documento certo, na primeira vez',
   ctaBody:
     'Conte para a gente para que você precisa do documento. A consultoria inicial custa 80 €, descontada se você seguir com o serviço.',

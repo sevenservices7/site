@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede:
     'Você já mora legalmente em Portugal e quer trazer quem ficou no Brasil. A gente confere se você já pode pedir, organiza os documentos da família e acompanha o processo na AIMA.',
   highlights: [
-    { value: '~2.000', label: 'clientes atendidos desde 2022' },
+    { value: '+5.000', label: 'clientes atendidos desde 2022' },
     { value: 'PT · BR', label: 'documentos do Brasil e de Portugal' },
     { value: 'Advogada', label: 'na equipe para o que é jurídico' },
     { value: 'Online', label: 'ou presencial' },

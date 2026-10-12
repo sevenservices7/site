@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "La tarjeta vence y la vida no puede parar. Vemos qué canal de la AIMA sirve para tu caso, revisamos los documentos y presentamos la renovación por ti.",
   highlights: [
     { value: "Online", label: "o presencial, según tu caso" },
-    { value: "~2.000", label: "clientes atendidos desde 2022" },
+    { value: "+5.000", label: "clientes atendidos desde 2022" },
     { value: "3", label: "sedes en Portugal" },
     { value: "4,9", label: "en Google, con 178 reseñas" },
   ],

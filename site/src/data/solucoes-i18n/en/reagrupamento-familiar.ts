@@ -12,7 +12,7 @@ export const solution: Solution = {
   h1: "Family reunification in Portugal: your family together, the right way",
   lede: "You already live in Portugal legally and want to bring the people who stayed behind. We check whether you can apply yet, organise your family's documents and follow the process with AIMA.",
   highlights: [
-    { value: "~2,000", label: "clients since 2022" },
+    { value: "5,000+", label: "clients since 2022" },
     { value: "Abroad · PT", label: "documents from abroad and from Portugal" },
     { value: "Lawyer", label: "on the team for legal matters" },
     { value: "Online", label: "or in person" },

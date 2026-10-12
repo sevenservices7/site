@@ -13,7 +13,7 @@ export const solution: Solution = {
   lede: "The NISS is your Portuguese social security number. Without it, you can't work on a contract, register as self-employed or apply for social support. We apply, organise and explain every step.",
   highlights: [
     { value: "Since 2022", label: "alongside foreigners in Portugal" },
-    { value: "Around 2,000", label: "clients served" },
+    { value: "5,000+", label: "clients served" },
     { value: "4.9 on Google", label: "from 178 reviews" },
     { value: "3 locations", label: "Albufeira, Faro and Porto, or online" },
   ],
