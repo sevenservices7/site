@@ -1,15 +1,21 @@
 ---
-import { useTranslations, getRoute, type Lang } from '../../i18n/ui';
+import { useTranslations, type Lang } from '../../i18n/ui';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 const copy = {
-  pt: { title: 'Agendar consultoria', step1: '1. Idioma da consultoria', step2: '2. Escolha um horário', step3: '3. Seus dados', noslots: 'Os horários online vão estar disponíveis em breve. Enquanto isso, fale com um especialista:', name: 'Nome completo', email: 'E-mail', phone: 'Celular', pay: 'Pagar e confirmar', loading: 'Carregando horários…', book: 'Reservar e pagar' },
-  en: { title: 'Book a consultation', step1: '1. Consultation language', step2: '2. Choose a time', step3: '3. Your details', noslots: 'Online time slots will be available soon. In the meantime, talk to a specialist:', name: 'Full name', email: 'Email', phone: 'Mobile phone', pay: 'Pay and confirm', loading: 'Loading time slots…', book: 'Book and pay' },
-  es: { title: 'Agendar consultoría', step1: '1. Idioma de la consultoría', step2: '2. Elige un horario', step3: '3. Tus datos', noslots: 'Los horarios online estarán disponibles pronto. Mientras tanto, habla con un especialista:', name: 'Nombre completo', email: 'Correo electrónico', phone: 'Celular', pay: 'Pagar y confirmar', loading: 'Cargando horarios…', book: 'Reservar y pagar' },
-  fr: { title: 'Prendre rendez-vous', step1: '1. Langue de la consultation', step2: '2. Choisissez un créneau', step3: '3. Vos coordonnées', noslots: 'Les créneaux en ligne seront bientôt disponibles. En attendant, parlez à un spécialiste :', name: 'Nom complet', email: 'E-mail', phone: 'Téléphone portable', pay: 'Payer et confirmer', loading: 'Chargement des créneaux…', book: 'Réserver et payer' },
+  pt: { title: 'Agendar consultoria', step1: '1. Idioma da consultoria', step2: '2. Escolha um horário', step3: '3. Seus dados', noslots: 'Não há horários online disponíveis no período consultado. Enquanto isso, fale com um especialista:', name: 'Nome completo', email: 'E-mail', phone: 'Celular', pay: 'Pagar e confirmar', loading: 'Carregando horários…', book: 'Reservar e pagar' },
+  en: { title: 'Book a consultation', step1: '1. Consultation language', step2: '2. Choose a time', step3: '3. Your details', noslots: 'There are no online time slots available in this date range. In the meantime, talk to a specialist:', name: 'Full name', email: 'Email', phone: 'Mobile phone', pay: 'Pay and confirm', loading: 'Loading time slots…', book: 'Book and pay' },
+  es: { title: 'Agendar consultoría', step1: '1. Idioma de la consultoría', step2: '2. Elige un horario', step3: '3. Tus datos', noslots: 'No hay horarios online disponibles en el período consultado. Mientras tanto, habla con un especialista:', name: 'Nombre completo', email: 'Correo electrónico', phone: 'Celular', pay: 'Pagar y confirmar', loading: 'Cargando horarios…', book: 'Reservar y pagar' },
+  fr: { title: 'Prendre rendez-vous', step1: '1. Langue de la consultation', step2: '2. Choisissez un créneau', step3: '3. Vos coordonnées', noslots: 'Aucun créneau en ligne n’est disponible pour cette période. En attendant, parlez à un spécialiste :', name: 'Nom complet', email: 'E-mail', phone: 'Téléphone portable', pay: 'Payer et confirmer', loading: 'Chargement des créneaux…', book: 'Réserver et payer' },
+}[lang];
+const feedback = {
+  pt: { availabilityError: 'Não foi possível carregar os horários. Tente novamente.', retry: 'Tentar novamente', processing: 'Preparando pagamento…', book: 'Reservar e pagar', retryCheckout: 'Tentar abrir o pagamento novamente', invalidDetails: 'Verifique este campo. Para WhatsApp, informe um telefone válido com código do país.', bookingError: 'Não foi possível reservar. Verifique os dados ou fale com um especialista.', bookingUncertain: 'Não foi possível confirmar se a reserva foi criada. Fale com um especialista antes de tentar novamente.', checkoutError: 'A pré-reserva foi criada, mas não foi possível abrir o pagamento. Tente novamente neste botão ou fale com um especialista.', slotTaken: 'Este horário já não está disponível. Escolha outro horário.' },
+  en: { availabilityError: 'Could not load time slots. Please try again.', retry: 'Try again', processing: 'Preparing payment…', book: 'Book and pay', retryCheckout: 'Try opening payment again', invalidDetails: 'Please check this field. For WhatsApp, enter a valid phone number with country code.', bookingError: 'Could not reserve. Check your details or contact a specialist.', bookingUncertain: 'We could not confirm whether your reservation was created. Contact a specialist before trying again.', checkoutError: 'Your provisional reservation was created, but payment could not be opened. Retry with this button or contact a specialist.', slotTaken: 'This time slot is no longer available. Please choose another.' },
+  es: { availabilityError: 'No se pudieron cargar los horarios. Inténtalo de nuevo.', retry: 'Intentar de nuevo', processing: 'Preparando el pago…', book: 'Reservar y pagar', retryCheckout: 'Intentar abrir el pago de nuevo', invalidDetails: 'Revisa este campo. Para WhatsApp, introduce un teléfono válido con código de país.', bookingError: 'No se pudo reservar. Revisa tus datos o contacta con un especialista.', bookingUncertain: 'No pudimos confirmar si se creó la reserva. Contacta con un especialista antes de volver a intentarlo.', checkoutError: 'Se creó la reserva provisional, pero no se pudo abrir el pago. Inténtalo con este botón o contacta con un especialista.', slotTaken: 'Este horario ya no está disponible. Elige otro.' },
+  fr: { availabilityError: 'Impossible de charger les créneaux. Réessayez.', retry: 'Réessayer', processing: 'Préparation du paiement…', book: 'Réserver et payer', retryCheckout: 'Réessayer d’ouvrir le paiement', invalidDetails: 'Vérifiez ce champ. Pour WhatsApp, indiquez un téléphone valide avec indicatif du pays.', bookingError: 'Impossible de réserver. Vérifiez vos coordonnées ou contactez un spécialiste.', bookingUncertain: 'Nous ne pouvons pas confirmer si la réservation a été créée. Contactez un spécialiste avant de réessayer.', checkoutError: 'La réservation provisoire a été créée, mais le paiement n’a pas pu être ouvert. Réessayez avec ce bouton ou contactez un spécialiste.', slotTaken: 'Ce créneau n’est plus disponible. Choisissez-en un autre.' },
 }[lang];
 // Consultas são feitas em PT/EN/ES; para FR, o idioma inicial sugerido é o inglês.
 const consultLang = lang === 'fr' ? 'en' : lang;
@@ -31,47 +37,57 @@ const waConsent = {
 
 <section>
   <div class="container book" style="max-width:720px"
-    data-lang={lang} data-consult={consultLang} data-loading={copy.loading} data-noslots={copy.noslots}>
+    data-lang={lang} data-consult={consultLang} data-loading={copy.loading}
+    data-availability-error={feedback.availabilityError} data-processing={feedback.processing}
+    data-book={feedback.book} data-retry-checkout={feedback.retryCheckout}
+    data-invalid-details={feedback.invalidDetails} data-booking-error={feedback.bookingError}
+    data-booking-uncertain={feedback.bookingUncertain} data-checkout-error={feedback.checkoutError}
+    data-slot-taken={feedback.slotTaken}>
     <div class="book-step">
       <h3>{copy.step1}</h3>
       <div class="book-langs" data-book-langs>
-        <button class="lang-opt" data-l="pt" aria-pressed={consultLang === 'pt'}>Português</button>
-        <button class="lang-opt" data-l="en" aria-pressed={consultLang === 'en'}>English</button>
-        <button class="lang-opt" data-l="es" aria-pressed={consultLang === 'es'}>Español</button>
+        <button type="button" class="lang-opt" data-l="pt" aria-pressed={consultLang === 'pt'}>Português</button>
+        <button type="button" class="lang-opt" data-l="en" aria-pressed={consultLang === 'en'}>English</button>
+        <button type="button" class="lang-opt" data-l="es" aria-pressed={consultLang === 'es'}>Español</button>
       </div>
     </div>
 
     <div class="book-step">
       <h3>{copy.step2}</h3>
-      <div data-slots class="book-slots"><p class="muted">{copy.loading}</p></div>
+      <p data-availability-status role="status" aria-live="polite">{copy.loading}</p>
+      <div data-slots class="book-slots" aria-busy="true"></div>
+      <button type="button" class="btn btn-gold" data-slots-retry hidden>{feedback.retry}</button>
       <div data-slots-fallback hidden>
         <p>{copy.noslots}</p>
         <p style="margin-top:12px"><button class="btn btn-gold" data-open-attendance>{t('common.onlineService')}</button></p>
       </div>
     </div>
 
-    <div class="book-step" data-book-details hidden>
+    <form class="book-step" data-book-details hidden>
       <h3>{copy.step3}</h3>
       <div class="book-fields">
-        <input data-b-name placeholder={copy.name} autocomplete="name" />
-        <input data-b-email type="email" placeholder={copy.email} autocomplete="email" />
-        <input data-b-phone type="tel" placeholder={copy.phone} autocomplete="tel" />
+        <input data-b-name aria-label={copy.name} placeholder={copy.name} autocomplete="name" required minlength="2" maxlength="200" />
+        <input data-b-email type="email" aria-label={copy.email} placeholder={copy.email} autocomplete="email" required maxlength="254" />
+        <input data-b-phone type="tel" aria-label={copy.phone} placeholder={copy.phone} autocomplete="tel" maxlength="40" />
         <label class="book-check"><input type="checkbox" data-b-wa /><span>{waConsent}</span></label>
       </div>
-      <button class="btn btn-gold btn-block" style="margin-top:14px" data-book-pay>{copy.book}</button>
-    </div>
+      <p data-book-error role="alert" aria-live="assertive"></p>
+      <button type="submit" class="btn btn-gold btn-block" style="margin-top:14px" data-book-pay disabled>{copy.book}</button>
+    </form>
   </div>
 </section>
 
 <style>
+  .book [hidden] { display: none !important; }
   .book-step { margin-bottom: 32px; }
   .book-step h3 { margin-bottom: 14px; }
   .book-langs, .book-slots { display: flex; flex-wrap: wrap; gap: 10px; }
-  .lang-opt, .slot-opt {
+  .lang-opt, :global(.slot-opt) {
     font: inherit; font-family: var(--font-head); font-weight: 600; cursor: pointer;
     padding: 10px 16px; border: 1px solid var(--b2); border-radius: var(--radius-sm); background: var(--surface); color: var(--heading);
   }
-  .lang-opt[aria-pressed='true'], .slot-opt[aria-pressed='true'] { background: var(--g1); border-color: var(--g2); }
+  .lang-opt[aria-pressed='true'], :global(.slot-opt[aria-pressed='true']) { background: var(--g1); border-color: var(--g2); }
+  .lang-opt:disabled, :global(.slot-opt:disabled) { cursor: wait; opacity: .6; }
   .book-fields { display: grid; gap: 10px; }
   .book-check { display: flex; gap: 10px; align-items: flex-start; font-size: .84rem; line-height: 1.45; cursor: pointer; }
   .book-fields .book-check input { width: 16px; height: 16px; padding: 0; margin-top: 2px; flex: none; accent-color: var(--heading); }
@@ -79,64 +95,6 @@ const waConsent = {
 </style>
 
 <script>
-  import { getAvailability, createBooking, createBookingCheckout } from '../../lib/api';
-
-  const root = document.querySelector('.book') as HTMLElement;
-  const lang = root.dataset.lang || 'pt';
-  let selectedLang = root.dataset.consult || lang;
-  let selectedSlot: { start: string; end: string } | null = null;
-
-  const slotsEl = document.querySelector('[data-slots]') as HTMLElement;
-  const fallbackEl = document.querySelector('[data-slots-fallback]') as HTMLElement;
-  const detailsEl = document.querySelector('[data-book-details]') as HTMLElement;
-
-  document.querySelectorAll('[data-book-langs] .lang-opt').forEach((b) =>
-    b.addEventListener('click', () => {
-      selectedLang = (b as HTMLElement).dataset.l!;
-      document.querySelectorAll('[data-book-langs] .lang-opt').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-    })
-  );
-
-  async function loadSlots() {
-    try {
-      const from = new Date().toISOString();
-      const to = new Date(Date.now() + 14 * 864e5).toISOString();
-      const { slots } = await getAvailability({ from, to, language: selectedLang });
-      if (!slots?.length) throw new Error('no slots');
-      slotsEl.innerHTML = '';
-      slots.slice(0, 24).forEach((s) => {
-        const btn = document.createElement('button');
-        btn.className = 'slot-opt';
-        btn.textContent = new Date(s.start).toLocaleString(lang, { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-        btn.addEventListener('click', () => {
-          selectedSlot = s;
-          slotsEl.querySelectorAll('.slot-opt').forEach((x) => x.setAttribute('aria-pressed', String(x === btn)));
-          detailsEl.hidden = false;
-        });
-        slotsEl.appendChild(btn);
-      });
-    } catch {
-      slotsEl.hidden = true;
-      fallbackEl.hidden = false;
-    }
-  }
-  loadSlots();
-
-  (document.querySelector('[data-book-pay]') as HTMLButtonElement)?.addEventListener('click', async () => {
-    if (!selectedSlot) return;
-    const { booking_id } = await createBooking({
-      language: selectedLang,
-      service_code: 'CONSULT',
-      slot_start: selectedSlot.start,
-      slot_end: selectedSlot.end,
-      whatsapp_consent: (document.querySelector('[data-b-wa]') as HTMLInputElement)?.checked ?? false,
-      customer: {
-        name: (document.querySelector('[data-b-name]') as HTMLInputElement).value,
-        email: (document.querySelector('[data-b-email]') as HTMLInputElement).value,
-        phone: (document.querySelector('[data-b-phone]') as HTMLInputElement).value,
-      },
-    });
-    const { url } = await createBookingCheckout(booking_id, selectedLang);
-    window.location.href = url;
-  });
+  import { initBooking } from '../../lib/booking';
+  document.querySelectorAll<HTMLElement>('.book').forEach(initBooking);
 </script>

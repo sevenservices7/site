@@ -1,22 +1,36 @@
 // Wrappers para chamar as Supabase Edge Functions a partir do browser.
 import { FUNCTIONS_URL, SUPABASE_ANON_KEY } from './config';
-import type { CartItem } from './cart';
 
-async function callFn<T>(name: string, body: unknown): Promise<T> {
-  const res = await fetch(`${FUNCTIONS_URL}/${name}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      apikey: SUPABASE_ANON_KEY,
-      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-    },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    const msg = await res.text().catch(() => res.statusText);
-    throw new Error(`${name} falhou (${res.status}): ${msg}`);
+export class ApiError extends Error {
+  constructor(public status: number, public code: string) {
+    super(code);
+    this.name = 'ApiError';
   }
-  return (await res.json()) as T;
+}
+
+async function callFn<T>(name: string, body: unknown, timeoutMs?: number): Promise<T> {
+  if (!FUNCTIONS_URL || !SUPABASE_ANON_KEY) throw new ApiError(400, 'api_not_configured');
+  const controller = new AbortController();
+  const timer = timeoutMs ? setTimeout(() => controller.abort(), timeoutMs) : undefined;
+  try {
+    const res = await fetch(`${FUNCTIONS_URL}/${name}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      const error = await res.json().catch(() => null);
+      throw new ApiError(res.status, typeof error?.error === 'string' ? error.error : 'request_failed');
+    }
+    return (await res.json()) as T;
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 export interface CheckoutCustomer {
@@ -28,7 +42,7 @@ export interface CheckoutCustomer {
 
 /** Cria a sessão de checkout do carrinho e devolve a URL hospedada do Stripe. */
 export function createCartCheckout(input: {
-  items: CartItem[];
+  items: { service_code: string; quantity: number }[];
   locale: string;
   customer?: CheckoutCustomer;
   unit_slug?: string;
@@ -42,8 +56,11 @@ export function createCartCheckout(input: {
   });
 }
 
-export function createBookingCheckout(booking_id: string, locale: string): Promise<{ url: string }> {
-  return callFn('create-checkout-session', { mode: 'booking', booking_id, locale });
+export async function createBookingCheckout(booking_id: string, locale: string): Promise<{ url: string }> {
+  const result = await callFn<{ url: string }>('create-checkout-session', { mode: 'booking', booking_id, locale }, 20000);
+  const url = new URL(result.url);
+  if (url.protocol !== 'https:' || url.hostname !== 'checkout.stripe.com' || url.username || url.password) throw new Error('invalid_checkout_url');
+  return { url: url.href };
 }
 
 /**
@@ -67,7 +84,7 @@ export function createSingleCheckout(input: {
   });
 }
 
-export function createBooking(input: {
+export async function createBooking(input: {
   language: string;
   service_code?: string;
   slot_start: string;
@@ -78,7 +95,9 @@ export function createBooking(input: {
   notes?: string;
   turnstile_token?: string;
 }): Promise<{ booking_id: string; amount: number }> {
-  return callFn('create-booking', input);
+  const result = await callFn<{ booking_id: string; amount: number }>('create-booking', input, 20000);
+  if (typeof result?.booking_id !== 'string' || !result.booking_id.trim()) throw new Error('invalid_booking_response');
+  return result;
 }
 
 export function getAvailability(input: {
@@ -87,7 +106,7 @@ export function getAvailability(input: {
   unit_slug?: string;
   language?: string;
 }): Promise<{ slots: { start: string; end: string }[] }> {
-  return callFn('get-availability', input);
+  return callFn('get-availability', input, 20000);
 }
 
 export function sendLead(input: {

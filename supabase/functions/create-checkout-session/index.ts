@@ -7,7 +7,8 @@ Deno.serve(async (req) => {
   const origin = req.headers.get('origin');
   if (req.method !== 'POST') return json({ error: 'method_not_allowed' }, 405, origin);
   try {
-    const body = await req.json();
+    const body = await req.json().catch(() => null);
+    if (!body || typeof body !== 'object') return json({ error: 'invalid_request' }, 400, origin);
     const { mode, locale = 'pt' } = body;
     const sb = adminClient();
     const stripe = stripeClient();
@@ -57,8 +58,10 @@ Deno.serve(async (req) => {
       if (body.kommo_lead_id) metadata.kommo_lead_id = String(body.kommo_lead_id);
       collectInStripe = true;
     } else if (mode === 'booking') {
-      const { data: booking, error } = await sb.from('bookings').select('id,amount,service_code,language,slot_start').eq('id', body.booking_id).single();
+      const { data: booking, error } = await sb.from('bookings').select('id,amount,service_code,language,slot_start,status').eq('id', body.booking_id).single();
       if (error || !booking) return json({ error: 'booking_not_found' }, 404, origin);
+      if (booking.status !== 'pending' || !Number.isFinite(Date.parse(booking.slot_start)) || Date.parse(booking.slot_start) <= Date.now()) return json({ error: 'booking_not_payable' }, 409, origin);
+      if (!Number.isFinite(Number(booking.amount)) || Number(booking.amount) <= 0) return json({ error: 'invalid_booking_amount' }, 409, origin);
       lineItems = [{ quantity: 1, price_data: { currency: 'eur', unit_amount: Math.round(Number(booking.amount) * 100), product_data: { name: `Consultoria (${booking.language})` } } }];
       metadata = { booking_id: booking.id };
     } else {
@@ -80,9 +83,13 @@ Deno.serve(async (req) => {
         phone_number_collection: { enabled: true },
         custom_fields: [{ key: 'nif', label: { type: 'custom', custom: 'NIF (opcional)' }, type: 'text', optional: true }],
       } : {}),
-    });
+    }, metadata.booking_id ? { idempotencyKey: `booking-checkout-${metadata.booking_id}` } : undefined);
+    if (!session.url) throw new Error('missing_checkout_url');
     if (metadata.order_id) await sb.from('orders').update({ stripe_session_id: session.id }).eq('id', metadata.order_id);
-    if (metadata.booking_id) await sb.from('bookings').update({ stripe_session_id: session.id }).eq('id', metadata.booking_id);
+    if (metadata.booking_id) {
+      const { error } = await sb.from('bookings').update({ stripe_session_id: session.id }).eq('id', metadata.booking_id);
+      if (error) throw error;
+    }
     return json({ url: session.url }, 200, origin);
   } catch (e) {
     console.error('create-checkout-session', e);
