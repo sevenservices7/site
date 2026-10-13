@@ -109,7 +109,7 @@ for (const language of ['pt', 'en', 'es']) test(`get-availability accepts ${lang
   const response = await h.run({ language, from, to });
   const { slots } = await response.json();
   assert.equal(response.status, 200); assert.ok(slots.length);
-  for (const slot of slots) { assert.ok(slot.start >= from); assert.ok(slot.end <= to); }
+  for (const slot of slots) { assert.ok(Date.parse(slot.start) >= Date.parse(from)); assert.ok(Date.parse(slot.end) <= Date.parse(to)); }
   assert.ok(h.db.calls.some((c) => c.method === 'gt' && c.args[0] === 'slot_end'));
 });
 for (const options of [{ responses: [{ error: 'database failed' }] }, { responses: [{ data: [] }], calendarError: true }]) test('availability dependency failure returns an error, not a free calendar', async () => {
