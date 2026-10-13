@@ -14,3 +14,7 @@ site/public/assets/
 
 # Local Claude session settings
 .claude/settings.local.json
+
+# Isolated booking tests
+site/test-results/
+site/playwright-report/

@@ -41,11 +41,13 @@ async function getAccessToken(): Promise<string | null> {
 export async function googleBusy(from: string, to: string): Promise<{ start: string; end: string }[]> {
   if (!calendarEnabled()) return [];
   const token = await getAccessToken();
-  if (!token) return [];
+  if (!token) throw new Error('calendar_auth_failed');
   const res = await fetch('https://www.googleapis.com/calendar/v3/freeBusy', { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ timeMin: from, timeMax: to, items: [{ id: CALENDAR_ID }] }) });
-  if (!res.ok) { console.error('google freeBusy', await res.text().catch(() => '')); return []; }
+  if (!res.ok) throw new Error('calendar_availability_failed');
   const data = await res.json();
-  return data.calendars?.[CALENDAR_ID]?.busy ?? [];
+  const calendar = data.calendars?.[CALENDAR_ID];
+  if (!calendar || calendar.errors?.length || !Array.isArray(calendar.busy)) throw new Error('calendar_availability_failed');
+  return calendar.busy;
 }
 export async function createCalendarEvent(input: { summary: string; description?: string; start: string; end: string; attendeeEmail?: string; }): Promise<string | null> {
   if (!calendarEnabled()) return null;
