@@ -13,6 +13,13 @@ const copy = {
 }[lang];
 // Consultas são feitas em PT/EN/ES; para FR, o idioma inicial sugerido é o inglês.
 const consultLang = lang === 'fr' ? 'en' : lang;
+const msgs = {
+  pt: { err: 'Não deu para reservar. Tente de novo ou chame a gente no WhatsApp.', taken: 'Esse horário acabou de ser reservado. Escolha outro.', missing: 'Preencha nome, e-mail e celular para continuar.' },
+  en: { err: 'We could not book it. Please try again or message us on WhatsApp.', taken: 'That time was just booked. Please choose another.', missing: 'Please fill in your name, email and phone to continue.' },
+  es: { err: 'No se pudo reservar. Inténtalo de nuevo o escríbenos por WhatsApp.', taken: 'Ese horario acaba de reservarse. Elige otro.', missing: 'Completa nombre, correo y celular para continuar.' },
+  fr: { err: 'La réservation n’a pas abouti. Réessayez ou écrivez-nous sur WhatsApp.', taken: 'Ce créneau vient d’être réservé. Choisissez-en un autre.', missing: 'Indiquez votre nom, e-mail et téléphone pour continuer.' },
+}[lang];
+const tzNote = { pt: 'Horários na hora de Portugal (Lisboa).', en: 'Times shown in Portugal time (Lisbon).', es: 'Horarios en hora de Portugal (Lisboa).', fr: 'Horaires à l’heure du Portugal (Lisbonne).' }[lang];
 // RGPD: autorização explícita, nunca pré-marcada, para contacto e lembretes por WhatsApp.
 const waConsent = {
   pt: 'Autorizo a SEVEN a entrar em contato comigo pelo WhatsApp sobre este agendamento, inclusive com lembretes. Posso cancelar quando quiser.',
@@ -31,7 +38,7 @@ const waConsent = {
 
 <section>
   <div class="container book" style="max-width:720px"
-    data-lang={lang} data-consult={consultLang} data-loading={copy.loading} data-noslots={copy.noslots}>
+    data-lang={lang} data-consult={consultLang} data-tz={tzNote} data-err={msgs.err} data-taken={msgs.taken} data-missing={msgs.missing} data-loading={copy.loading} data-noslots={copy.noslots}>
     <div class="book-step">
       <h3>{copy.step1}</h3>
       <div class="book-langs" data-book-langs>
@@ -59,6 +66,7 @@ const waConsent = {
         <label class="book-check"><input type="checkbox" data-b-wa /><span>{waConsent}</span></label>
       </div>
       <button class="btn btn-gold btn-block" style="margin-top:14px" data-book-pay>{copy.book}</button>
+      <p class="book-msg" data-book-msg role="alert" hidden></p>
     </div>
   </div>
 </section>
@@ -66,12 +74,16 @@ const waConsent = {
 <style>
   .book-step { margin-bottom: 32px; }
   .book-step h3 { margin-bottom: 14px; }
-  .book-langs, .book-slots { display: flex; flex-wrap: wrap; gap: 10px; }
-  .lang-opt, .slot-opt {
+  .book-langs, .book-days, .book-times { display: flex; flex-wrap: wrap; gap: 10px; }
+  .book-slots { display: grid; gap: 16px; }
+  .book-tz { font-size: .85rem; }
+  .book-msg { margin-top: 12px; padding: 10px 12px; background: #FEE2E2; color: #991B1B; font-size: .9rem; }
+  .lang-opt, .slot-opt, .day-opt {
     font: inherit; font-family: var(--font-head); font-weight: 600; cursor: pointer;
     padding: 10px 16px; border: 1px solid var(--b2); border-radius: var(--radius-sm); background: var(--surface); color: var(--heading);
   }
-  .lang-opt[aria-pressed='true'], .slot-opt[aria-pressed='true'] { background: var(--g1); border-color: var(--g2); }
+  .day-opt { text-transform: capitalize; }
+  .lang-opt[aria-pressed='true'], .slot-opt[aria-pressed='true'], .day-opt[aria-pressed='true'] { background: var(--g1); border-color: var(--g2); }
   .book-fields { display: grid; gap: 10px; }
   .book-check { display: flex; gap: 10px; align-items: flex-start; font-size: .84rem; line-height: 1.45; cursor: pointer; }
   .book-fields .book-check input { width: 16px; height: 16px; padding: 0; margin-top: 2px; flex: none; accent-color: var(--heading); }
@@ -97,24 +109,48 @@ const waConsent = {
     })
   );
 
+  // Horários sempre mostrados na hora de Portugal (a agenda da equipa é em Lisboa).
+  const TZ = 'Europe/Lisbon';
+  const dayKey = (iso: string) => new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(iso));
+  const dayLabel = (iso: string) => new Intl.DateTimeFormat(lang, { timeZone: TZ, weekday: 'short', day: '2-digit', month: 'short' }).format(new Date(iso));
+  const timeLabel = (iso: string) => new Intl.DateTimeFormat(lang, { timeZone: TZ, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(iso));
+
   async function loadSlots() {
     try {
       const from = new Date().toISOString();
       const to = new Date(Date.now() + 14 * 864e5).toISOString();
       const { slots } = await getAvailability({ from, to, language: selectedLang });
       if (!slots?.length) throw new Error('no slots');
+      const byDay = new Map<string, { start: string; end: string }[]>();
+      for (const s of slots) { const k = dayKey(s.start); if (!byDay.has(k)) byDay.set(k, []); byDay.get(k)!.push(s); }
       slotsEl.innerHTML = '';
-      slots.slice(0, 24).forEach((s) => {
-        const btn = document.createElement('button');
-        btn.className = 'slot-opt';
-        btn.textContent = new Date(s.start).toLocaleString(lang, { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-        btn.addEventListener('click', () => {
-          selectedSlot = s;
-          slotsEl.querySelectorAll('.slot-opt').forEach((x) => x.setAttribute('aria-pressed', String(x === btn)));
-          detailsEl.hidden = false;
+      const days = document.createElement('div'); days.className = 'book-days';
+      const times = document.createElement('div'); times.className = 'book-times';
+      const note = document.createElement('p'); note.className = 'book-tz muted'; note.textContent = root.dataset.tz || '';
+      const showDay = (k: string, chip: HTMLElement) => {
+        days.querySelectorAll('.day-opt').forEach((x) => x.setAttribute('aria-pressed', String(x === chip)));
+        times.innerHTML = '';
+        selectedSlot = null; detailsEl.hidden = true;
+        byDay.get(k)!.forEach((s) => {
+          const btn = document.createElement('button');
+          btn.type = 'button'; btn.className = 'slot-opt'; btn.textContent = timeLabel(s.start);
+          btn.addEventListener('click', () => {
+            selectedSlot = s;
+            times.querySelectorAll('.slot-opt').forEach((x) => x.setAttribute('aria-pressed', String(x === btn)));
+            detailsEl.hidden = false;
+          });
+          times.appendChild(btn);
         });
-        slotsEl.appendChild(btn);
-      });
+      };
+      let first = true;
+      for (const [k, list] of byDay) {
+        const chip = document.createElement('button');
+        chip.type = 'button'; chip.className = 'day-opt'; chip.textContent = dayLabel(list[0].start);
+        chip.addEventListener('click', () => showDay(k, chip));
+        days.appendChild(chip);
+        if (first) { showDay(k, chip); first = false; }
+      }
+      slotsEl.append(days, times, note);
     } catch {
       slotsEl.hidden = true;
       fallbackEl.hidden = false;
@@ -122,21 +158,33 @@ const waConsent = {
   }
   loadSlots();
 
-  (document.querySelector('[data-book-pay]') as HTMLButtonElement)?.addEventListener('click', async () => {
+  const payBtn = document.querySelector('[data-book-pay]') as HTMLButtonElement;
+  const payMsg = document.querySelector('[data-book-msg]') as HTMLElement;
+  payBtn?.addEventListener('click', async () => {
     if (!selectedSlot) return;
-    const { booking_id } = await createBooking({
-      language: selectedLang,
-      service_code: 'CONSULT',
-      slot_start: selectedSlot.start,
-      slot_end: selectedSlot.end,
-      whatsapp_consent: (document.querySelector('[data-b-wa]') as HTMLInputElement)?.checked ?? false,
-      customer: {
-        name: (document.querySelector('[data-b-name]') as HTMLInputElement).value,
-        email: (document.querySelector('[data-b-email]') as HTMLInputElement).value,
-        phone: (document.querySelector('[data-b-phone]') as HTMLInputElement).value,
-      },
-    });
-    const { url } = await createBookingCheckout(booking_id, selectedLang);
-    window.location.href = url;
+    const val = (sel: string) => (document.querySelector(sel) as HTMLInputElement).value.trim();
+    const name = val('[data-b-name]'), email = val('[data-b-email]'), phone = val('[data-b-phone]');
+    payMsg.hidden = true;
+    if (!name || !/^\S+@\S+\.\S+$/.test(email) || phone.replace(/\D/g, '').length < 6) {
+      payMsg.textContent = root.dataset.missing || ''; payMsg.hidden = false; return;
+    }
+    payBtn.disabled = true;
+    try {
+      const { booking_id } = await createBooking({
+        language: selectedLang,
+        service_code: 'CONSULT',
+        slot_start: selectedSlot.start,
+        slot_end: selectedSlot.end,
+        whatsapp_consent: (document.querySelector('[data-b-wa]') as HTMLInputElement)?.checked ?? false,
+        customer: { name, email, phone },
+      });
+      const { url } = await createBookingCheckout(booking_id, selectedLang);
+      window.location.href = url;
+    } catch (e) {
+      const taken = String((e as Error)?.message || '').includes('slot_taken');
+      payMsg.textContent = (taken ? root.dataset.taken : root.dataset.err) || ''; payMsg.hidden = false;
+      payBtn.disabled = false;
+      if (taken) loadSlots();
+    }
   });
 </script>
