@@ -3,6 +3,11 @@ import { useTranslations, type Lang } from '../../i18n/ui';
 import { getTeam } from '../../lib/data';
 import { initials } from '../../lib/format';
 import PersonCard from '../PersonCard.astro';
+import WhatsAppButton from '../WhatsAppButton.astro';
+import { largePhoto } from '../../lib/team-photos';
+import { getRoute } from '../../i18n/ui';
+import { getUi } from '../../data/ui';
+import { mainWhatsapp, waText } from '../../lib/site';
 
 interface Props { lang: Lang; /** Dentro da página Sobre: sem hero próprio, com âncora #equipe. */ embedded?: boolean; }
 const { lang, embedded = false } = Astro.props;
@@ -67,6 +72,14 @@ const closing = {
 }[lang];
 const info = (code: string): Bio => TEAM[lang][code] ?? { role: '', languages: '', phrase: '' };
 const f = info(founder?.code ?? '');
+const u = getUi(lang);
+const wa = await mainWhatsapp();
+const pl = {
+  pt: { open: 'Ver perfil de', close: 'Fechar', prev: 'Anterior', next: 'Próximo' },
+  en: { open: 'View profile of', close: 'Close', prev: 'Previous', next: 'Next' },
+  es: { open: 'Ver perfil de', close: 'Cerrar', prev: 'Anterior', next: 'Siguiente' },
+  fr: { open: 'Voir le profil de', close: 'Fermer', prev: 'Précédent', next: 'Suivant' },
+}[lang];
 ---
 {embedded ? (
   <section class="team-head center" id="equipe">
@@ -86,7 +99,9 @@ const f = info(founder?.code ?? '');
 
 {founder && (
   <section>
-    <div class="container founder-block">
+    <div class="container founder-block" data-profile tabindex="0" role="button" aria-haspopup="dialog" aria-label={`${pl.open} ${founder.name}`}
+      data-name={founder.name} data-role={f.role} data-langs={`${langsLabel}: ${f.languages}`} data-phrase={f.phrase}
+      data-photo={largePhoto(founder.photo_url) || founder.photo_url || ''} data-initials={initials(founder.name)}>
       <div class="founder-photo">
         {founder.photo_url ? (
           <img src={founder.photo_url} alt={founder.name} />
@@ -108,14 +123,85 @@ const f = info(founder?.code ?? '');
   <div class="container">
     <div class="grid cols-3">
       {others.map((m) => (
-        <PersonCard member={m} role={info(m.code).role} languages={info(m.code).languages} langsLabel={langsLabel} phrase={info(m.code).phrase} />
+        <PersonCard member={m} role={info(m.code).role} languages={info(m.code).languages} langsLabel={langsLabel} phrase={info(m.code).phrase} openLabel={pl.open} />
       ))}
     </div>
     <p class="team-closing center">{closing}</p>
   </div>
 </section>
 
+<dialog class="profile" data-profile-dialog aria-labelledby="profile-name">
+  <button type="button" class="profile-x" data-profile-close aria-label={pl.close}>&times;</button>
+  <div class="profile-in">
+    <div class="profile-photo"><img data-p-photo alt="" /><span data-p-initials></span></div>
+    <div class="profile-body">
+      <span class="eyebrow" data-p-role></span>
+      <h2 id="profile-name" data-p-name></h2>
+      <p class="profile-langs" data-p-langs></p>
+      <p class="profile-phrase" data-p-phrase></p>
+      <div class="profile-ctas">
+        <a href={getRoute('booking', lang)} class="btn btn-gold">{u.common.talkToExpert}</a>
+        <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
+      </div>
+      <div class="profile-nav">
+        <button type="button" data-profile-prev>← {pl.prev}</button>
+        <button type="button" data-profile-next>{pl.next} →</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const dlg = document.querySelector<HTMLDialogElement>('[data-profile-dialog]');
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-profile]'));
+  let idx = 0;
+  const $ = (sel: string) => dlg!.querySelector<HTMLElement>(sel)!;
+  function show(i: number) {
+    idx = (i + cards.length) % cards.length;
+    const d = cards[idx].dataset;
+    const img = $('[data-p-photo]') as HTMLImageElement;
+    if (d.photo) { img.src = d.photo; img.alt = d.name || ''; img.hidden = false; $('[data-p-initials]').hidden = true; }
+    else { img.hidden = true; img.removeAttribute('src'); $('[data-p-initials]').textContent = d.initials || ''; $('[data-p-initials]').hidden = false; }
+    $('[data-p-name]').textContent = d.name || '';
+    $('[data-p-role]').textContent = d.role || '';
+    $('[data-p-langs]').textContent = d.langs || '';
+    $('[data-p-phrase]').textContent = d.phrase || '';
+  }
+  cards.forEach((c, i) => {
+    const open = () => { show(i); dlg?.showModal(); };
+    c.addEventListener('click', open);
+    c.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  });
+  dlg?.querySelector('[data-profile-close]')?.addEventListener('click', () => dlg.close());
+  dlg?.querySelector('[data-profile-prev]')?.addEventListener('click', () => show(idx - 1));
+  dlg?.querySelector('[data-profile-next]')?.addEventListener('click', () => show(idx + 1));
+  dlg?.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  dlg?.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') show(idx - 1); if (e.key === 'ArrowRight') show(idx + 1); });
+</script>
+
 <style>
+  .founder-block { cursor: pointer; }
+  .founder-block:hover .founder-photo, .founder-block:focus-visible .founder-photo { border-color: var(--heading); }
+  .profile { margin: auto; border: 0; padding: 0; width: min(880px, calc(100vw - 32px)); max-height: calc(100vh - 32px); background: var(--surface); border-top: 4px solid var(--accent); box-shadow: 0 24px 60px rgba(1,32,63,.35); }
+  .profile::backdrop { background: rgba(1,32,63,.72); }
+  .profile-x { position: absolute; top: 8px; right: 12px; z-index: 2; background: none; border: 0; font-size: 2rem; line-height: 1; cursor: pointer; color: var(--heading); }
+  .profile-in { display: grid; grid-template-columns: 340px 1fr; }
+  .profile-photo { background: #fff; display: flex; align-items: center; justify-content: center; min-height: 320px; }
+  .profile-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .profile-photo [data-p-initials] { font-family: var(--font-head); font-weight: 700; font-size: 4rem; color: var(--accent); }
+  .profile-photo:has([data-p-initials]:not([hidden])) { background: var(--surface-brand); }
+  .profile-body { padding: clamp(24px, 4vw, 44px); display: flex; flex-direction: column; gap: 10px; }
+  .profile-body h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+  .profile-langs { font-family: var(--font-head); font-size: .74rem; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-muted); }
+  .profile-phrase { font-size: 1.02rem; line-height: 1.7; color: var(--ink); margin-top: 6px; }
+  .profile-ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 18px; }
+  .profile-nav { display: flex; justify-content: space-between; gap: 12px; padding-top: 14px; border-top: 1px solid var(--border); margin-top: 8px; }
+  .profile-nav button { background: none; border: 0; cursor: pointer; font: 600 .82rem/1 var(--font-head); color: var(--heading); text-transform: uppercase; letter-spacing: .08em; padding: 6px 0; }
+  @media (max-width: 720px) {
+    .profile-in { grid-template-columns: 1fr; }
+    .profile-photo { max-height: 46vh; overflow: hidden; }
+    .profile-photo img { object-position: top; }
+  }
   .team-head { padding-bottom: 0; scroll-margin-top: 90px; }
   .founder-block { display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center; max-width: 860px; margin-inline: auto; }
   .founder-photo {

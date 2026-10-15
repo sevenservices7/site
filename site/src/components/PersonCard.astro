@@ -1,12 +1,19 @@
 ---
 import { initials } from '../lib/format';
 import type { TeamMember } from '../lib/data';
+import { largePhoto } from '../lib/team-photos';
 
-interface Props { member: TeamMember; role?: string; languages?: string; langsLabel?: string; phrase?: string; }
-const { member, role, languages, langsLabel, phrase } = Astro.props;
+interface Props { member: TeamMember; role?: string; languages?: string; langsLabel?: string; phrase?: string; openLabel?: string; }
+const { member, role, languages, langsLabel, phrase, openLabel } = Astro.props;
 const roleText = role ?? member.role_label;
+const large = largePhoto(member.photo_url);
 ---
-<article class:list={['person card', { founder: member.founder }]}>
+<article
+  class:list={['person card', { founder: member.founder }]}
+  data-profile tabindex="0" role="button" aria-haspopup="dialog" aria-label={`${openLabel ?? ''} ${member.name}`.trim()}
+  data-name={member.name} data-role={roleText} data-langs={languages ? `${langsLabel}: ${languages}` : ''} data-phrase={phrase ?? ''}
+  data-photo={large || member.photo_url || ''} data-initials={initials(member.name)}
+>
   <div class="person-photo">
     {member.photo_url ? (
       <img src={member.photo_url} alt={member.name} loading="lazy" />
@@ -21,6 +28,9 @@ const roleText = role ?? member.role_label;
 </article>
 
 <style>
+  .person { cursor: pointer; transition: border-color .15s, transform .15s; }
+  .person:hover, .person:focus-visible { border-color: var(--accent); transform: translateY(-2px); }
+  .person:hover .person-photo { border-color: var(--heading); }
   .person { padding: 26px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; }
   .person-photo {
     width: 104px; height: 104px; border-radius: 50%; overflow: hidden; margin-bottom: 10px;
