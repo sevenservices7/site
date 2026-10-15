@@ -6,10 +6,10 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 const copy = {
-  pt: { title: 'Agendar consultoria', step1: '1. Idioma da consultoria', step2: '2. Escolha um horário', step3: '3. Seus dados', noslots: 'Os horários online vão estar disponíveis em breve. Enquanto isso, fale com um especialista:', name: 'Nome completo', email: 'E-mail', phone: 'Celular', pay: 'Pagar e confirmar', loading: 'Carregando horários…', book: 'Reservar e pagar' },
-  en: { title: 'Book a consultation', step1: '1. Consultation language', step2: '2. Choose a time', step3: '3. Your details', noslots: 'Online time slots will be available soon. In the meantime, talk to a specialist:', name: 'Full name', email: 'Email', phone: 'Mobile phone', pay: 'Pay and confirm', loading: 'Loading time slots…', book: 'Book and pay' },
-  es: { title: 'Agendar consultoría', step1: '1. Idioma de la consultoría', step2: '2. Elige un horario', step3: '3. Tus datos', noslots: 'Los horarios online estarán disponibles pronto. Mientras tanto, habla con un especialista:', name: 'Nombre completo', email: 'Correo electrónico', phone: 'Celular', pay: 'Pagar y confirmar', loading: 'Cargando horarios…', book: 'Reservar y pagar' },
-  fr: { title: 'Prendre rendez-vous', step1: '1. Langue de la consultation', step2: '2. Choisissez un créneau', step3: '3. Vos coordonnées', noslots: 'Les créneaux en ligne seront bientôt disponibles. En attendant, parlez à un spécialiste :', name: 'Nom complet', email: 'E-mail', phone: 'Téléphone portable', pay: 'Payer et confirmer', loading: 'Chargement des créneaux…', book: 'Réserver et payer' },
+  pt: { title: 'Agendar consultoria', step1: '1. Idioma da consultoria', step2: '2. Escolha o dia e o horário', step3: '3. Seus dados', noslots: 'Os horários online vão estar disponíveis em breve. Enquanto isso, fale com um especialista:', name: 'Nome completo', email: 'E-mail', phone: 'Celular', pay: 'Pagar e confirmar', loading: 'Carregando horários…', book: 'Reservar e pagar' },
+  en: { title: 'Book a consultation', step1: '1. Consultation language', step2: '2. Choose a day and time', step3: '3. Your details', noslots: 'Online time slots will be available soon. In the meantime, talk to a specialist:', name: 'Full name', email: 'Email', phone: 'Mobile phone', pay: 'Pay and confirm', loading: 'Loading time slots…', book: 'Book and pay' },
+  es: { title: 'Agendar consultoría', step1: '1. Idioma de la consultoría', step2: '2. Elige el día y la hora', step3: '3. Tus datos', noslots: 'Los horarios online estarán disponibles pronto. Mientras tanto, habla con un especialista:', name: 'Nombre completo', email: 'Correo electrónico', phone: 'Celular', pay: 'Pagar y confirmar', loading: 'Cargando horarios…', book: 'Reservar y pagar' },
+  fr: { title: 'Prendre rendez-vous', step1: '1. Langue de la consultation', step2: '2. Choisissez le jour et l’heure', step3: '3. Vos coordonnées', noslots: 'Les créneaux en ligne seront bientôt disponibles. En attendant, parlez à un spécialiste :', name: 'Nom complet', email: 'E-mail', phone: 'Téléphone portable', pay: 'Payer et confirmer', loading: 'Chargement des créneaux…', book: 'Réserver et payer' },
 }[lang];
 // Consultas são feitas em PT/EN/ES; para FR, o idioma inicial sugerido é o inglês.
 const consultLang = lang === 'fr' ? 'en' : lang;
@@ -30,7 +30,7 @@ const waConsent = {
 ---
 <section class="bg-navy center">
   <div class="container" style="max-width:720px">
-    <span class="eyebrow">{t('nav.booking')}</span>
+    <span class="eyebrow">{({ pt: 'Consultoria', en: 'Consultation', es: 'Consultoría', fr: 'Consultation' } as const)[lang]}</span>
     <h1>{copy.title}</h1>
     <p class="lead" style="margin-inline:auto">{t('home.cta.body')}</p>
   </div>
@@ -71,10 +71,27 @@ const waConsent = {
   </div>
 </section>
 
-<style>
+<style is:global>
   .book-step { margin-bottom: 32px; }
   .book-step h3 { margin-bottom: 14px; }
   .book-langs, .book-days, .book-times { display: flex; flex-wrap: wrap; gap: 10px; }
+  .book-picker { display: grid; grid-template-columns: minmax(0, 340px) 1fr; gap: 28px; align-items: start; }
+  .book-times { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; }
+  .book-times-head { font-family: var(--font-head); font-weight: 600; color: var(--heading); margin-bottom: 12px; }
+  .book-times-head::first-letter, .cal-head strong::first-letter { text-transform: uppercase; }
+  .cal { border: 1px solid var(--border-strong); background: var(--surface); padding: 14px; }
+  .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .cal-head strong { font-family: var(--font-head); color: var(--heading); display: inline-block; }
+  .cal-nav { background: none; border: 1px solid var(--border-strong); width: 32px; height: 32px; cursor: pointer; font-size: 1.1rem; color: var(--heading); }
+  .cal-nav:disabled { opacity: .3; cursor: default; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+  .cal-wd { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-muted); padding: 4px 0; }
+  .cal-day { aspect-ratio: 1; display: grid; place-items: center; font: 600 .9rem/1 var(--font-head); border: 1px solid transparent; background: none; }
+  button.cal-day { cursor: pointer; color: var(--heading); background: var(--surface-alt); }
+  button.cal-day:hover { border-color: var(--heading); }
+  button.cal-day[aria-pressed='true'] { background: var(--heading); color: var(--accent); }
+  .cal-day.off { color: var(--border-strong); font-weight: 400; }
+  @media (max-width: 720px) { .book-picker { grid-template-columns: 1fr; } }
   .book-slots { display: grid; gap: 16px; }
   .book-tz { font-size: .85rem; }
   .book-msg { margin-top: 12px; padding: 10px 12px; background: #FEE2E2; color: #991B1B; font-size: .9rem; }
@@ -118,19 +135,28 @@ const waConsent = {
   async function loadSlots() {
     try {
       const from = new Date().toISOString();
-      const to = new Date(Date.now() + 14 * 864e5).toISOString();
+      const to = new Date(Date.now() + 31 * 864e5).toISOString();
       const { slots } = await getAvailability({ from, to, language: selectedLang });
       if (!slots?.length) throw new Error('no slots');
       const byDay = new Map<string, { start: string; end: string }[]>();
       for (const s of slots) { const k = dayKey(s.start); if (!byDay.has(k)) byDay.set(k, []); byDay.get(k)!.push(s); }
+      const keys = [...byDay.keys()].sort();
+      const months = [...new Set(keys.map((k) => k.slice(0, 7)))];
+      let mi = 0;
+      let selectedDay = '';
       slotsEl.innerHTML = '';
-      const days = document.createElement('div'); days.className = 'book-days';
+      const cal = document.createElement('div'); cal.className = 'cal';
       const times = document.createElement('div'); times.className = 'book-times';
+      const timesHead = document.createElement('p'); timesHead.className = 'book-times-head';
       const note = document.createElement('p'); note.className = 'book-tz muted'; note.textContent = root.dataset.tz || '';
-      const showDay = (k: string, chip: HTMLElement) => {
-        days.querySelectorAll('.day-opt').forEach((x) => x.setAttribute('aria-pressed', String(x === chip)));
+      // Semana começando na segunda-feira, nomes no idioma da página.
+      const weekdays = Array.from({ length: 7 }, (_, i) => new Intl.DateTimeFormat(lang, { weekday: 'short', timeZone: 'UTC' }).format(new Date(Date.UTC(2024, 0, 1 + i))));
+      function showDay(k: string) {
+        selectedDay = k;
+        cal.querySelectorAll('.cal-day').forEach((x) => x.setAttribute('aria-pressed', String((x as HTMLElement).dataset.k === k)));
         times.innerHTML = '';
         selectedSlot = null; detailsEl.hidden = true;
+        timesHead.textContent = dayLabel(byDay.get(k)![0].start);
         byDay.get(k)!.forEach((s) => {
           const btn = document.createElement('button');
           btn.type = 'button'; btn.className = 'slot-opt'; btn.textContent = timeLabel(s.start);
@@ -138,19 +164,36 @@ const waConsent = {
             selectedSlot = s;
             times.querySelectorAll('.slot-opt').forEach((x) => x.setAttribute('aria-pressed', String(x === btn)));
             detailsEl.hidden = false;
+            detailsEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           });
           times.appendChild(btn);
         });
-      };
-      let first = true;
-      for (const [k, list] of byDay) {
-        const chip = document.createElement('button');
-        chip.type = 'button'; chip.className = 'day-opt'; chip.textContent = dayLabel(list[0].start);
-        chip.addEventListener('click', () => showDay(k, chip));
-        days.appendChild(chip);
-        if (first) { showDay(k, chip); first = false; }
       }
-      slotsEl.append(days, times, note);
+      function render() {
+        const [y, m] = months[mi].split('-').map(Number);
+        const monthName = new Intl.DateTimeFormat(lang, { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(Date.UTC(y, m - 1, 1)));
+        const firstDow = (new Date(Date.UTC(y, m - 1, 1)).getUTCDay() + 6) % 7;
+        const daysInMonth = new Date(Date.UTC(y, m, 0)).getUTCDate();
+        let html = `<div class="cal-head"><button type="button" class="cal-nav" data-prev ${mi === 0 ? 'disabled' : ''} aria-label="‹">‹</button><strong>${monthName}</strong><button type="button" class="cal-nav" data-next ${mi === months.length - 1 ? 'disabled' : ''} aria-label="›">›</button></div><div class="cal-grid">`;
+        html += weekdays.map((w) => `<span class="cal-wd">${w}</span>`).join('');
+        html += '<span></span>'.repeat(firstDow);
+        for (let d = 1; d <= daysInMonth; d++) {
+          const k = `${months[mi]}-${String(d).padStart(2, '0')}`;
+          html += byDay.has(k)
+            ? `<button type="button" class="cal-day" data-k="${k}" aria-pressed="${k === selectedDay}">${d}</button>`
+            : `<span class="cal-day off">${d}</span>`;
+        }
+        cal.innerHTML = html + '</div>';
+        cal.querySelector('[data-prev]')?.addEventListener('click', () => { mi--; render(); });
+        cal.querySelector('[data-next]')?.addEventListener('click', () => { mi++; render(); });
+        cal.querySelectorAll<HTMLElement>('.cal-day[data-k]').forEach((b) => b.addEventListener('click', () => showDay(b.dataset.k!)));
+      }
+      render();
+      showDay(keys[0]);
+      const wrap = document.createElement('div'); wrap.className = 'book-picker';
+      const right = document.createElement('div'); right.append(timesHead, times);
+      wrap.append(cal, right);
+      slotsEl.append(wrap, note);
     } catch {
       slotsEl.hidden = true;
       fallbackEl.hidden = false;

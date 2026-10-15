@@ -1,0 +1,385 @@
+---
+// Formulário "Falar com especialista" em 3 etapas (pré-qualificação).
+// Etapa 1 (contato) já grava o lead como parcial no servidor: quem desiste no meio não se perde,
+// a equipa é avisada e, com autorização, recebe um e-mail automático depois de 30 minutos.
+// Pode aparecer mais de uma vez na mesma página (modal + página): tudo é escopado por [data-prequal].
+import { getRoute, type Lang } from '../i18n/ui';
+import { getOffices } from '../lib/data';
+import { countryList } from '../lib/countries';
+import { mainWhatsapp } from '../lib/site';
+
+interface Props { lang: Lang; idp: string; }
+const { lang, idp } = Astro.props;
+const offices = (await getOffices()).filter((o) => o.is_open);
+const countries = countryList(lang);
+const first = countries[0];
+const serviceLang = lang === 'fr' ? 'en' : lang;
+const wa = await mainWhatsapp();
+const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
+
+const C = {
+  pt: {
+    step: 'Passo', of: 'de', s1: 'Seus contatos', s2: 'O que você quer resolver?', s3: 'Só mais alguns detalhes',
+    s1Lead: 'Comece por aqui. Se a ligação cair, a gente já sabe como falar com você.',
+    name: 'Nome completo', phone: 'WhatsApp', phonePh: 'Seu número de WhatsApp', email: 'Seu melhor e-mail',
+    ddi: 'País (DDI)', ddiSearch: 'Buscar país ou DDI (ex.: Portugal ou +351)', ddiNone: 'Nenhum país encontrado',
+    consent: 'Autorizo a SEVEN a falar comigo por WhatsApp e e-mail sobre este pedido, inclusive com lembretes. Posso cancelar quando quiser.',
+    privacy: 'Seus dados são usados só para responder ao seu pedido. Veja a', policy: 'Política de Privacidade',
+    next: 'Continuar', back: 'Voltar', send: 'Enviar para a equipe',
+    topics: { visto: 'Vir para Portugal / visto', residencia: 'Residência ou renovação', familia: 'Trazer a família', nacionalidade: 'Nacionalidade portuguesa', documentos: 'NIF, NISS e primeiros documentos', empresa: 'Abrir empresa / contabilidade', irs: 'IRS e impostos', carta: 'Carta de condução ou carro', consular: 'Serviços consulares brasileiros', juridico: 'Problema jurídico / recurso', outro: 'Outro assunto' },
+    message: 'Conte em poucas palavras o seu caso (opcional)', messagePh: 'Ex.: meu título vence mês que vem e não consigo agendar na AIMA.',
+    urgency: 'Qual a urgência?', urgencies: { urgente: 'Urgente: tenho prazo ou notificação', semanas: 'Nas próximas semanas', meses: 'Nos próximos meses', pesquisando: 'Só estou pesquisando' },
+    location: 'Onde você está agora?', locations: { portugal: 'Em Portugal', brasil: 'No Brasil', outro: 'Em outro país' },
+    consulted: 'Já falou com outra empresa ou advogado sobre isso?', consulteds: { nao: 'Não', nao_resolveu: 'Sim, mas não resolveu', comparando: 'Sim, estou comparando' },
+    contact: 'Como prefere que a gente fale com você?', contacts: { whatsapp: 'WhatsApp', email: 'E-mail', ligacao: 'Ligação' },
+    unit: 'Unidade de preferência', unitAuto: 'Sem preferência', language: 'Idioma do atendimento',
+    required: 'Preencha os campos obrigatórios para continuar.', error: 'Não deu para enviar. Tente de novo ou chame a gente no WhatsApp.',
+    doneTitle: 'Recebido! A gente fala com você em até 1 dia útil.', doneBody: 'Um especialista vai analisar o seu caso e entrar em contato pelo canal que você escolheu. Quer adiantar?',
+    book: 'Agendar consultoria agora', whatsapp: 'Chamar no WhatsApp',
+  },
+  en: {
+    step: 'Step', of: 'of', s1: 'Your contact details', s2: 'What would you like to solve?', s3: 'Just a few more details',
+    s1Lead: 'Start here. If anything goes wrong, we already know how to reach you.',
+    name: 'Full name', phone: 'WhatsApp', phonePh: 'Your WhatsApp number', email: 'Your best email',
+    ddi: 'Country (dialling code)', ddiSearch: 'Search country or code (e.g. Portugal or +351)', ddiNone: 'No country found',
+    consent: 'I authorise SEVEN to contact me on WhatsApp and by email about this request, including reminders. I can withdraw at any time.',
+    privacy: 'Your data is only used to reply to your request. See the', policy: 'Privacy Policy',
+    next: 'Continue', back: 'Back', send: 'Send to the team',
+    topics: { visto: 'Moving to Portugal / visa', residencia: 'Residence permit or renewal', familia: 'Bringing my family', nacionalidade: 'Portuguese citizenship', documentos: 'NIF, NISS and first documents', empresa: 'Company / accounting', irs: 'IRS and taxes', carta: 'Driving licence or car', consular: 'Brazilian consular services', juridico: 'Legal issue / appeal', outro: 'Something else' },
+    message: 'Tell us briefly about your case (optional)', messagePh: 'E.g. my permit expires next month and I can’t get an AIMA appointment.',
+    urgency: 'How urgent is it?', urgencies: { urgente: 'Urgent: I have a deadline or notice', semanas: 'In the coming weeks', meses: 'In the coming months', pesquisando: 'Just researching' },
+    location: 'Where are you now?', locations: { portugal: 'In Portugal', brasil: 'In Brazil', outro: 'In another country' },
+    consulted: 'Have you spoken to another company or lawyer about this?', consulteds: { nao: 'No', nao_resolveu: 'Yes, but it wasn’t solved', comparando: 'Yes, I’m comparing' },
+    contact: 'How would you like us to contact you?', contacts: { whatsapp: 'WhatsApp', email: 'Email', ligacao: 'Phone call' },
+    unit: 'Preferred office', unitAuto: 'No preference', language: 'Service language',
+    required: 'Please fill in the required fields to continue.', error: 'We couldn’t send it. Please try again or message us on WhatsApp.',
+    doneTitle: 'Received! We’ll get back to you within 1 business day.', doneBody: 'A specialist will review your case and contact you through the channel you chose. Want to move faster?',
+    book: 'Book a consultation now', whatsapp: 'Message us on WhatsApp',
+  },
+  es: {
+    step: 'Paso', of: 'de', s1: 'Tus datos de contacto', s2: '¿Qué quieres resolver?', s3: 'Solo unos detalles más',
+    s1Lead: 'Empieza por aquí. Si algo falla, ya sabremos cómo contactarte.',
+    name: 'Nombre completo', phone: 'WhatsApp', phonePh: 'Tu número de WhatsApp', email: 'Tu mejor correo',
+    ddi: 'País (prefijo)', ddiSearch: 'Buscar país o prefijo (ej.: Portugal o +351)', ddiNone: 'Ningún país encontrado',
+    consent: 'Autorizo a SEVEN a contactarme por WhatsApp y correo sobre esta solicitud, incluso con recordatorios. Puedo retirarlo cuando quiera.',
+    privacy: 'Tus datos solo se usan para responder a tu solicitud. Consulta la', policy: 'Política de Privacidad',
+    next: 'Continuar', back: 'Volver', send: 'Enviar al equipo',
+    topics: { visto: 'Venir a Portugal / visado', residencia: 'Residencia o renovación', familia: 'Traer a la familia', nacionalidade: 'Nacionalidad portuguesa', documentos: 'NIF, NISS y primeros documentos', empresa: 'Empresa / contabilidad', irs: 'IRS e impuestos', carta: 'Licencia de conducir o coche', consular: 'Servicios consulares brasileños', juridico: 'Problema jurídico / recurso', outro: 'Otro asunto' },
+    message: 'Cuéntanos brevemente tu caso (opcional)', messagePh: 'Ej.: mi permiso vence el mes que viene y no consigo cita en la AIMA.',
+    urgency: '¿Qué urgencia tiene?', urgencies: { urgente: 'Urgente: tengo un plazo o notificación', semanas: 'En las próximas semanas', meses: 'En los próximos meses', pesquisando: 'Solo estoy informándome' },
+    location: '¿Dónde estás ahora?', locations: { portugal: 'En Portugal', brasil: 'En Brasil', outro: 'En otro país' },
+    consulted: '¿Ya hablaste con otra empresa o abogado sobre esto?', consulteds: { nao: 'No', nao_resolveu: 'Sí, pero no se resolvió', comparando: 'Sí, estoy comparando' },
+    contact: '¿Cómo prefieres que te contactemos?', contacts: { whatsapp: 'WhatsApp', email: 'Correo', ligacao: 'Llamada' },
+    unit: 'Sede preferida', unitAuto: 'Sin preferencia', language: 'Idioma de atención',
+    required: 'Completa los campos obligatorios para continuar.', error: 'No se pudo enviar. Inténtalo de nuevo o escríbenos por WhatsApp.',
+    doneTitle: '¡Recibido! Te contactamos en 1 día hábil como máximo.', doneBody: 'Un especialista analizará tu caso y te contactará por el canal que elegiste. ¿Quieres adelantar?',
+    book: 'Agendar consultoría ahora', whatsapp: 'Escribir por WhatsApp',
+  },
+  fr: {
+    step: 'Étape', of: 'sur', s1: 'Vos coordonnées', s2: 'Que souhaitez-vous résoudre ?', s3: 'Encore quelques détails',
+    s1Lead: 'Commencez ici. En cas de problème, nous saurons déjà comment vous joindre.',
+    name: 'Nom complet', phone: 'WhatsApp', phonePh: 'Votre numéro WhatsApp', email: 'Votre meilleur e-mail',
+    ddi: 'Pays (indicatif)', ddiSearch: 'Chercher un pays ou un indicatif (ex. : Portugal ou +351)', ddiNone: 'Aucun pays trouvé',
+    consent: 'J’autorise SEVEN à me contacter sur WhatsApp et par e-mail au sujet de cette demande, y compris par des rappels. Je peux retirer mon accord à tout moment.',
+    privacy: 'Vos données servent uniquement à répondre à votre demande. Voir la', policy: 'Politique de confidentialité',
+    next: 'Continuer', back: 'Retour', send: 'Envoyer à l’équipe',
+    topics: { visto: 'Venir au Portugal / visa', residencia: 'Titre de séjour ou renouvellement', familia: 'Faire venir ma famille', nacionalidade: 'Nationalité portugaise', documentos: 'NIF, NISS et premiers documents', empresa: 'Entreprise / comptabilité', irs: 'IRS et impôts', carta: 'Permis de conduire ou voiture', consular: 'Services consulaires brésiliens', juridico: 'Problème juridique / recours', outro: 'Autre sujet' },
+    message: 'Décrivez brièvement votre situation (facultatif)', messagePh: 'Ex. : mon titre expire le mois prochain et je n’obtiens pas de rendez-vous à l’AIMA.',
+    urgency: 'Quelle est l’urgence ?', urgencies: { urgente: 'Urgent : j’ai un délai ou une notification', semanas: 'Dans les prochaines semaines', meses: 'Dans les prochains mois', pesquisando: 'Je me renseigne' },
+    location: 'Où êtes-vous actuellement ?', locations: { portugal: 'Au Portugal', brasil: 'Au Brésil', outro: 'Dans un autre pays' },
+    consulted: 'Avez-vous déjà consulté une autre entreprise ou un avocat ?', consulteds: { nao: 'Non', nao_resolveu: 'Oui, sans solution', comparando: 'Oui, je compare' },
+    contact: 'Comment préférez-vous être contacté ?', contacts: { whatsapp: 'WhatsApp', email: 'E-mail', ligacao: 'Appel' },
+    unit: 'Agence préférée', unitAuto: 'Sans préférence', language: 'Langue de l’échange',
+    required: 'Remplissez les champs obligatoires pour continuer.', error: 'L’envoi a échoué. Réessayez ou écrivez-nous sur WhatsApp.',
+    doneTitle: 'Bien reçu ! Nous revenons vers vous sous 1 jour ouvré.', doneBody: 'Un spécialiste va étudier votre situation et vous contacter par le canal choisi. Vous voulez aller plus vite ?',
+    book: 'Prendre rendez-vous maintenant', whatsapp: 'Écrire sur WhatsApp',
+  },
+}[lang] as any;
+// Chaves fixas (iguais às do servidor), rótulos por idioma.
+const TOPIC_KEYS = ['visto', 'residencia', 'familia', 'nacionalidade', 'documentos', 'empresa', 'irs', 'carta', 'consular', 'juridico', 'outro'];
+const topicLabel = (k: string) => C.topics[k] ?? k;
+const radios = (name: string, map: Record<string, string>) => Object.entries(map).map(([value, text]) => ({ name, value, text }));
+const waLink = `https://wa.me/${wa.replace(/\D/g, '')}`;
+---
+<div class="pq" data-prequal data-lang={lang} data-required={C.required} data-error={C.error}>
+  <div class="pq-progress" aria-hidden="true"><span data-pq-bar></span></div>
+  <p class="pq-steplabel"><span data-pq-steplabel>{C.step} 1 {C.of} 3</span></p>
+
+  <!-- Etapa 1: contato -->
+  <form class="pq-step" data-pq-step="1" novalidate>
+    <h3>{C.s1}</h3>
+    <p class="pq-lead">{C.s1Lead}</p>
+    <label>{C.name} *<input name="name" type="text" required autocomplete="name" /></label>
+    <div class="pq-field">
+      <span class="pq-lbl" id={`pq-phone-${idp}`}>{C.phone} *</span>
+      <div class="pq-phone">
+        <div class="ddi" data-ddi>
+          <button type="button" class="ddi-btn" data-ddi-btn aria-haspopup="listbox" aria-expanded="false" aria-label={C.ddi}>
+            <span data-ddi-label>{first.dial}</span><span class="ddi-iso" data-ddi-iso>{first.iso}</span>
+            <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          <div class="ddi-pop" data-ddi-pop hidden>
+            <input type="search" class="ddi-search" data-ddi-search placeholder={C.ddiSearch} aria-label={C.ddiSearch} autocomplete="off" />
+            <ul class="ddi-list" role="listbox" data-ddi-list aria-labelledby={`pq-phone-${idp}`}>
+              {countries.map((c, i) => (
+                <li role="option" tabindex="-1" data-iso={c.iso} data-dial={c.dial} data-q={`${c.name} ${c.dial} ${c.iso}`} aria-selected={i === 0 ? 'true' : 'false'} class:list={[{ 'ddi-sep': i === 1 }]}>
+                  <span class="ddi-name">{c.name}</span><span class="ddi-code">{c.dial}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="ddi-none" data-ddi-none hidden>{C.ddiNone}</p>
+          </div>
+          <input type="hidden" name="ddi" value={first.dial} data-ddi-value />
+        </div>
+        <input name="phone" type="tel" inputmode="tel" required autocomplete="tel-national" placeholder={C.phonePh} aria-labelledby={`pq-phone-${idp}`} />
+      </div>
+    </div>
+    <label>{C.email} *<input name="email" type="email" required autocomplete="email" /></label>
+    <label class="pq-check"><input type="checkbox" name="consent" value="1" /><span>{C.consent}</span></label>
+    <input type="text" name="company" tabindex="-1" autocomplete="off" class="pq-hp" aria-hidden="true" />
+    {turnstileKey && <div class="cf-turnstile" data-sitekey={turnstileKey}></div>}
+    <p class="pq-privacy">{C.privacy} <a href={getRoute('privacy', lang)} target="_blank" rel="noopener">{C.policy}</a>.</p>
+    <p class="pq-msg" data-pq-msg role="alert" hidden></p>
+    <button type="submit" class="btn btn-gold btn-block">{C.next} →</button>
+  </form>
+
+  <!-- Etapa 2: assunto -->
+  <form class="pq-step" data-pq-step="2" hidden novalidate>
+    <h3>{C.s2}</h3>
+    <div class="pq-chips" role="radiogroup">
+      {TOPIC_KEYS.map((k) => <label class="pq-chip"><input type="radio" name="topic" value={k} required /><span>{topicLabel(k)}</span></label>)}
+    </div>
+    <label>{C.message}<textarea name="message" rows="3" placeholder={C.messagePh}></textarea></label>
+    <p class="pq-msg" data-pq-msg role="alert" hidden></p>
+    <div class="pq-nav"><button type="button" class="btn btn-ghost" data-pq-back>← {C.back}</button><button type="submit" class="btn btn-gold">{C.next} →</button></div>
+  </form>
+
+  <!-- Etapa 3: qualificação -->
+  <form class="pq-step" data-pq-step="3" hidden novalidate>
+    <h3>{C.s3}</h3>
+    {[
+      { q: C.urgency, items: radios('urgency', C.urgencies), req: true },
+      { q: C.location, items: radios('location', C.locations), req: false },
+      { q: C.consulted, items: radios('consulted_others', C.consulteds), req: false },
+      { q: C.contact, items: radios('preferred_contact', C.contacts), req: false },
+    ].map((g) => (
+      <fieldset class="pq-group">
+        <legend>{g.q}{g.req ? ' *' : ''}</legend>
+        <div class="pq-chips">{g.items.map((it) => <label class="pq-chip"><input type="radio" name={it.name} value={it.value} required={g.req} /><span>{it.text}</span></label>)}</div>
+      </fieldset>
+    ))}
+    <div class="pq-row">
+      <label>{C.unit}<select name="unit_slug"><option value="">{C.unitAuto}</option>{offices.map((o) => <option value={o.slug}>{o.name}</option>)}</select></label>
+      <label>{C.language}<select name="language">
+        <option value="pt" selected={serviceLang === 'pt'}>Português</option>
+        <option value="en" selected={serviceLang === 'en'}>English</option>
+        <option value="es" selected={serviceLang === 'es'}>Español</option>
+      </select></label>
+    </div>
+    <p class="pq-msg" data-pq-msg role="alert" hidden></p>
+    <div class="pq-nav"><button type="button" class="btn btn-ghost" data-pq-back>← {C.back}</button><button type="submit" class="btn btn-gold">{C.send}</button></div>
+  </form>
+
+  <!-- Concluído -->
+  <div class="pq-step pq-done" data-pq-step="4" hidden>
+    <div class="pq-check-icon" aria-hidden="true">✓</div>
+    <h3>{C.doneTitle}</h3>
+    <p>{C.doneBody}</p>
+    <div class="pq-nav pq-nav-done">
+      <a href={getRoute('booking', lang)} class="btn btn-gold">{C.book}</a>
+      <a href={waLink} class="btn btn-ghost" target="_blank" rel="noopener">{C.whatsapp}</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pq { display: grid; gap: 14px; }
+  .pq-progress { height: 4px; background: var(--border); }
+  .pq-progress span { display: block; height: 100%; width: 33%; background: var(--accent); transition: width .3s; }
+  .pq-steplabel { font-family: var(--font-head); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-muted); }
+  .pq-step { display: grid; gap: 14px; }
+  .pq-step[hidden] { display: none; }
+  .pq-step h3 { font-size: 1.35rem; }
+  .pq-lead { color: var(--ink-muted); font-size: .92rem; margin-top: -6px; }
+  .pq label { display: grid; gap: 6px; font-size: .85rem; font-weight: 600; color: var(--heading); }
+  .pq input:not([type=radio]):not([type=checkbox]), .pq select, .pq textarea {
+    font: inherit; font-weight: 400; padding: 11px 12px; border: 1px solid var(--b2, var(--border-strong));
+    border-radius: var(--r-md); background: var(--off, var(--surface-alt)); color: var(--ink); width: 100%;
+  }
+  .pq input:focus, .pq select:focus, .pq textarea:focus { border-color: var(--heading); background: var(--surface); outline: none; }
+  .pq .pq-check { display: flex; gap: 10px; align-items: flex-start; font-size: .84rem; line-height: 1.45; font-weight: 400; color: var(--ink); cursor: pointer; }
+  .pq .pq-check input { width: 16px; height: 16px; margin-top: 2px; flex: none; accent-color: var(--heading); }
+  .pq-hp { position: absolute; left: -9999px; width: 1px; height: 1px; }
+  .pq-privacy { font-size: .78rem; color: var(--ink-muted); }
+  .pq-privacy a { text-decoration: underline; text-underline-offset: 2px; }
+  .pq-msg { font-size: .88rem; padding: 10px 12px; background: #FEE2E2; color: #991B1B; }
+  .pq-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pq .pq-chip { display: inline-flex; cursor: pointer; font-weight: 500; }
+  .pq-chip input { position: absolute; opacity: 0; pointer-events: none; }
+  .pq-chip span { padding: 9px 13px; border: 1px solid var(--border-strong); background: var(--surface); font-size: .88rem; line-height: 1.3; color: var(--heading); transition: background .15s, border-color .15s; }
+  .pq-chip:hover span { border-color: var(--heading); }
+  .pq-chip input:checked + span { background: var(--heading); border-color: var(--heading); color: var(--branco); }
+  .pq-chip input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .pq-group { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .pq-group legend { font-size: .85rem; font-weight: 600; color: var(--heading); margin-bottom: 8px; }
+  .pq-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .pq-nav { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .pq-nav-done { justify-content: flex-start; }
+  .pq-done { text-align: left; }
+  .pq-check-icon { width: 48px; height: 48px; display: grid; place-items: center; background: var(--heading); color: var(--accent); font-size: 1.6rem; font-weight: 700; }
+  .pq-field { display: grid; gap: 6px; }
+  .pq-lbl { font-size: .85rem; font-weight: 600; color: var(--heading); }
+  .pq-phone { display: grid; grid-template-columns: auto 1fr; gap: 8px; }
+  .ddi { position: relative; }
+  .ddi-btn { height: 100%; display: inline-flex; align-items: center; gap: 6px; font: inherit; padding: 11px 12px; border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface-alt); color: var(--ink); cursor: pointer; white-space: nowrap; }
+  .ddi-btn[aria-expanded="true"] { border-color: var(--heading); background: var(--surface); }
+  .ddi-iso { font-size: .72rem; color: var(--ink-muted); letter-spacing: .06em; }
+  .ddi-pop { position: absolute; z-index: 5; top: calc(100% + 6px); left: 0; width: min(340px, 80vw); background: var(--surface); border: 1px solid var(--border-strong); border-top: 3px solid var(--accent); padding: 8px; }
+  .ddi-pop[hidden] { display: none; }
+  .ddi-list { list-style: none; max-height: 240px; overflow-y: auto; margin: 6px 0 0; padding: 0; }
+  .ddi-list li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 10px; cursor: pointer; font-size: .92rem; color: var(--ink); }
+  .ddi-list li.ddi-sep { border-bottom: 1px solid var(--border); margin-bottom: 4px; padding-bottom: 10px; }
+  .ddi-list li:hover, .ddi-list li:focus, .ddi-list li[aria-selected="true"] { background: var(--surface-alt); outline: none; }
+  .ddi-list li[hidden] { display: none; }
+  .ddi-code { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+  .ddi-none { margin: 8px 10px; font-size: .88rem; color: var(--ink-muted); }
+  @media (max-width: 520px) { .pq-row { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  import { leadStart, leadComplete } from '../lib/api';
+
+  const norm = (v: string) => v.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+  const KEY = 'seven_lead';
+  const saveLead = (v: { id: number; token: string }) => { try { sessionStorage.setItem(KEY, JSON.stringify(v)); } catch {} };
+  const loadLead = (): { id: number; token: string } | null => {
+    try {
+      const qs = new URLSearchParams(location.search);
+      const id = Number(qs.get('lead')), token = qs.get('t');
+      if (id && token) { saveLead({ id, token }); return { id, token }; }
+      return JSON.parse(sessionStorage.getItem(KEY) || 'null');
+    } catch { return null; }
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-prequal]').forEach((root) => {
+    const steps = Array.from(root.querySelectorAll<HTMLElement>('[data-pq-step]'));
+    const bar = root.querySelector<HTMLElement>('[data-pq-bar]')!;
+    const label = root.querySelector<HTMLElement>('[data-pq-steplabel]')!;
+    const labelTpl = label.textContent || '';
+    let lead = loadLead();
+    let current = 1;
+
+    function go(n: number) {
+      current = n;
+      steps.forEach((s) => (s.hidden = Number(s.dataset.pqStep) !== n));
+      bar.style.width = `${Math.min(n, 3) / 3 * 100}%`;
+      label.parentElement!.hidden = n > 3;
+      label.textContent = labelTpl.replace(/\d/, String(Math.min(n, 3)));
+      root.querySelectorAll<HTMLElement>('[data-pq-msg]').forEach((m) => (m.hidden = true));
+      steps[n - 1]?.querySelector<HTMLElement>('input:not([type=hidden]),textarea')?.focus({ preventScroll: true });
+    }
+    const fail = (form: HTMLElement, text: string) => { const m = form.querySelector<HTMLElement>('[data-pq-msg]'); if (m) { m.textContent = text; m.hidden = false; } };
+    root.querySelectorAll('[data-pq-back]').forEach((b) => b.addEventListener('click', () => go(current - 1)));
+    // Quem volta pelo link do e-mail (ou recarrega a página) continua na etapa 2.
+    if (lead) go(2);
+
+    // --- Seletor de DDI pesquisável ---
+    const ddi = root.querySelector<HTMLElement>('[data-ddi]')!;
+    const ddiBtn = ddi.querySelector<HTMLButtonElement>('[data-ddi-btn]')!;
+    const ddiPop = ddi.querySelector<HTMLElement>('[data-ddi-pop]')!;
+    const ddiSearch = ddi.querySelector<HTMLInputElement>('[data-ddi-search]')!;
+    const ddiNone = ddi.querySelector<HTMLElement>('[data-ddi-none]')!;
+    const ddiValue = ddi.querySelector<HTMLInputElement>('[data-ddi-value]')!;
+    const opts = Array.from(ddi.querySelectorAll<HTMLElement>('[data-ddi-list] li'));
+    const setDdi = (li?: HTMLElement) => {
+      if (!li) return;
+      opts.forEach((o) => o.setAttribute('aria-selected', String(o === li)));
+      ddiValue.value = li.dataset.dial || '';
+      ddi.querySelector('[data-ddi-label]')!.textContent = li.dataset.dial || '';
+      ddi.querySelector('[data-ddi-iso]')!.textContent = li.dataset.iso || '';
+    };
+    const filter = (q: string) => {
+      const nq = norm(q); const digits = q.replace(/[^\d]/g, ''); let shown = 0;
+      for (const o of opts) {
+        const ok = !nq || norm(o.dataset.q || '').includes(nq) || (digits.length > 0 && (o.dataset.dial || '').replace('+', '').startsWith(digits));
+        o.hidden = !ok; if (ok) shown++;
+      }
+      ddiNone.hidden = shown > 0;
+    };
+    const openDdi = (open: boolean) => { ddiPop.hidden = !open; ddiBtn.setAttribute('aria-expanded', String(open)); if (open) { ddiSearch.value = ''; filter(''); ddiSearch.focus(); } };
+    const pickDdi = (o?: HTMLElement) => { setDdi(o); openDdi(false); ddiBtn.focus(); };
+    ddiBtn.addEventListener('click', () => openDdi(ddiPop.hidden));
+    ddiSearch.addEventListener('input', () => filter(ddiSearch.value));
+    ddiSearch.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); pickDdi(opts.find((o) => !o.hidden)); }
+      if (e.key === 'ArrowDown') { e.preventDefault(); opts.find((o) => !o.hidden)?.focus(); }
+      if (e.key === 'Escape') { e.stopPropagation(); openDdi(false); ddiBtn.focus(); }
+    });
+    opts.forEach((o) => {
+      o.addEventListener('click', () => pickDdi(o));
+      o.addEventListener('keydown', (e) => {
+        const vis = opts.filter((x) => !x.hidden); const i = vis.indexOf(o);
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pickDdi(o); }
+        if (e.key === 'ArrowDown') { e.preventDefault(); vis[i + 1]?.focus(); }
+        if (e.key === 'ArrowUp') { e.preventDefault(); (vis[i - 1] ?? ddiSearch).focus(); }
+        if (e.key === 'Escape') { e.stopPropagation(); openDdi(false); ddiBtn.focus(); }
+      });
+    });
+    document.addEventListener('click', (e) => { if (!ddi.contains(e.target as Node)) openDdi(false); });
+
+    // --- Etapa 1: grava o contato já ---
+    const f1 = steps[0] as HTMLFormElement;
+    f1.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(f1);
+      if (fd.get('company')) return;
+      const name = String(fd.get('name') || '').trim(), email = String(fd.get('email') || '').trim();
+      const digits = String(fd.get('phone') || '').replace(/\D/g, '');
+      if (!name || !/^\S+@\S+\.\S+$/.test(email) || digits.length < 6) return fail(f1, root.dataset.required || '');
+      const btn = f1.querySelector<HTMLButtonElement>('button[type=submit]')!; btn.disabled = true;
+      try {
+        const r = await leadStart({
+          name, email, phone: `${fd.get('ddi')} ${digits}`, consent: fd.get('consent') === '1',
+          site_lang: root.dataset.lang || 'pt', language: root.dataset.lang === 'fr' ? 'en' : root.dataset.lang || 'pt',
+          page: location.pathname, turnstile_token: String(fd.get('cf-turnstile-response') || ''),
+        });
+        lead = { id: r.lead_id, token: r.token }; saveLead(lead);
+        // Conversão "Contato" do Google Ads: contato recebido.
+        (window as any).gtag?.('event', 'conversion', { send_to: 'AW-10789023252/z_q5CP3zn48YEJTczZgo' });
+        go(2);
+      } catch { fail(f1, root.dataset.error || ''); }
+      finally { btn.disabled = false; }
+    });
+
+    // --- Etapa 2 ---
+    const f2 = steps[1] as HTMLFormElement;
+    f2.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!new FormData(f2).get('topic')) return fail(f2, root.dataset.required || '');
+      go(3);
+    });
+
+    // --- Etapa 3: conclui ---
+    const f3 = steps[2] as HTMLFormElement;
+    f3.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const a = new FormData(f2), b = new FormData(f3);
+      if (!b.get('urgency')) return fail(f3, root.dataset.required || '');
+      if (!lead) return go(1);
+      const btn = f3.querySelector<HTMLButtonElement>('button[type=submit]')!; btn.disabled = true;
+      try {
+        await leadComplete({
+          lead_id: lead.id, token: lead.token,
+          topic: String(a.get('topic') || ''), message: String(a.get('message') || ''),
+          urgency: String(b.get('urgency') || ''), location: String(b.get('location') || ''),
+          consulted_others: String(b.get('consulted_others') || ''), preferred_contact: String(b.get('preferred_contact') || ''),
+          unit_slug: String(b.get('unit_slug') || ''), language: String(b.get('language') || ''),
+        });
+        try { sessionStorage.removeItem(KEY); } catch {}
+        lead = null;
+        go(4);
+      } catch { fail(f3, root.dataset.error || ''); }
+      finally { btn.disabled = false; }
+    });
+  });
+</script>

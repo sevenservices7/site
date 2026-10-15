@@ -63,7 +63,7 @@ const mapLabel = { pt: 'Mapa', en: 'Map', es: 'Mapa', fr: 'Carte' }[lang];
           {Object.entries(office.hours).map(([k, v]) => <p style="margin:2px 0"><strong>{k}:</strong> {v}</p>)}
         </div>
       )}
-      <a href={getRoute('booking', lang)} class="btn btn-gold btn-block" style="margin-top:18px">{t('nav.booking')}</a>
+      <a href={getRoute('expert', lang)} class="btn btn-gold btn-block" style="margin-top:18px">{t('nav.booking')}</a>
     </div>
 
     <div class="unit-map">

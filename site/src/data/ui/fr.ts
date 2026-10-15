@@ -10,7 +10,7 @@ export const ui: UiStrings = {
     apoio: { title: "Appui juridique", summary: "Quand le dossier demande une avocate : recours, refus et cas complexes." },
   },
   common: {
-    home: "Accueil", solutions: "Solutions", talkToExpert: "Parler à un spécialiste", whatsapp: "Discuter sur WhatsApp",
+    home: "Accueil", solutions: "Solutions", talkToExpert: "Parler à un spécialiste", bookConsult: "Prendre rendez-vous", whatsapp: "Discuter sur WhatsApp",
     learnMore: "En savoir plus", seeAllSolutions: "Voir toutes les solutions", breadcrumbAria: "Vous êtes ici",
     anyStage: "À toutes les étapes", stage: "Étape",
     waGeneric: "Bonjour SEVEN ! Je viens du site et je souhaite parler à un spécialiste.",

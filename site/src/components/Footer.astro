@@ -42,7 +42,8 @@ const cookiePrefs = { pt: 'Preferências de cookies', en: 'Cookie preferences', 
         <ul>
           <li><a href={getRoute('about', lang)}>{t('nav.about')}</a></li>
           <li><a href={`${getRoute('about', lang)}#equipe`}>{t('nav.team')}</a></li>
-          <li><a href={getRoute('booking', lang)}>{t('nav.booking')}</a></li>
+          <li><a href={getRoute('expert', lang)}>{t('nav.booking')}</a></li>
+          <li><a href={getRoute('booking', lang)}>{u.common.bookConsult}</a></li>
           {isPt && <li><a href="/blog">{t('nav.blog')}</a></li>}
           {isPt && <li><a href="/podcast">{t('nav.podcast')}</a></li>}
         </ul>

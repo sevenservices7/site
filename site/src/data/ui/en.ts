@@ -10,7 +10,7 @@ export const ui: UiStrings = {
     apoio: { title: "Legal support", summary: "When your case needs a lawyer: appeals, refusals and complex cases." },
   },
   common: {
-    home: "Home", solutions: "Solutions", talkToExpert: "Talk to an expert", whatsapp: "Chat on WhatsApp",
+    home: "Home", solutions: "Solutions", talkToExpert: "Talk to an expert", bookConsult: "Book a consultation", whatsapp: "Chat on WhatsApp",
     learnMore: "Learn more", seeAllSolutions: "See all solutions", breadcrumbAria: "You are here",
     anyStage: "At any stage", stage: "Stage",
     waGeneric: "Hi SEVEN! I found you through your website and I'd like to talk to an expert.",

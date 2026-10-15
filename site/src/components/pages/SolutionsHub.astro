@@ -10,6 +10,7 @@ const { lang } = Astro.props;
 const u = getUi(lang);
 const wa = await mainWhatsapp();
 const booking = getRoute('booking', lang);
+const expert = getRoute('expert', lang);
 const stages = STAGES.map((st) => ({ ...st, ...u.stages[st.id], items: solutionsByStageFor(lang, st.id) })).filter((st) => st.items.length > 0);
 ---
 <section class="pg-hero">
@@ -19,7 +20,8 @@ const stages = STAGES.map((st) => ({ ...st, ...u.stages[st.id], items: solutions
     <h1>{u.hub.h1} <em>{u.hub.h1Em}</em></h1>
     <p class="lede">{u.hub.lede}</p>
     <div class="ctas">
-      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={expert} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={booking} class="btn btn-ghost">{u.common.bookConsult}</a>
       <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
     </div>
   </div>
@@ -49,7 +51,8 @@ const stages = STAGES.map((st) => ({ ...st, ...u.stages[st.id], items: solutions
     <h2>{u.hub.ctaTitle}</h2>
     <p>{u.hub.ctaBody}</p>
     <div class="ctas">
-      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={expert} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={booking} class="btn btn-ghost">{u.common.bookConsult}</a>
       <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
     </div>
   </div>

@@ -10,7 +10,7 @@ export const ui: UiStrings = {
     apoio: { title: 'Apoyo jurídico', summary: 'Cuando el caso pide abogada: recursos, denegaciones y casos complejos.' },
   },
   common: {
-    home: 'Inicio', solutions: 'Soluciones', talkToExpert: 'Hablar con un especialista', whatsapp: 'Escribir por WhatsApp',
+    home: 'Inicio', solutions: 'Soluciones', talkToExpert: 'Hablar con un especialista', bookConsult: 'Agendar consultoría', whatsapp: 'Escribir por WhatsApp',
     learnMore: 'Saber más', seeAllSolutions: 'Ver todas las soluciones', breadcrumbAria: 'Estás en',
     anyStage: 'En cualquier etapa', stage: 'Etapa',
     waGeneric: '¡Hola, SEVEN! Vengo de la web y quiero hablar con un especialista.',

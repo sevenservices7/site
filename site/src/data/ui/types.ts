@@ -4,7 +4,7 @@
 export interface UiStrings {
   stages: Record<'decisao' | 'chegada' | 'residencia' | 'nacionalidade' | 'empresa' | 'apoio', { title: string; summary: string }>;
   common: {
-    home: string; solutions: string; talkToExpert: string; whatsapp: string; learnMore: string; seeAllSolutions: string;
+    home: string; solutions: string; talkToExpert: string; bookConsult: string; whatsapp: string; learnMore: string; seeAllSolutions: string;
     breadcrumbAria: string; anyStage: string; stage: string; waGeneric: string; waTopic: string; // waTopic usa {topic}
   };
   solution: {

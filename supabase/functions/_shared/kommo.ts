@@ -111,3 +111,14 @@ export async function markKommoLeadWon(leadId: number): Promise<{ ok: boolean }>
   if (!res.ok) { const txt = await res.text().catch(() => res.statusText); throw new Error(`Kommo won ${res.status}: ${txt}`); }
   return { ok: true };
 }
+
+/** Acrescenta uma nota e etiquetas a um lead existente (ex.: respostas da pré-qualificação). */
+export async function updateKommoLead(leadId: number, note: string, tags: string[]): Promise<void> {
+  const subdomain = Deno.env.get('KOMMO_SUBDOMAIN');
+  const token = Deno.env.get('KOMMO_LONG_LIVED_TOKEN');
+  if (!subdomain || !token || !leadId) throw new Error('KOMMO_SUBDOMAIN/KOMMO_LONG_LIVED_TOKEN nao configurados');
+  const h = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` };
+  const base = `https://${subdomain}.kommo.com/api/v4/leads`;
+  if (tags.length) await fetch(`${base}/${leadId}`, { method: 'PATCH', headers: h, body: JSON.stringify({ _embedded: { tags: tags.map((name) => ({ name })) } }) });
+  if (note) await fetch(`${base}/${leadId}/notes`, { method: 'POST', headers: h, body: JSON.stringify([{ note_type: 'common', params: { text: note } }]) });
+}

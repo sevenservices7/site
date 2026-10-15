@@ -65,7 +65,8 @@ const groups = STAGES
       </ul>
       <div class="nav-actions">
         <LangSwitcher lang={lang} routeKey={routeKey} alternates={alternates} />
-        <a href={getRoute('booking', lang)} class="btn btn-gold btn-sm">{t('nav.booking')}</a>
+        <a href={getRoute('booking', lang)} class="nav-book">{u.common.bookConsult}</a>
+        <a href={getRoute('expert', lang)} class="btn btn-gold btn-sm">{t('nav.booking')}</a>
       </div>
     </nav>
   </div>
@@ -87,6 +88,9 @@ const groups = STAGES
   .nav-links a:hover { color: var(--g1); }
   .nav-actions { display: flex; align-items: center; gap: 16px; }
   .nav-actions .btn { white-space: nowrap; }
+  .nav-book { color: var(--areia); font-family: var(--font-head); font-weight: 600; font-size: .8rem; white-space: nowrap; border-bottom: 1px solid transparent; }
+  .nav-book:hover { border-color: var(--areia); }
+  @media (min-width: 961px) and (max-width: 1400px) { .nav-book { display: none; } }
   @media (max-width: 1360px) { .nav-menu, .nav-links { gap: 22px; } }
   .nav-drop { position: relative; }
   .nav-drop-btn { display: inline-flex; align-items: center; gap: 6px; }

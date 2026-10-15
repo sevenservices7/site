@@ -12,6 +12,7 @@ const u = getUi(lang);
 const wa = await mainWhatsapp();
 const related = s.related.map((k) => solutionFor(lang, k)).filter((x): x is Solution => Boolean(x));
 const booking = getRoute('booking', lang);
+const expert = getRoute('expert', lang);
 const home = getRoute('home', lang);
 const hub = getRoute('solutions', lang);
 ---
@@ -28,7 +29,8 @@ const hub = getRoute('solutions', lang);
     <h1>{s.h1}</h1>
     <p class="lede">{s.lede}</p>
     <div class="ctas">
-      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={expert} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={booking} class="btn btn-ghost">{u.common.bookConsult}</a>
       <WhatsAppButton whatsapp={wa} text={waText(s.navLabel, lang)} label={u.common.whatsapp} />
     </div>
     {s.highlights.length > 0 && (
@@ -132,7 +134,8 @@ const hub = getRoute('solutions', lang);
     <h2>{s.ctaTitle}</h2>
     <p>{s.ctaBody}</p>
     <div class="ctas">
-      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={expert} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={booking} class="btn btn-ghost">{u.common.bookConsult}</a>
       <WhatsAppButton whatsapp={wa} text={waText(s.navLabel, lang)} label={u.common.whatsapp} />
     </div>
   </div>

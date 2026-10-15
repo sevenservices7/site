@@ -1,0 +1,96 @@
+---
+import { getRoute, type Lang } from '../../i18n/ui';
+import { getUi } from '../../data/ui';
+import PreQualForm from '../PreQualForm.astro';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const u = getUi(lang);
+const C = {
+  pt: {
+    eyebrow: 'Falar com especialista', h1: 'Conte o seu caso.', h1Em: 'A gente mostra o caminho.',
+    lede: 'Três passos rápidos, sem custo e sem compromisso. Um especialista analisa e fala com você em até 1 dia útil.',
+    nextTitle: 'O que acontece depois', next: [
+      ['Análise', 'Um especialista lê o seu caso antes de falar com você. Nada de contar a história cinco vezes.'],
+      ['Contato em até 1 dia útil', 'Pelo canal que você escolher: WhatsApp, e-mail ou ligação.'],
+      ['Caminho claro', 'A gente explica as opções, os prazos e o que dá ou não dá, com honestidade.'],
+    ],
+    bookTitle: 'Prefere já marcar uma conversa?', bookBody: 'Escolha o dia e o horário no calendário. A consultoria custa 80 €, descontados se você seguir com o serviço.',
+  },
+  en: {
+    eyebrow: 'Talk to an expert', h1: 'Tell us about your case.', h1Em: 'We’ll show you the way.',
+    lede: 'Three quick steps, free and with no commitment. A specialist reviews it and gets back to you within 1 business day.',
+    nextTitle: 'What happens next', next: [
+      ['Review', 'A specialist reads your case before contacting you. No telling your story five times.'],
+      ['Contact within 1 business day', 'Through the channel you choose: WhatsApp, email or a phone call.'],
+      ['A clear path', 'We explain the options, the timelines and what can or can’t be done, honestly.'],
+    ],
+    bookTitle: 'Rather book a call right away?', bookBody: 'Pick a day and time on the calendar. The consultation costs €80, deducted if you go ahead with the service.',
+  },
+  es: {
+    eyebrow: 'Hablar con un especialista', h1: 'Cuéntanos tu caso.', h1Em: 'Te mostramos el camino.',
+    lede: 'Tres pasos rápidos, sin coste y sin compromiso. Un especialista lo analiza y te contacta en 1 día hábil como máximo.',
+    nextTitle: 'Qué pasa después', next: [
+      ['Análisis', 'Un especialista lee tu caso antes de hablar contigo. Sin contar tu historia cinco veces.'],
+      ['Contacto en 1 día hábil', 'Por el canal que elijas: WhatsApp, correo o llamada.'],
+      ['Un camino claro', 'Te explicamos las opciones, los plazos y lo que se puede o no hacer, con honestidad.'],
+    ],
+    bookTitle: '¿Prefieres agendar ya una conversación?', bookBody: 'Elige el día y la hora en el calendario. La consultoría cuesta 80 €, que se descuentan si sigues con el servicio.',
+  },
+  fr: {
+    eyebrow: 'Parler à un spécialiste', h1: 'Parlez-nous de votre situation.', h1Em: 'Nous vous montrons le chemin.',
+    lede: 'Trois étapes rapides, gratuites et sans engagement. Un spécialiste l’étudie et vous recontacte sous 1 jour ouvré.',
+    nextTitle: 'Et ensuite ?', next: [
+      ['Analyse', 'Un spécialiste lit votre dossier avant de vous contacter. Inutile de raconter votre histoire cinq fois.'],
+      ['Contact sous 1 jour ouvré', 'Par le canal de votre choix : WhatsApp, e-mail ou appel.'],
+      ['Un chemin clair', 'Nous expliquons les options, les délais et ce qui est possible ou non, en toute honnêteté.'],
+    ],
+    bookTitle: 'Vous préférez réserver directement ?', bookBody: 'Choisissez le jour et l’heure dans le calendrier. La consultation coûte 80 €, déduits si vous poursuivez avec le service.',
+  },
+}[lang];
+---
+<section class="pg-hero xp-hero">
+  <div class="container">
+    <span class="eyebrow">{C.eyebrow}</span>
+    <h1>{C.h1} <em>{C.h1Em}</em></h1>
+    <p class="lede">{C.lede}</p>
+  </div>
+  <div class="pg-hero-mark" aria-hidden="true"></div>
+</section>
+
+<section class="bg-off">
+  <div class="container xp-grid">
+    <div class="xp-form"><PreQualForm lang={lang} idp="p" /></div>
+    <aside class="xp-side">
+      <h2>{C.nextTitle}</h2>
+      <ol class="steps-list">
+        {C.next.map(([t, b], i) => <li><span class="n">{String(i + 1).padStart(2, '0')}</span><div><h3>{t}</h3><p>{b}</p></div></li>)}
+      </ol>
+      <div class="pg-highlights xp-proof">
+        {u.home.highlights.slice(0, 2).map((h) => <div><strong>{h.value}</strong><span>{h.label}</span></div>)}
+      </div>
+      <div class="xp-book">
+        <h3>{C.bookTitle}</h3>
+        <p>{C.bookBody}</p>
+        <a href={getRoute('booking', lang)} class="btn btn-ghost">{u.common.bookConsult} →</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .xp-hero { padding-bottom: clamp(40px, 6vw, 64px); }
+  .xp-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(28px, 5vw, 64px); align-items: start; }
+  .xp-form { background: var(--surface); border-top: 4px solid var(--accent); padding: clamp(22px, 4vw, 36px); }
+  .xp-side h2 { font-size: 1.4rem; margin-bottom: 8px; }
+  .xp-side .steps-list li { grid-template-columns: 48px 1fr; padding: 16px 0; }
+  .xp-side .steps-list .n { font-size: 20px; }
+  .xp-side .steps-list h3 { font-size: 1rem; }
+  .xp-proof { grid-template-columns: 1fr 1fr; background: var(--border); border-top: 0; margin-top: 24px; }
+  .xp-proof > div { background: var(--surface-brand); padding: 16px; }
+  .xp-proof > div + div { padding-left: 16px; }
+  .xp-book { margin-top: 24px; padding: 22px; border: 1px solid var(--border-strong); background: var(--surface); }
+  .xp-book h3 { font-size: 1.05rem; margin-bottom: 6px; }
+  .xp-book p { color: var(--ink-muted); font-size: .92rem; margin-bottom: 14px; }
+  @media (max-width: 900px) { .xp-grid { grid-template-columns: 1fr; } }
+</style>

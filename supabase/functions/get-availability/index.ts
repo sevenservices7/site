@@ -6,7 +6,7 @@ import { googleBusy, TIMEZONE } from '../_shared/google.ts';
 const SLOT_MIN = 30;
 const DAY_START_MIN = 10 * 60;
 const DAY_END_MIN = 17 * 60;
-const MAX_DAYS = 14;
+const MAX_DAYS = 30;
 
 /** Partes de data/hora de um instante no fuso indicado. */
 function partsIn(ts: number, tz: string) {

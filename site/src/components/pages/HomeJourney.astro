@@ -17,6 +17,7 @@ const isPt = lang === 'pt';
 const u = getUi(lang);
 const h = u.home;
 const booking = getRoute('booking', lang);
+const expert = getRoute('expert', lang);
 const hub = getRoute('solutions', lang);
 const offices = await getOffices();
 const wa = await mainWhatsapp();
@@ -42,7 +43,8 @@ const testimonials = [
     <h1>{h.h1} <em>{h.h1Em}</em></h1>
     <p class="lede">{h.lede}</p>
     <div class="ctas">
-      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={expert} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={booking} class="btn btn-ghost">{u.common.bookConsult}</a>
       <a href={hub} class="btn btn-light">{h.ctaSecondary}</a>
     </div>
     <div class="pg-highlights">
@@ -180,7 +182,8 @@ const testimonials = [
     <h2>{h.closingTitle}</h2>
     <p>{h.closingBody}</p>
     <div class="ctas">
-      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={expert} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={booking} class="btn btn-ghost">{u.common.bookConsult}</a>
       <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
     </div>
   </div>

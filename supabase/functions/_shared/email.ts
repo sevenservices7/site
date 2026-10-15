@@ -1,8 +1,10 @@
 const FROM = Deno.env.get('EMAIL_FROM') || 'Seven Services <noreply@sevens.services>';
-export async function sendEmail(to: string, subject: string, html: string): Promise<boolean> {
+export async function sendEmail(to: string, subject: string, html: string, opts: { from?: string; replyTo?: string } = {}): Promise<boolean> {
   const key = Deno.env.get('RESEND_API_KEY');
   if (!key || !to) return false;
-  const res = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ from: FROM, to, subject, html }) });
+  const payload: Record<string, unknown> = { from: opts.from || FROM, to, subject, html };
+  if (opts.replyTo) payload.reply_to = opts.replyTo;
+  const res = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
   if (!res.ok) { console.error('resend', await res.text().catch(() => '')); return false; }
   return true;
 }

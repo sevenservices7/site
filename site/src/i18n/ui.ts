@@ -29,6 +29,7 @@ export const ROUTES = {
   solutions: { pt: '/solucoes', en: '/en/solutions', es: '/es/soluciones', fr: '/fr/solutions' },
   about: { pt: '/sobre', en: '/en/about', es: '/es/sobre', fr: '/fr/a-propos' },
   team: { pt: '/equipa', en: '/en/team', es: '/es/equipo', fr: '/fr/equipe' },
+  expert: { pt: '/falar-com-especialista', en: '/en/talk-to-an-expert', es: '/es/hablar-con-un-especialista', fr: '/fr/parler-a-un-specialiste' },
   booking: { pt: '/agendamento', en: '/en/booking', es: '/es/agenda', fr: '/fr/rendez-vous' },
   contact: { pt: '/contato', en: '/en/contact', es: '/es/contacto', fr: '/fr/contact' },
   terms: { pt: '/legal/termos', en: '/en/legal/terms', es: '/es/legal/terminos', fr: '/fr/legal/conditions' },

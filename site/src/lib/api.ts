@@ -103,3 +103,19 @@ export function sendLead(input: {
 }): Promise<{ ok: boolean; lead_id?: number }> {
   return callFn('kommo-lead', { ...input, source: 'website' });
 }
+
+/** "Falar com especialista", etapa 1: grava o contato como lead parcial e devolve id + token. */
+export function leadStart(input: {
+  name: string; email: string; phone: string; consent: boolean;
+  site_lang: string; language: string; page: string; turnstile_token?: string;
+}): Promise<{ ok: boolean; lead_id: number; token: string }> {
+  return callFn('lead', { action: 'start', ...input });
+}
+
+/** "Falar com especialista", etapas 2 e 3: completa a pré-qualificação do lead. */
+export function leadComplete(input: {
+  lead_id: number; token: string; topic: string; message: string; urgency: string; location: string;
+  consulted_others: string; preferred_contact: string; unit_slug: string; language: string;
+}): Promise<{ ok: boolean }> {
+  return callFn('lead', { action: 'complete', ...input });
+}

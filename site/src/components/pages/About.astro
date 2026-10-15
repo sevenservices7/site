@@ -275,6 +275,7 @@ const brand = {
 const u = getUi(lang);
 const wa = await mainWhatsapp();
 const booking = getRoute('booking', lang);
+const expert = getRoute('expert', lang);
 const journey = STAGES.map((st) => {
   const first = solutionsByStageFor(lang, st.id)[0];
   return { step: st.step, title: u.stages[st.id].title, summary: u.stages[st.id].summary, href: first ? solutionPath(lang, first) : getRoute('solutions', lang) };
@@ -291,7 +292,8 @@ import { mainWhatsapp, waText } from '../../lib/site';
     <h1>{brand.heroH1} <em>{brand.heroEm}</em></h1>
     <p class="lede">{brand.heroLede}</p>
     <div class="ctas">
-      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={expert} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={booking} class="btn btn-ghost">{u.common.bookConsult}</a>
       <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
     </div>
     <div class="pg-highlights">
@@ -395,7 +397,8 @@ import { mainWhatsapp, waText } from '../../lib/site';
     <h2>{brand.closingTitle}</h2>
     <p>{brand.closingBody}</p>
     <div class="ctas">
-      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={expert} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <a href={booking} class="btn btn-ghost">{u.common.bookConsult}</a>
       <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
     </div>
     <p class="legal-line">{t('footer.legalEntity')}</p>
