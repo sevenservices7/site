@@ -71,12 +71,12 @@ export const fallbackTeam: TeamMember[] = [
   { code: 'DJ', name: 'Danilo Jesus', role_label: 'Fundador e CEO', unit: 'Albufeira', photo_url: '/team/danilo.jpg', founder: true },
   { code: 'DG', name: 'Douglas Santos', role_label: 'Diretor de Operações', unit: '', photo_url: '' },
   { code: 'AK', name: 'Ana Kathlyn', role_label: 'Advogada', unit: '', photo_url: '/team/ana.jpg' },
-  { code: 'MC', name: 'Marcella Volpi', role_label: 'Gestora Comercial', unit: '', photo_url: '' },
+  { code: 'MC', name: 'Marcella Volpi', role_label: 'Gestora Comercial', unit: '', photo_url: '/team/marcella.jpg' },
   { code: 'GR', name: 'Gabriela Ramos', role_label: 'Gestora de Onboarding', unit: 'Albufeira', photo_url: '/team/gabriela.jpg' },
   { code: 'DS', name: 'Dayane Silva', role_label: 'Gestora de Unidade · Faro', unit: 'Faro', photo_url: '/team/dayane.jpg' },
-  { code: 'MI', name: 'Maria Inês', role_label: 'Contabilista Certificada', unit: '', photo_url: '' },
+  { code: 'MI', name: 'Maria Inês', role_label: 'Contabilista Certificada', unit: '', photo_url: '/team/maria-ines.jpg' },
   { code: 'DN', name: 'Danusia Jesus', role_label: 'Marketing · Direção Criativa', unit: '', photo_url: '' },
-  { code: 'TH', name: 'Thayná Jesus', role_label: 'Marketing · Edição e Conteúdo', unit: '', photo_url: '' },
+  { code: 'TH', name: 'Thayná Jesus', role_label: 'Marketing · Edição e Conteúdo', unit: '', photo_url: '/team/thayna.jpg' },
 ];
 
 // Catálogo completo do site (136 serviços, 8 famílias). Fonte de verdade na
