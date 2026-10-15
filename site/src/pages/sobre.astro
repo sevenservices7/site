@@ -1,9 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import About from '../components/pages/About.astro';
-import { useTranslations } from '../i18n/ui';
-const t = useTranslations('pt');
 ---
-<Base title={`${t('nav.about')} — ${t('site.name')}`} description={t('home.about.body')} routeKey="about">
+<Base title="Sobre a SEVEN: imigração e negócios em Portugal" description="A SEVEN nasceu da história de um imigrante que ouviu “impossível” e achou o caminho. +5.000 clientes, 3 unidades e atendimento online no mundo todo." routeKey="about">
   <About lang="pt" />
 </Base>

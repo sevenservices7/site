@@ -127,70 +127,294 @@ const copy = {
     ],
   },
 }[lang];
+
+// Plataforma de marca (design system SEVEN): manifesto, linha do tempo e jornada.
+// TODO livro do Danilo: quando chegar o texto, entram aqui uma citação e trechos da história.
+const brand = {
+  pt: {
+    heroH1: 'Sempre existe um', heroEm: 'caminho.',
+    heroLede: 'Transformando complexidade em caminho. Clareza para ir além. A SEVEN é a assessoria especialista em imigração e negócios que acompanha você do primeiro documento ao seu próprio negócio em Portugal.',
+    manifestoEyebrow: 'Manifesto',
+    manifesto: [
+      'Mudar de país já é difícil o bastante.',
+      'Ninguém deveria perder o emprego, o sono ou o dinheiro por causa de papelada.',
+      'A gente não vende papel. Vende certeza.',
+      'Não promete o que não pode cumprir. Não pega atalho. Não aceita jeitinho.',
+      'Quando um caminho fecha, a gente mostra outro, dentro da lei.',
+    ],
+    manifestoClose: 'Resolvido. Do jeito certo.',
+    storyEyebrow: 'A nossa história',
+    storyTitle: 'Começou com um imigrante que ouviu “impossível” e foi atrás da resposta.',
+    timelineEyebrow: 'Linha do tempo',
+    timelineTitle: 'De uma mesa e uma impressora a três unidades',
+    timeline: [
+      ['A chegada', 'O Danilo chega a Portugal e enfrenta a mesma burocracia de todo imigrante. Decide entender as regras por conta própria e organiza toda a documentação dele.'],
+      ['O “impossível”', 'Troca a carteira brasileira pela portuguesa sem ter o título de residência, quando todo mundo dizia que não dava. Família e amigos começam a pedir ajuda.'],
+      ['Agosto de 2022', 'Nasce a SEVEN, em Albufeira: uma mesa, uma impressora e muita determinação. Em poucos meses, centenas de clientes.'],
+      ['Janeiro de 2026', 'Abre a unidade de Faro.'],
+      ['Março de 2026', 'Abre a unidade do Porto.'],
+      ['Hoje', 'Mais de 5.000 clientes atendidos, atendimento online em qualquer lugar do mundo e um podcast com histórias reais de quem construiu a vida lá fora.'],
+    ],
+    missionEyebrow: 'Missão',
+    beliefsEyebrow: 'Valores',
+    beliefTiles: ['Sem atalho', 'Sem jeitinho', 'Sem promessa vazia'],
+    beliefQuote: 'Prefiro perder uma venda a perder um cliente.',
+    journeyEyebrow: 'A jornada',
+    journeyTitle: 'A gente acompanha a vida lá fora inteira, não só um papel',
+    journeyLead: 'Da decisão de sair do país à nacionalidade e ao seu próprio negócio. Você não precisa saber o nome do processo: diga onde está, e a gente mostra o próximo passo.',
+    workEyebrow: 'Método',
+    closingTitle: 'Qual é o seu próximo passo?',
+    closingBody: 'Conte o seu caso. A gente analisa, explica as opções e mostra o caminho, com honestidade, mesmo quando a resposta é não.',
+  },
+  en: {
+    heroH1: 'There is always a', heroEm: 'way.',
+    heroLede: 'Turning complexity into a clear path. Clarity to go further. SEVEN is the immigration and business advisory that supports you from your first document to your own company in Portugal.',
+    manifestoEyebrow: 'Manifesto',
+    manifesto: [
+      'Moving country is hard enough.',
+      'No one should lose their job, their sleep or their money over paperwork.',
+      'We don’t sell paperwork. We sell certainty.',
+      'We don’t promise what we can’t deliver. No shortcuts. No bending the rules.',
+      'When one path closes, we show you another, within the law.',
+    ],
+    manifestoClose: 'Solved. The right way.',
+    storyEyebrow: 'Our story',
+    storyTitle: 'It started with an immigrant who heard “impossible” and went looking for the answer.',
+    timelineEyebrow: 'Timeline',
+    timelineTitle: 'From one desk and a printer to three locations',
+    timeline: [
+      ['Arriving', 'Danilo arrives in Portugal and faces the same bureaucracy as every immigrant. He decides to understand the rules himself and sorts out all of his own paperwork.'],
+      ['The “impossible”', 'He exchanges his Brazilian driving licence for a Portuguese one without a residence permit, when everyone said it couldn’t be done. Family and friends start asking for help.'],
+      ['August 2022', 'SEVEN is born in Albufeira: one desk, one printer and a lot of determination. Within months, hundreds of clients.'],
+      ['January 2026', 'The Faro office opens.'],
+      ['March 2026', 'The Porto office opens.'],
+      ['Today', 'More than 5,000 clients served, online support anywhere in the world and a podcast with real stories of people who built a life abroad.'],
+    ],
+    missionEyebrow: 'Mission',
+    beliefsEyebrow: 'Values',
+    beliefTiles: ['No shortcuts', 'No bending the rules', 'No empty promises'],
+    beliefQuote: 'I’d rather lose a sale than lose a client.',
+    journeyEyebrow: 'The journey',
+    journeyTitle: 'We support your whole life abroad, not just one document',
+    journeyLead: 'From deciding to move to citizenship and your own business. You don’t need to know the name of the process: tell us where you are, and we’ll show you the next step.',
+    workEyebrow: 'Method',
+    closingTitle: 'What’s your next step?',
+    closingBody: 'Tell us about your case. We’ll look at it, explain your options and show you the way, honestly, even when the answer is no.',
+  },
+  es: {
+    heroH1: 'Siempre hay un', heroEm: 'camino.',
+    heroLede: 'Transformando la complejidad en camino. Claridad para ir más allá. SEVEN es la asesoría especializada en inmigración y negocios que te acompaña desde el primer documento hasta tu propio negocio en Portugal.',
+    manifestoEyebrow: 'Manifiesto',
+    manifesto: [
+      'Cambiar de país ya es bastante difícil.',
+      'Nadie debería perder el trabajo, el sueño o el dinero por culpa del papeleo.',
+      'No vendemos papeles. Vendemos certeza.',
+      'No prometemos lo que no podemos cumplir. Sin atajos. Sin trampas.',
+      'Cuando un camino se cierra, te mostramos otro, dentro de la ley.',
+    ],
+    manifestoClose: 'Resuelto. Como debe ser.',
+    storyEyebrow: 'Nuestra historia',
+    storyTitle: 'Empezó con un inmigrante que escuchó “imposible” y fue a buscar la respuesta.',
+    timelineEyebrow: 'Línea de tiempo',
+    timelineTitle: 'De una mesa y una impresora a tres sedes',
+    timeline: [
+      ['La llegada', 'Danilo llega a Portugal y se enfrenta a la misma burocracia que cualquier inmigrante. Decide entender las reglas por su cuenta y organiza toda su documentación.'],
+      ['El “imposible”', 'Cambia su permiso de conducir brasileño por el portugués sin tener el permiso de residencia, cuando todos decían que no se podía. Familia y amigos empiezan a pedirle ayuda.'],
+      ['Agosto de 2022', 'Nace SEVEN en Albufeira: una mesa, una impresora y mucha determinación. En pocos meses, cientos de clientes.'],
+      ['Enero de 2026', 'Abre la sede de Faro.'],
+      ['Marzo de 2026', 'Abre la sede de Oporto.'],
+      ['Hoy', 'Más de 5.000 clientes atendidos, atención online en cualquier lugar del mundo y un podcast con historias reales de quienes construyeron su vida fuera.'],
+    ],
+    missionEyebrow: 'Misión',
+    beliefsEyebrow: 'Valores',
+    beliefTiles: ['Sin atajos', 'Sin trampas', 'Sin promesas vacías'],
+    beliefQuote: 'Prefiero perder una venta que perder un cliente.',
+    journeyEyebrow: 'El recorrido',
+    journeyTitle: 'Te acompañamos en toda tu vida fuera, no solo en un trámite',
+    journeyLead: 'Desde la decisión de mudarte hasta la nacionalidad y tu propio negocio. No necesitas saber el nombre del trámite: dinos dónde estás y te mostramos el siguiente paso.',
+    workEyebrow: 'Método',
+    closingTitle: '¿Cuál es tu próximo paso?',
+    closingBody: 'Cuéntanos tu caso. Lo analizamos, te explicamos las opciones y te mostramos el camino, con honestidad, incluso cuando la respuesta es no.',
+  },
+  fr: {
+    heroH1: 'Il y a toujours un', heroEm: 'chemin.',
+    heroLede: 'Transformer la complexité en chemin. La clarté pour aller plus loin. SEVEN est le cabinet de conseil en immigration et en affaires qui vous accompagne du premier document jusqu’à votre propre entreprise au Portugal.',
+    manifestoEyebrow: 'Manifeste',
+    manifesto: [
+      'Changer de pays est déjà assez difficile.',
+      'Personne ne devrait perdre son emploi, son sommeil ou son argent à cause de la paperasse.',
+      'Nous ne vendons pas des papiers. Nous vendons de la certitude.',
+      'Nous ne promettons pas ce que nous ne pouvons pas tenir. Pas de raccourcis. Pas de passe-droits.',
+      'Quand un chemin se ferme, nous vous en montrons un autre, dans le respect de la loi.',
+    ],
+    manifestoClose: 'Réglé. Dans les règles.',
+    storyEyebrow: 'Notre histoire',
+    storyTitle: 'Tout a commencé avec un immigré qui a entendu « impossible » et qui est allé chercher la réponse.',
+    timelineEyebrow: 'Chronologie',
+    timelineTitle: 'D’un bureau et une imprimante à trois agences',
+    timeline: [
+      ['L’arrivée', 'Danilo arrive au Portugal et affronte la même bureaucratie que tout immigré. Il décide de comprendre les règles par lui-même et règle tous ses papiers.'],
+      ['L’« impossible »', 'Il échange son permis de conduire brésilien contre un permis portugais sans titre de séjour, alors que tout le monde disait que c’était impossible. Famille et amis commencent à lui demander de l’aide.'],
+      ['Août 2022', 'SEVEN naît à Albufeira : un bureau, une imprimante et beaucoup de détermination. En quelques mois, des centaines de clients.'],
+      ['Janvier 2026', 'Ouverture de l’agence de Faro.'],
+      ['Mars 2026', 'Ouverture de l’agence de Porto.'],
+      ['Aujourd’hui', 'Plus de 5 000 clients accompagnés, un accompagnement en ligne partout dans le monde et un podcast avec des histoires vraies de personnes qui ont construit leur vie à l’étranger.'],
+    ],
+    missionEyebrow: 'Mission',
+    beliefsEyebrow: 'Valeurs',
+    beliefTiles: ['Pas de raccourcis', 'Pas de passe-droits', 'Pas de promesses vides'],
+    beliefQuote: 'Je préfère perdre une vente que perdre un client.',
+    journeyEyebrow: 'Le parcours',
+    journeyTitle: 'Nous vous accompagnons dans toute votre vie à l’étranger, pas seulement pour un papier',
+    journeyLead: 'De la décision de partir jusqu’à la nationalité et votre propre entreprise. Inutile de connaître le nom de la démarche : dites-nous où vous en êtes, nous vous montrons la prochaine étape.',
+    workEyebrow: 'Méthode',
+    closingTitle: 'Quelle est votre prochaine étape ?',
+    closingBody: 'Parlez-nous de votre situation. Nous l’analysons, vous expliquons les options et vous montrons le chemin, en toute honnêteté, même quand la réponse est non.',
+  },
+}[lang];
+const u = getUi(lang);
+const wa = await mainWhatsapp();
+const booking = getRoute('booking', lang);
+const journey = STAGES.map((st) => {
+  const first = solutionsByStageFor(lang, st.id)[0];
+  return { step: st.step, title: u.stages[st.id].title, summary: u.stages[st.id].summary, href: first ? solutionPath(lang, first) : getRoute('solutions', lang) };
+});
 import Team from './Team.astro';
+import WhatsAppButton from '../WhatsAppButton.astro';
+import { getUi } from '../../data/ui';
+import { STAGES, solutionsByStageFor, solutionPath } from '../../data/solucoes';
+import { mainWhatsapp, waText } from '../../lib/site';
 ---
-<section class="bg-navy">
-  <div class="container center" style="max-width:760px">
-    <span class="eyebrow">{t('home.about.eyebrow')}</span>
-    <h1>{copy.title}</h1>
-    <p class="lead" style="margin-inline:auto">{copy.intro}</p>
-  </div>
-</section>
-
-<section>
-  <div class="container prose" style="max-width:760px">
-    <figure class="founder-portrait">
-      <img src="/team/danilo-sobre.jpg" alt={`Danilo Jesus — ${t('founder.role')}`} loading="lazy" width="760" height="1140" />
-      <figcaption>Danilo Jesus · {t('founder.role')}</figcaption>
-    </figure>
-    {copy.story.map((p) => <p>{p}</p>)}
-  </div>
-</section>
-
-<section class="bg-off">
-  <div class="container" style="max-width:760px">
-    <h2>{copy.missionTitle}</h2>
-    {copy.mission.map((p, i) => <p class:list={['mission-p', { lead: i === 0 }]} style="margin-top:14px">{p}</p>)}
-  </div>
-</section>
-
-<section>
-  <div class="container" style="max-width:760px">
-    <h2>{copy.beliefsTitle}</h2>
-    <div class="beliefs-lead">
-      {copy.beliefsLead.map((l) => <p>{l}</p>)}
+<section class="pg-hero">
+  <div class="container">
+    <span class="eyebrow">{copy.title}</span>
+    <h1>{brand.heroH1} <em>{brand.heroEm}</em></h1>
+    <p class="lede">{brand.heroLede}</p>
+    <div class="ctas">
+      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
     </div>
-    {copy.beliefs.map((p) => <p class="prose-p">{p}</p>)}
+    <div class="pg-highlights">
+      {u.home.highlights.map((h) => <div><strong>{h.value}</strong><span>{h.label}</span></div>)}
+    </div>
+  </div>
+  <div class="pg-hero-mark" aria-hidden="true"></div>
+</section>
+
+<section class="bg-white">
+  <div class="container manifesto">
+    <span class="eyebrow">{brand.manifestoEyebrow}</span>
+    {brand.manifesto.map((l) => <p>{l}</p>)}
+    <p class="manifesto-close">{brand.manifestoClose}</p>
   </div>
 </section>
 
 <section class="bg-off">
   <div class="container">
-    <div class="section-head center"><h2>{copy.workTitle}</h2></div>
-    <div class="grid cols-3">
-      {copy.work.map(([title, body]) => (
-        <div class="card work-card">
-          <h3>{title}</h3>
-          <p>{body}</p>
-        </div>
+    <div class="sec-head">
+      <span class="eyebrow">{brand.storyEyebrow}</span>
+      <h2>{brand.storyTitle}</h2>
+    </div>
+    <div class="prose story">
+      <figure class="founder-portrait">
+        <img src="/team/danilo-sobre.jpg" alt={`Danilo Jesus — ${t('founder.role')}`} loading="lazy" width="760" height="1140" />
+        <figcaption>Danilo Jesus · {t('founder.role')}</figcaption>
+      </figure>
+      {copy.story.map((p) => <p>{p}</p>)}
+    </div>
+  </div>
+</section>
+
+<section class="bg-white">
+  <div class="container">
+    <div class="sec-head">
+      <span class="eyebrow">{brand.timelineEyebrow}</span>
+      <h2>{brand.timelineTitle}</h2>
+    </div>
+    <ol class="steps-list timeline">
+      {brand.timeline.map(([when, what], i) => (
+        <li><span class="n">{String(i + 1).padStart(2, '0')}</span><div><h3>{when}</h3><p>{what}</p></div></li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<section class="sign-band mission-band">
+  <div class="container">
+    <span class="eyebrow">{brand.missionEyebrow}</span>
+    <p class="statement">{copy.mission[0]}</p>
+    <p>{copy.mission[1]}</p>
+  </div>
+</section>
+
+<section class="bg-white">
+  <div class="container">
+    <div class="sec-head">
+      <span class="eyebrow">{brand.beliefsEyebrow}</span>
+      <h2>{copy.beliefsTitle}</h2>
+    </div>
+    <div class="tiles tiles-3">
+      {brand.beliefTiles.map((title, i) => <div class="tile"><h3>{title}</h3><p>{copy.beliefs[i]}</p></div>)}
+    </div>
+    <blockquote class="belief-quote">“{brand.beliefQuote}”<cite>Danilo Jesus</cite></blockquote>
+  </div>
+</section>
+
+<section class="bg-off">
+  <div class="container">
+    <div class="sec-head">
+      <span class="eyebrow">{brand.journeyEyebrow}</span>
+      <h2>{brand.journeyTitle}</h2>
+      <p class="lead">{brand.journeyLead}</p>
+    </div>
+    <div class="link-cards">
+      {journey.map((j) => (
+        <a href={j.href} class="link-card"><span class="journey-step">{j.step}</span><h3>{j.title}</h3><p>{j.summary}</p><span class="go">{u.common.learnMore}</span></a>
       ))}
     </div>
-    <p class="center muted" style="margin-top:32px">{t('footer.legalEntity')}</p>
+  </div>
+</section>
+
+<section class="bg-white">
+  <div class="container">
+    <div class="sec-head">
+      <span class="eyebrow">{brand.workEyebrow}</span>
+      <h2>{copy.workTitle}</h2>
+    </div>
+    <div class="tiles tiles-3">
+      {copy.work.map(([title, body]) => <div class="tile"><h3>{title}</h3><p>{body}</p></div>)}
+    </div>
   </div>
 </section>
 
 <Team lang={lang} embedded />
 
+<section class="sign-band">
+  <div class="container">
+    <p class="statement">{brand.heroH1} {brand.heroEm}</p>
+    <h2>{brand.closingTitle}</h2>
+    <p>{brand.closingBody}</p>
+    <div class="ctas">
+      <a href={booking} class="btn btn-gold">{u.common.talkToExpert}</a>
+      <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
+    </div>
+    <p class="legal-line">{t('footer.legalEntity')}</p>
+  </div>
+</section>
+
 <style>
-  .prose p, .prose-p { color: var(--seven-ink); line-height: 1.75; margin-bottom: 18px; }
-  .founder-portrait { float: right; width: 248px; margin: 4px 0 20px 30px; }
+  .manifesto { max-width: 860px; }
+  .manifesto p { font-family: var(--font-head); font-weight: 600; font-size: clamp(1.3rem, 2.8vw, 2rem); line-height: 1.25; color: var(--heading); margin-top: 14px; text-wrap: balance; }
+  .manifesto .manifesto-close { margin-top: 28px; padding-top: 22px; border-top: 3px solid var(--accent); display: inline-block; text-transform: uppercase; letter-spacing: .02em; font-weight: 700; }
+  .story { max-width: 860px; }
+  .founder-portrait { float: right; width: 260px; margin: 4px 0 20px 32px; }
   .founder-portrait img { width: 100%; height: auto; display: block; }
-  .founder-portrait figcaption { margin-top: 10px; font-family: var(--font-head); font-size: .76rem; text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--g0); text-align: center; }
-  @media (max-width: 560px) { .founder-portrait { float: none; width: 220px; margin: 0 auto 22px; } }
-  .mission-p { color: var(--seven-ink); line-height: 1.7; }
-  .beliefs-lead { margin: 18px 0 24px; }
-  .beliefs-lead p { font-family: var(--font-head); font-weight: 500; font-size: clamp(1.15rem, 2.2vw, 1.5rem); line-height: 1.35; color: var(--heading); margin: 2px 0; }
-  .work-card { padding: 28px; height: 100%; }
-  .work-card h3 { font-size: 1.12rem; color: var(--seven-navy-deep); margin-bottom: 10px; }
-  .work-card p { color: var(--seven-muted); font-size: .94rem; line-height: 1.65; }
+  .founder-portrait figcaption { margin-top: 10px; font-family: var(--font-head); font-size: .76rem; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-muted); text-align: center; }
+  @media (max-width: 620px) { .founder-portrait { float: none; width: 220px; margin: 0 auto 22px; } }
+  .timeline h3 { text-transform: none; letter-spacing: 0; }
+  .mission-band .statement { max-width: 22ch; margin-top: 14px; }
+  .belief-quote { margin-top: 32px; max-width: 760px; border-left: 4px solid var(--accent); padding: 6px 0 6px 20px; font-family: var(--font-head); font-weight: 600; font-size: clamp(1.15rem, 2.2vw, 1.5rem); color: var(--heading); }
+  .belief-quote cite { display: block; margin-top: 8px; font-style: normal; font-size: .8rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-muted); }
+  .journey-step { font-family: var(--font-head); font-weight: 700; font-size: 1.4rem; color: var(--accent-strong, var(--heading)); }
+  .legal-line { margin-top: 28px; font-size: .8rem; color: var(--complementar-2) !important; }
 </style>
