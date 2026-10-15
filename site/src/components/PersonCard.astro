@@ -1,7 +1,7 @@
 ---
 import { initials } from '../lib/format';
 import type { TeamMember } from '../lib/data';
-import { largePhoto } from '../lib/team-photos';
+import { largePhoto, photoSrc } from '../lib/team-photos';
 
 interface Props { member: TeamMember; role?: string; languages?: string; langsLabel?: string; phrase?: string; openLabel?: string; }
 const { member, role, languages, langsLabel, phrase, openLabel } = Astro.props;
@@ -12,11 +12,11 @@ const large = largePhoto(member.photo_url);
   class:list={['person card', { founder: member.founder }]}
   data-profile tabindex="0" role="button" aria-haspopup="dialog" aria-label={`${openLabel ?? ''} ${member.name}`.trim()}
   data-name={member.name} data-role={roleText} data-langs={languages ? `${langsLabel}: ${languages}` : ''} data-phrase={phrase ?? ''}
-  data-photo={large || member.photo_url || ''} data-initials={initials(member.name)}
+  data-photo={photoSrc(large || member.photo_url)} data-initials={initials(member.name)}
 >
   <div class="person-photo">
     {member.photo_url ? (
-      <img src={member.photo_url} alt={member.name} loading="lazy" />
+      <img src={photoSrc(member.photo_url)} alt={member.name} loading="lazy" />
     ) : (
       <span class="person-initials" aria-hidden="true">{initials(member.name)}</span>
     )}

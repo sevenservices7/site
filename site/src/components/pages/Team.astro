@@ -4,7 +4,7 @@ import { getTeam } from '../../lib/data';
 import { initials } from '../../lib/format';
 import PersonCard from '../PersonCard.astro';
 import WhatsAppButton from '../WhatsAppButton.astro';
-import { largePhoto } from '../../lib/team-photos';
+import { largePhoto, photoSrc } from '../../lib/team-photos';
 import { getRoute } from '../../i18n/ui';
 import { getUi } from '../../data/ui';
 import { mainWhatsapp, waText } from '../../lib/site';
@@ -101,10 +101,10 @@ const pl = {
   <section>
     <div class="container founder-block" data-profile tabindex="0" role="button" aria-haspopup="dialog" aria-label={`${pl.open} ${founder.name}`}
       data-name={founder.name} data-role={f.role} data-langs={`${langsLabel}: ${f.languages}`} data-phrase={f.phrase}
-      data-photo={largePhoto(founder.photo_url) || founder.photo_url || ''} data-initials={initials(founder.name)}>
+      data-photo={photoSrc(largePhoto(founder.photo_url) || founder.photo_url)} data-initials={initials(founder.name)}>
       <div class="founder-photo">
         {founder.photo_url ? (
-          <img src={founder.photo_url} alt={founder.name} />
+          <img src={photoSrc(founder.photo_url)} alt={founder.name} />
         ) : (
           <span class="founder-initials" aria-hidden="true">{initials(founder.name)}</span>
         )}
