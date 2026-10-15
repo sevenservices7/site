@@ -4,8 +4,8 @@ import { getTeam } from '../../lib/data';
 import { initials } from '../../lib/format';
 import PersonCard from '../PersonCard.astro';
 
-interface Props { lang: Lang; }
-const { lang } = Astro.props;
+interface Props { lang: Lang; /** Dentro da página Sobre: sem hero próprio, com âncora #equipe. */ embedded?: boolean; }
+const { lang, embedded = false } = Astro.props;
 const t = useTranslations(lang);
 const team = await getTeam();
 const founder = team.find((m) => m.founder) ?? team[0];
@@ -14,46 +14,46 @@ const others = team.filter((m) => m !== founder);
 type Bio = { role: string; languages: string; phrase: string };
 const TEAM: Record<Lang, Record<string, Bio>> = {
   pt: {
-    DJ: { role: 'Fundador e CEO · Operações', languages: 'Português, espanhol', phrase: '“Me traz o problema, que eu trago a solução.” Rápido e determinado, ele cuida de como cada processo anda, com um objetivo só: que o cliente conquiste o que veio buscar.' },
-    DG: { role: 'Sócio · Diretor de Gestão e Performance', languages: 'Português, inglês', phrase: 'Cuida do time, das metas e dos resultados. É quem garante que a SEVEN entregue o que promete, todo mês.' },
+    DJ: { role: 'Fundador e CEO', languages: 'Português, espanhol', phrase: '“Me traz o problema, que eu trago a solução.” Rápido e determinado, ele cuida de como cada processo anda, com um objetivo só: que o cliente conquiste o que veio buscar.' },
+    DG: { role: 'Diretor de Operações', languages: 'Português, inglês', phrase: 'Cuida da operação do dia a dia: o time, os prazos e os resultados. É quem garante que a SEVEN entregue o que promete, todo mês.' },
     AK: { role: 'Advogada', languages: 'Português, inglês', phrase: 'Senso de justiça forte e muita empatia. É ela quem garante que cada processo está em terreno legal firme.' },
     MC: { role: 'Gestora Comercial', languages: 'Português, inglês', phrase: 'É a primeira conversa de quem chega. Entende o caso e indica o caminho certo, sem vender o que você não precisa.' },
     GR: { role: 'Gestora de Onboarding', languages: 'Português, inglês, espanhol', phrase: 'Recebe cada cliente que fecha com a SEVEN e organiza os primeiros passos. Inteligente, rápida e atenciosa.' },
     DS: { role: 'Gestora de Unidade · Faro', languages: 'Português', phrase: 'Contadora de formação e simpatia em pessoa. Cuida de quem chega a Faro com a atenção de quem lida com gente, não com papel.' },
-    MI: { role: 'Contabilista Certificada', languages: '', phrase: 'Cuida da contabilidade de empresas e trabalhadores independentes, com impostos e obrigações em dia.' },
+    MI: { role: 'Contabilista Certificada', languages: 'Português, inglês', phrase: 'Cuida da contabilidade de empresas e trabalhadores independentes, com impostos e obrigações em dia.' },
     DN: { role: 'Marketing · Direção Criativa', languages: 'Português, inglês', phrase: 'Filma, cria e tem as ideias. É quem transforma a história da SEVEN e dos clientes em conteúdo.' },
     TH: { role: 'Marketing · Edição e Conteúdo', languages: 'Português, italiano', phrase: 'Edita o podcast, os carrosséis, os posts e os reels. Cada vídeo que você vê da SEVEN passa pelas mãos dela.' },
   },
   en: {
-    DJ: { role: 'Founder & CEO · Operations', languages: 'Portuguese, Spanish', phrase: '“Bring me the problem, and I’ll bring the solution.” Fast and determined, he looks after how every process moves forward, with one goal: that the client gets what they came for.' },
-    DG: { role: 'Partner · Director of Management & Performance', languages: 'Portuguese, English', phrase: 'Looks after the team, the goals and the results. He makes sure SEVEN delivers what it promises, every month.' },
+    DJ: { role: 'Founder & CEO', languages: 'Portuguese, Spanish', phrase: '“Bring me the problem, and I’ll bring the solution.” Fast and determined, he looks after how every process moves forward, with one goal: that the client gets what they came for.' },
+    DG: { role: 'Director of Operations', languages: 'Portuguese, English', phrase: 'Runs day-to-day operations: the team, the deadlines and the results. He makes sure SEVEN delivers what it promises, every month.' },
     AK: { role: 'Lawyer', languages: 'Portuguese, English', phrase: 'A strong sense of justice and a lot of empathy. She makes sure every case stands on solid legal ground.' },
     MC: { role: 'Sales Manager', languages: 'Portuguese, English', phrase: 'The first conversation for everyone who reaches out. She understands the case and points to the right path, without selling you what you don’t need.' },
     GR: { role: 'Onboarding Manager', languages: 'Portuguese, English, Spanish', phrase: 'Welcomes every client who signs with SEVEN and organises the first steps. Smart, quick and attentive.' },
     DS: { role: 'Location Manager · Faro', languages: 'Portuguese', phrase: 'An accountant by training and kindness in person. She looks after everyone who comes to Faro with the care of someone who deals with people, not paper.' },
-    MI: { role: 'Certified Accountant', languages: '', phrase: 'Handles the accounting for companies and self-employed workers, keeping taxes and obligations up to date.' },
+    MI: { role: 'Certified Accountant', languages: 'Portuguese, English', phrase: 'Handles the accounting for companies and self-employed workers, keeping taxes and obligations up to date.' },
     DN: { role: 'Marketing · Creative Direction', languages: 'Portuguese, English', phrase: 'Films, creates and comes up with the ideas. He turns the story of SEVEN and its clients into content.' },
     TH: { role: 'Marketing · Editing & Content', languages: 'Portuguese, Italian', phrase: 'Edits the podcast, carousels, posts and reels. Every SEVEN video you see goes through her hands.' },
   },
   es: {
-    DJ: { role: 'Fundador y CEO · Operaciones', languages: 'Portugués, español', phrase: '“Tráeme el problema, que yo traigo la solución.” Rápido y decidido, se ocupa de cómo avanza cada proceso, con un único objetivo: que el cliente consiga lo que vino a buscar.' },
-    DG: { role: 'Socio · Director de Gestión y Rendimiento', languages: 'Portugués, inglés', phrase: 'Se ocupa del equipo, las metas y los resultados. Es quien garantiza que SEVEN cumpla lo que promete, todos los meses.' },
+    DJ: { role: 'Fundador y CEO', languages: 'Portugués, español', phrase: '“Tráeme el problema, que yo traigo la solución.” Rápido y decidido, se ocupa de cómo avanza cada proceso, con un único objetivo: que el cliente consiga lo que vino a buscar.' },
+    DG: { role: 'Director de Operaciones', languages: 'Portugués, inglés', phrase: 'Dirige la operación del día a día: el equipo, los plazos y los resultados. Es quien garantiza que SEVEN cumpla lo que promete, todos los meses.' },
     AK: { role: 'Abogada', languages: 'Portugués, inglés', phrase: 'Un fuerte sentido de la justicia y mucha empatía. Es ella quien garantiza que cada proceso esté sobre una base legal firme.' },
     MC: { role: 'Gerente Comercial', languages: 'Portugués, inglés', phrase: 'Es la primera conversación de quien llega. Entiende el caso e indica el camino correcto, sin venderte lo que no necesitas.' },
     GR: { role: 'Gerente de Onboarding', languages: 'Portugués, inglés, español', phrase: 'Recibe a cada cliente que empieza con SEVEN y organiza los primeros pasos. Inteligente, rápida y atenta.' },
     DS: { role: 'Gerente de Sede · Faro', languages: 'Portugués', phrase: 'Contadora de formación y la simpatía en persona. Atiende a quien llega a Faro con la atención de quien trata con personas, no con papeles.' },
-    MI: { role: 'Contadora Certificada', languages: '', phrase: 'Lleva la contabilidad de empresas y trabajadores autónomos, con los impuestos y las obligaciones al día.' },
+    MI: { role: 'Contadora Certificada', languages: 'Portugués, inglés', phrase: 'Lleva la contabilidad de empresas y trabajadores autónomos, con los impuestos y las obligaciones al día.' },
     DN: { role: 'Marketing · Dirección Creativa', languages: 'Portugués, inglés', phrase: 'Filma, crea y tiene las ideas. Es quien convierte la historia de SEVEN y de sus clientes en contenido.' },
     TH: { role: 'Marketing · Edición y Contenido', languages: 'Portugués, italiano', phrase: 'Edita el pódcast, los carruseles, las publicaciones y los reels. Cada video de SEVEN que ves pasa por sus manos.' },
   },
   fr: {
-    DJ: { role: 'Fondateur et CEO · Opérations', languages: 'Portugais, espagnol', phrase: '« Apportez-moi le problème, j’apporte la solution. » Rapide et déterminé, il veille à l’avancement de chaque dossier, avec un seul objectif : que le client obtienne ce qu’il est venu chercher.' },
-    DG: { role: 'Associé · Directeur de la Gestion et de la Performance', languages: 'Portugais, anglais', phrase: 'Il s’occupe de l’équipe, des objectifs et des résultats. C’est lui qui garantit que SEVEN tient ses promesses, chaque mois.' },
+    DJ: { role: 'Fondateur et CEO', languages: 'Portugais, espagnol', phrase: '« Apportez-moi le problème, j’apporte la solution. » Rapide et déterminé, il veille à l’avancement de chaque dossier, avec un seul objectif : que le client obtienne ce qu’il est venu chercher.' },
+    DG: { role: 'Directeur des Opérations', languages: 'Portugais, anglais', phrase: 'Il dirige les opérations au quotidien : l’équipe, les délais et les résultats. C’est lui qui garantit que SEVEN tient ses promesses, chaque mois.' },
     AK: { role: 'Avocate', languages: 'Portugais, anglais', phrase: 'Un sens aigu de la justice et beaucoup d’empathie. C’est elle qui garantit que chaque dossier repose sur des bases juridiques solides.' },
     MC: { role: 'Responsable Commerciale', languages: 'Portugais, anglais', phrase: 'C’est le premier échange de chaque personne qui nous contacte. Elle comprend le cas et indique le bon chemin, sans vous vendre ce dont vous n’avez pas besoin.' },
     GR: { role: 'Responsable Onboarding', languages: 'Portugais, anglais, espagnol', phrase: 'Elle accueille chaque client qui s’engage avec SEVEN et organise les premières étapes. Intelligente, rapide et attentionnée.' },
     DS: { role: 'Responsable d’agence · Faro', languages: 'Portugais', phrase: 'Comptable de formation et la gentillesse incarnée. Elle accueille ceux qui arrivent à Faro avec l’attention de quelqu’un qui s’occupe de personnes, pas de papiers.' },
-    MI: { role: 'Expert-comptable certifiée', languages: '', phrase: 'Elle tient la comptabilité des entreprises et des travailleurs indépendants, avec impôts et obligations à jour.' },
+    MI: { role: 'Expert-comptable certifiée', languages: 'Portugais, anglais', phrase: 'Elle tient la comptabilité des entreprises et des travailleurs indépendants, avec impôts et obligations à jour.' },
     DN: { role: 'Marketing · Direction créative', languages: 'Portugais, anglais', phrase: 'Il filme, crée et trouve les idées. C’est lui qui transforme l’histoire de SEVEN et de ses clients en contenu.' },
     TH: { role: 'Marketing · Montage et contenu', languages: 'Portugais, italien', phrase: 'Elle monte le podcast, les carrousels, les publications et les reels. Chaque vidéo de SEVEN que vous voyez passe entre ses mains.' },
   },
@@ -68,12 +68,21 @@ const closing = {
 const info = (code: string): Bio => TEAM[lang][code] ?? { role: '', languages: '', phrase: '' };
 const f = info(founder?.code ?? '');
 ---
-<section class="bg-navy center">
-  <div class="container" style="max-width:720px">
-    <span class="eyebrow">{t('team.eyebrow')}</span>
-    <h1>{t('team.title')}</h1>
-  </div>
-</section>
+{embedded ? (
+  <section class="team-head center" id="equipe">
+    <div class="container" style="max-width:720px">
+      <span class="eyebrow">{t('team.eyebrow')}</span>
+      <h2>{t('team.title')}</h2>
+    </div>
+  </section>
+) : (
+  <section class="bg-navy center">
+    <div class="container" style="max-width:720px">
+      <span class="eyebrow">{t('team.eyebrow')}</span>
+      <h1>{t('team.title')}</h1>
+    </div>
+  </section>
+)}
 
 {founder && (
   <section>
@@ -107,6 +116,7 @@ const f = info(founder?.code ?? '');
 </section>
 
 <style>
+  .team-head { padding-bottom: 0; scroll-margin-top: 90px; }
   .founder-block { display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center; max-width: 860px; margin-inline: auto; }
   .founder-photo {
     width: 168px; height: 168px; border-radius: 50%; overflow: hidden; flex: none;

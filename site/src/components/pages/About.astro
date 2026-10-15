@@ -127,6 +127,7 @@ const copy = {
     ],
   },
 }[lang];
+import Team from './Team.astro';
 ---
 <section class="bg-navy">
   <div class="container center" style="max-width:760px">
@@ -178,11 +179,7 @@ const copy = {
   </div>
 </section>
 
-<section class="center">
-  <div class="container">
-    <a href={getRoute('team', lang)} class="btn btn-gold">{t('nav.team')}</a>
-  </div>
-</section>
+<Team lang={lang} embedded />
 
 <style>
   .prose p, .prose-p { color: var(--seven-ink); line-height: 1.75; margin-bottom: 18px; }

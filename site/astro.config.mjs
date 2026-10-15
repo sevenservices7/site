@@ -31,6 +31,11 @@ export default defineConfig({
   // Páginas antigas (catálogo e carrinho) → destinos novos. Geram HTML de redirecionamento com noindex.
   redirects: {
     '/lander': '/',
+    // A equipa passou a ficar dentro da página Sobre.
+    '/equipa': '/sobre#equipe',
+    '/en/team': '/en/about#equipe',
+    '/es/equipo': '/es/sobre#equipe',
+    '/fr/equipe': '/fr/a-propos#equipe',
     '/servicos': '/solucoes',
     '/carrinho': '/solucoes',
     '/en/services': '/en/solutions',

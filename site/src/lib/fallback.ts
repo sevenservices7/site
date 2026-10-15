@@ -68,8 +68,8 @@ export const fallbackOffices: Office[] = [
 ];
 
 export const fallbackTeam: TeamMember[] = [
-  { code: 'DJ', name: 'Danilo Jesus', role_label: 'Fundador e CEO · Operações', unit: 'Albufeira', photo_url: '/team/danilo.jpg', founder: true },
-  { code: 'DG', name: 'Douglas Santos', role_label: 'Sócio · Diretor de Gestão e Performance', unit: '', photo_url: '' },
+  { code: 'DJ', name: 'Danilo Jesus', role_label: 'Fundador e CEO', unit: 'Albufeira', photo_url: '/team/danilo.jpg', founder: true },
+  { code: 'DG', name: 'Douglas Santos', role_label: 'Diretor de Operações', unit: '', photo_url: '' },
   { code: 'AK', name: 'Ana Kathlyn', role_label: 'Advogada', unit: '', photo_url: '/team/ana.jpg' },
   { code: 'MC', name: 'Marcella Volpi', role_label: 'Gestora Comercial', unit: '', photo_url: '' },
   { code: 'GR', name: 'Gabriela Ramos', role_label: 'Gestora de Onboarding', unit: 'Albufeira', photo_url: '/team/gabriela.jpg' },

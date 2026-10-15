@@ -14,25 +14,73 @@ function hrefFor(target: Lang): string {
   if (routeKey) return getRoute(routeKey, target);
   return getRoute('home', target);
 }
+
+// Bandeiras em SVG (emoji de bandeira não aparece no Windows). O site em português é PT-BR.
+const FLAGS: Record<Lang, string> = {
+  pt: '<svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#009c3b"/><path d="M14 2.5 25.5 10 14 17.5 2.5 10z" fill="#ffdf00"/><circle cx="14" cy="10" r="4.6" fill="#002776"/><path d="M9.6 9.1c3-.6 6.2-.2 8.8 1.3" stroke="#fff" stroke-width=".8" fill="none"/></svg>',
+  en: '<svg viewBox="0 0 60 30"><clipPath id="uk"><path d="M0 0v30h60V0z"/></clipPath><g clip-path="url(#uk)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" stroke="#C8102E" stroke-width="2.4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg>',
+  es: '<svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#AA151B"/><rect y="5" width="30" height="10" fill="#F1BF00"/></svg>',
+  fr: '<svg viewBox="0 0 30 20"><rect width="10" height="20" fill="#002395"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#ED2939"/></svg>',
+};
+const label = { pt: 'Idioma', en: 'Language', es: 'Idioma', fr: 'Langue' }[lang];
+const order = Object.keys(languages) as Lang[];
 ---
-<div class="langsw" aria-label={{ pt: 'Idioma', en: 'Language', es: 'Idioma', fr: 'Langue' }[lang]}>
-  {(Object.keys(languages) as Lang[]).map((l) => (
-    <a
-      href={hrefFor(l)}
-      hreflang={l}
-      class:list={['langsw-opt', { on: l === lang }]}
-      aria-current={l === lang ? 'true' : undefined}
-    >{l.toUpperCase()}</a>
-  ))}
+<div class="langsw" data-langsw>
+  <button type="button" class="langsw-btn" aria-haspopup="true" aria-expanded="false" aria-label={`${label}: ${languages[lang]}`} data-langsw-btn>
+    <span class="flag" set:html={FLAGS[lang]} />
+    <span class="langsw-name">{languages[lang]}</span>
+    <svg class="chev" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+  </button>
+  <ul class="langsw-menu" data-langsw-menu hidden>
+    {order.map((l) => (
+      <li>
+        <a href={hrefFor(l)} hreflang={l} lang={l} class:list={['langsw-opt', { on: l === lang }]} aria-current={l === lang ? 'true' : undefined}>
+          <span class="flag" set:html={FLAGS[l]} />{languages[l]}
+        </a>
+      </li>
+    ))}
+  </ul>
 </div>
 
 <style>
-  .langsw { display: inline-flex; gap: 2px; align-items: center; }
-  .langsw-opt {
-    font-family: var(--font-head); font-size: .74rem; font-weight: 600; letter-spacing: .08em;
-    padding: 5px 8px; border-radius: var(--r-sm); color: var(--complementar-2);
-    transition: color .15s, background .15s;
+  .langsw { position: relative; }
+  .langsw-btn {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    font: 600 .78rem/1 var(--font-head); color: var(--nevoa); background: transparent;
+    border: 1px solid var(--complementar-1); padding: 7px 10px; border-radius: var(--r-sm);
+    transition: border-color .15s, color .15s;
   }
-  .langsw-opt:hover { color: var(--branco); background: var(--complementar-1); }
-  .langsw-opt.on { color: var(--g1); }
+  .langsw-btn:hover, .langsw-btn[aria-expanded='true'] { border-color: var(--areia); color: var(--branco); }
+  .flag { display: inline-flex; width: 20px; height: 14px; flex: none; overflow: hidden; border-radius: 2px; box-shadow: 0 0 0 1px rgba(255,255,255,.15); }
+  .flag :global(svg) { width: 100%; height: 100%; display: block; }
+  .chev { opacity: .8; transition: transform .15s; }
+  .langsw-btn[aria-expanded='true'] .chev { transform: rotate(180deg); }
+  .langsw-menu {
+    position: absolute; right: 0; top: calc(100% + 8px); z-index: 60; min-width: 170px; list-style: none;
+    background: var(--surface); border-top: 3px solid var(--accent); padding: 6px; box-shadow: 0 10px 30px rgba(1,32,63,.18);
+  }
+  .langsw-menu[hidden] { display: none; }
+  .langsw-opt {
+    display: flex; align-items: center; gap: 10px; padding: 9px 10px;
+    font: 500 .9rem/1.2 var(--font-head); color: var(--heading); text-transform: none; letter-spacing: 0;
+  }
+  .langsw-opt:hover { background: var(--surface-alt); }
+  .langsw-opt.on { font-weight: 700; }
+  .langsw-opt .flag { box-shadow: 0 0 0 1px var(--border); }
+  @media (max-width: 960px) {
+    .langsw-menu { position: static; margin-top: 8px; background: transparent; border: 0; box-shadow: none; padding: 0; }
+    .langsw-opt { color: var(--nevoa); padding: 8px 0; }
+    .langsw-opt:hover { background: transparent; color: var(--areia); }
+  }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-langsw]').forEach((root) => {
+    const btn = root.querySelector<HTMLButtonElement>('[data-langsw-btn]')!;
+    const menu = root.querySelector<HTMLElement>('[data-langsw-menu]')!;
+    const set = (open: boolean) => { menu.hidden = !open; btn.setAttribute('aria-expanded', String(open)); };
+    btn.addEventListener('click', (e) => { e.stopPropagation(); set(menu.hidden); });
+    document.addEventListener('click', (e) => { if (!root.contains(e.target as Node)) set(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { set(false); btn.focus(); } });
+  });
+</script>
