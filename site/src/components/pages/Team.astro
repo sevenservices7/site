@@ -89,11 +89,13 @@ const pl = {
     </div>
   </section>
 ) : (
-  <section class="bg-navy center">
-    <div class="container" style="max-width:720px">
+  <section class="pg-hero pg-hero--compact">
+    <div class="container">
       <span class="eyebrow">{t('team.eyebrow')}</span>
       <h1>{t('team.title')}</h1>
+      <p class="lede">{closing}</p>
     </div>
+    <div class="pg-hero-mark" aria-hidden="true"></div>
   </section>
 )}
 

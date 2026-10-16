@@ -28,6 +28,8 @@ export const ROUTES = {
   home: { pt: '/', en: '/en/', es: '/es/', fr: '/fr/' },
   solutions: { pt: '/solucoes', en: '/en/solutions', es: '/es/soluciones', fr: '/fr/solutions' },
   about: { pt: '/sobre', en: '/en/about', es: '/es/sobre', fr: '/fr/a-propos' },
+  values: { pt: '/missao-e-valores', en: '/en/mission-and-values', es: '/es/mision-y-valores', fr: '/fr/mission-et-valeurs' },
+  units: { pt: '/unidades', en: '/en/units', es: '/es/unidades', fr: '/fr/agences' },
   team: { pt: '/equipa', en: '/en/team', es: '/es/equipo', fr: '/fr/equipe' },
   expert: { pt: '/falar-com-especialista', en: '/en/talk-to-an-expert', es: '/es/hablar-con-un-especialista', fr: '/fr/parler-a-un-specialiste' },
   booking: { pt: '/agendamento', en: '/en/booking', es: '/es/agenda', fr: '/fr/rendez-vous' },

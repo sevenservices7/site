@@ -1,0 +1,77 @@
+---
+// Página interna da equipe (não aparece em menus, nem no sitemap, nem no Google).
+// Gera um link de pagamento Stripe com serviço e valor livres (cartão, MB Way, Klarna... conforme o Dashboard do Stripe).
+import Base from '../layouts/Base.astro';
+---
+<Base title="Pagamento SEVEN (equipe)" description="Uso interno" noindex bare>
+  <section class="tp">
+    <div class="tp-card">
+      <img src="/brand/seven-horizontal-areia.svg" alt="SEVEN" width="160" height="33" class="tp-logo" />
+      <h1>Gerar link de pagamento</h1>
+      <p class="tp-lead">Uso interno da equipe. Preencha, gere o link e envie ao cliente, ou abra o pagamento aqui mesmo.</p>
+      <form data-tp novalidate>
+        <label>Código da equipe<input name="code" type="password" required autocomplete="off" /></label>
+        <label>Nome do cliente<input name="name" required /></label>
+        <label>E-mail do cliente (opcional)<input name="email" type="email" /></label>
+        <label>Serviço<input name="service" required placeholder="Ex.: Renovação de residência" /></label>
+        <label>Valor (€)<input name="amount" required inputmode="decimal" placeholder="Ex.: 350" /></label>
+        <label>Idioma da página de pagamento<select name="locale"><option value="pt">Português</option><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option></select></label>
+        <button type="submit" class="btn btn-gold btn-block">Gerar link de pagamento</button>
+        <p class="tp-msg" data-tp-msg hidden></p>
+      </form>
+      <div class="tp-out" data-tp-out hidden>
+        <p><strong>Link pronto</strong> (válido por 24 horas):</p>
+        <input data-tp-url readonly />
+        <div class="tp-actions">
+          <button type="button" class="btn btn-ghost" data-tp-copy>Copiar link</button>
+          <a class="btn btn-gold" data-tp-open target="_blank" rel="noopener">Abrir pagamento</a>
+        </div>
+        <button type="button" class="tp-new" data-tp-new>Gerar outro</button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .tp { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; background: var(--surface-brand); }
+  .tp-card { width: 100%; max-width: 460px; background: var(--surface); border-top: 4px solid var(--accent); padding: 28px; }
+  .tp-logo { display: block; height: 30px; width: auto; margin-bottom: 18px; background: var(--surface-brand); padding: 8px 10px; box-sizing: content-box; }
+  .tp h1 { font-size: 1.4rem; }
+  .tp-lead { color: var(--ink-muted); font-size: .9rem; margin: 6px 0 18px; }
+  .tp form { display: grid; gap: 12px; }
+  .tp label { display: grid; gap: 6px; font-size: .85rem; font-weight: 600; color: var(--heading); }
+  .tp input, .tp select { font: inherit; font-weight: 400; padding: 10px 12px; border: 1px solid var(--border-strong); background: var(--surface-alt); width: 100%; }
+  .tp-msg { padding: 10px 12px; background: #FEE2E2; color: #991B1B; font-size: .88rem; }
+  .tp-out { display: grid; gap: 12px; margin-top: 4px; }
+  .tp-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .tp-new { background: none; border: 0; color: var(--heading); text-decoration: underline; cursor: pointer; justify-self: start; padding: 0; font: inherit; font-size: .88rem; }
+</style>
+
+<script>
+  import { createCustomCheckout } from '../lib/api';
+  const form = document.querySelector<HTMLFormElement>('[data-tp]')!;
+  const msg = document.querySelector<HTMLElement>('[data-tp-msg]')!;
+  const out = document.querySelector<HTMLElement>('[data-tp-out]')!;
+  const urlEl = document.querySelector<HTMLInputElement>('[data-tp-url]')!;
+  const open = document.querySelector<HTMLAnchorElement>('[data-tp-open]')!;
+  const fail = (t: string) => { msg.textContent = t; msg.hidden = false; };
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.hidden = true;
+    const fd = new FormData(form);
+    const g = (k: string) => String(fd.get(k) || '').trim();
+    const amount = Number(g('amount').replace(',', '.'));
+    if (!g('code') || !g('name') || !g('service') || !(amount >= 1)) return fail('Preencha código, nome, serviço e um valor válido.');
+    const btn = form.querySelector('button')!; btn.disabled = true;
+    try {
+      const { url } = await createCustomCheckout({ team_code: g('code'), service: g('service'), amount: g('amount'), locale: g('locale') || 'pt', customer: { name: g('name'), email: g('email') || undefined } });
+      urlEl.value = url; open.href = url; form.hidden = true; out.hidden = false;
+    } catch (err) {
+      fail(String((err as Error).message).includes('403') ? 'Código da equipe incorreto.' : 'Não foi possível gerar o link. Tente de novo.');
+    } finally { btn.disabled = false; }
+  });
+  document.querySelector('[data-tp-copy]')!.addEventListener('click', async (e) => {
+    try { await navigator.clipboard.writeText(urlEl.value); (e.target as HTMLElement).textContent = 'Copiado!'; } catch { urlEl.select(); }
+  });
+  document.querySelector('[data-tp-new]')!.addEventListener('click', () => { form.reset(); form.hidden = false; out.hidden = true; });
+</script>

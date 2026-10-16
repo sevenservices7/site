@@ -31,11 +31,6 @@ export default defineConfig({
   // Páginas antigas (catálogo e carrinho) → destinos novos. Geram HTML de redirecionamento com noindex.
   redirects: {
     '/lander': '/',
-    // A equipa passou a ficar dentro da página Sobre.
-    '/equipa': '/sobre#equipe',
-    '/en/team': '/en/about#equipe',
-    '/es/equipo': '/es/sobre#equipe',
-    '/fr/equipe': '/fr/a-propos#equipe',
     '/servicos': '/solucoes',
     '/carrinho': '/solucoes',
     '/en/services': '/en/solutions',
@@ -49,7 +44,7 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         const path = new URL(page).pathname;
-        return !draftPaths.includes(path) && !redirectPaths.includes(path) && !path.startsWith('/checkout') && !path.startsWith('/en/checkout') && !path.startsWith('/es/checkout') && !path.startsWith('/fr/checkout') && !/\/(pagar|pay)\/?$/.test(path);
+        return !draftPaths.includes(path) && !redirectPaths.includes(path) && !path.startsWith('/checkout') && !path.startsWith('/en/checkout') && !path.startsWith('/es/checkout') && !path.startsWith('/fr/checkout') && !/\/(pagar|pay|equipe-pagamento)\/?$/.test(path);
       },
       i18n: {
         defaultLocale: 'pt',

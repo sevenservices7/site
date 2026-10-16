@@ -8,8 +8,8 @@ const { lang } = Astro.props;
 const u = getUi(lang);
 const C = {
   pt: {
-    eyebrow: 'Falar com especialista', h1: 'Conte o seu caso.', h1Em: 'A gente mostra o caminho.',
-    lede: 'Três passos rápidos, sem custo e sem compromisso. Um especialista analisa e fala com você em até 1 dia útil.',
+    eyebrow: 'Falar com especialista', h1: 'Quer ser contactado?', h1Em: 'Um especialista fala com você.',
+    lede: 'Deixe seus dados e um especialista entra em contato com você em até 1 dia útil. Sem custo e sem compromisso.',
     nextTitle: 'O que acontece depois', next: [
       ['Análise', 'Um especialista lê o seu caso antes de falar com você. Nada de contar a história cinco vezes.'],
       ['Contato em até 1 dia útil', 'Pelo canal que você escolher: WhatsApp, e-mail ou ligação.'],
@@ -18,8 +18,8 @@ const C = {
     bookTitle: 'Prefere já marcar uma conversa?', bookBody: 'Escolha o dia e o horário no calendário. A consultoria custa 80 €, descontados se você seguir com o serviço.',
   },
   en: {
-    eyebrow: 'Talk to an expert', h1: 'Tell us about your case.', h1Em: 'We’ll show you the way.',
-    lede: 'Three quick steps, free and with no commitment. A specialist reviews it and gets back to you within 1 business day.',
+    eyebrow: 'Talk to an expert', h1: 'Want us to contact you?', h1Em: 'A specialist will reach out.',
+    lede: 'Leave your details and a specialist will contact you within 1 business day. Free and with no commitment.',
     nextTitle: 'What happens next', next: [
       ['Review', 'A specialist reads your case before contacting you. No telling your story five times.'],
       ['Contact within 1 business day', 'Through the channel you choose: WhatsApp, email or a phone call.'],
@@ -28,8 +28,8 @@ const C = {
     bookTitle: 'Rather book a call right away?', bookBody: 'Pick a day and time on the calendar. The consultation costs €80, deducted if you go ahead with the service.',
   },
   es: {
-    eyebrow: 'Hablar con un especialista', h1: 'Cuéntanos tu caso.', h1Em: 'Te mostramos el camino.',
-    lede: 'Tres pasos rápidos, sin coste y sin compromiso. Un especialista lo analiza y te contacta en 1 día hábil como máximo.',
+    eyebrow: 'Hablar con un especialista', h1: '¿Quieres que te contactemos?', h1Em: 'Un especialista te escribe.',
+    lede: 'Déjanos tus datos y un especialista te contactará en 1 día hábil como máximo. Sin coste y sin compromiso.',
     nextTitle: 'Qué pasa después', next: [
       ['Análisis', 'Un especialista lee tu caso antes de hablar contigo. Sin contar tu historia cinco veces.'],
       ['Contacto en 1 día hábil', 'Por el canal que elijas: WhatsApp, correo o llamada.'],
@@ -38,8 +38,8 @@ const C = {
     bookTitle: '¿Prefieres agendar ya una conversación?', bookBody: 'Elige el día y la hora en el calendario. La consultoría cuesta 80 €, que se descuentan si sigues con el servicio.',
   },
   fr: {
-    eyebrow: 'Parler à un spécialiste', h1: 'Parlez-nous de votre situation.', h1Em: 'Nous vous montrons le chemin.',
-    lede: 'Trois étapes rapides, gratuites et sans engagement. Un spécialiste l’étudie et vous recontacte sous 1 jour ouvré.',
+    eyebrow: 'Parler à un spécialiste', h1: 'Vous souhaitez être contacté ?', h1Em: 'Un spécialiste vous répond.',
+    lede: 'Laissez vos coordonnées et un spécialiste vous contactera sous 1 jour ouvré. Gratuit et sans engagement.',
     nextTitle: 'Et ensuite ?', next: [
       ['Analyse', 'Un spécialiste lit votre dossier avant de vous contacter. Inutile de raconter votre histoire cinq fois.'],
       ['Contact sous 1 jour ouvré', 'Par le canal de votre choix : WhatsApp, e-mail ou appel.'],
@@ -49,7 +49,7 @@ const C = {
   },
 }[lang];
 ---
-<section class="pg-hero xp-hero">
+<section class="pg-hero pg-hero--compact">
   <div class="container">
     <span class="eyebrow">{C.eyebrow}</span>
     <h1>{C.h1} <em>{C.h1Em}</em></h1>

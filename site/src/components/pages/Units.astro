@@ -1,0 +1,43 @@
+---
+import { getRoute, type Lang } from '../../i18n/ui';
+import { getUi } from '../../data/ui';
+import { getOffices } from '../../lib/data';
+import UnitCard from '../UnitCard.astro';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const u = getUi(lang);
+const offices = await getOffices();
+const C = {
+  pt: { eyebrow: 'Unidades', h1: 'Perto de você em Portugal. Online no mundo todo.', lede: 'Atendimento presencial em Albufeira, Faro e Porto. Se preferir, a gente resolve tudo online, de onde você estiver.', online: 'Mora longe de uma unidade? Tudo pode ser feito online: documentos por WhatsApp, reuniões por vídeo e acompanhamento do início ao fim.' },
+  en: { eyebrow: 'Locations', h1: 'Close to you in Portugal. Online worldwide.', lede: 'In person in Albufeira, Faro and Porto. If you prefer, we handle everything online, wherever you are.', online: 'Far from our offices? Everything can be done online: documents via WhatsApp, video meetings and support from start to finish.' },
+  es: { eyebrow: 'Sedes', h1: 'Cerca de ti en Portugal. Online en todo el mundo.', lede: 'Atención presencial en Albufeira, Faro y Oporto. Si lo prefieres, lo resolvemos todo online, estés donde estés.', online: '¿Vives lejos de una sede? Todo puede hacerse online: documentos por WhatsApp, reuniones por vídeo y seguimiento de principio a fin.' },
+  fr: { eyebrow: 'Agences', h1: 'Près de chez vous au Portugal. En ligne partout dans le monde.', lede: 'Accueil sur place à Albufeira, Faro et Porto. Si vous préférez, nous nous occupons de tout en ligne, où que vous soyez.', online: 'Loin d’une agence ? Tout peut se faire en ligne : documents par WhatsApp, réunions en visio et suivi du début à la fin.' },
+}[lang];
+---
+<section class="pg-hero pg-hero--compact">
+  <div class="container">
+    <span class="eyebrow">{C.eyebrow}</span>
+    <h1>{C.h1}</h1>
+    <p class="lede">{C.lede}</p>
+  </div>
+  <div class="pg-hero-mark" aria-hidden="true"></div>
+</section>
+
+<section class="bg-off">
+  <div class="container">
+    <div class="units-grid">
+      {offices.map((o) => <UnitCard office={o} lang={lang} />)}
+    </div>
+    <div class="units-online">
+      <p>{C.online}</p>
+      <a href={getRoute('expert', lang)} class="btn btn-gold">{u.common.talkToExpert}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .units-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  .units-online { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: space-between; padding: 24px; background: var(--surface); border-left: 4px solid var(--accent); }
+  .units-online p { max-width: 62ch; color: var(--ink); }
+</style>

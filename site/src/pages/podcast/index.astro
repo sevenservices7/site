@@ -7,23 +7,27 @@ const episodes = (await getCollection('podcast', ({ data }) => !data.draft)).sor
 const dateFmt = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 ---
 <Base
-  title="Podcast SEVEN: vida real de brasileiros em Portugal | SEVEN"
-  description="Conversas diretas sobre imigração, dinheiro e negócios para brasileiros em Portugal. Assista no YouTube e leia a transcrição completa de cada episódio."
+  title="Podcast SEVEN: empresários entre o Brasil e Portugal | SEVEN"
+  description="Conversas com empresários brasileiros, portugueses e imigrantes que empreendem entre o Brasil e Portugal. Assista no YouTube e leia a transcrição completa."
   jsonLd={[
     breadcrumbLd([{ name: 'Início', path: '/' }, { name: 'Podcast', path: '/podcast' }]),
     { '@context': 'https://schema.org', '@type': 'PodcastSeries', name: 'Podcast SEVEN', url: 'https://seveneu.com/podcast', inLanguage: 'pt-BR', author: { '@id': 'https://seveneu.com/#organization' } },
   ]}
 >
-  <section class="pg-hero">
+  <section class="pg-hero pg-hero--compact">
     <div class="container">
       <nav aria-label="Você está em"><ol class="crumbs"><li><a href="/">Início</a></li><li aria-current="page">Podcast</li></ol></nav>
-      <span class="eyebrow">Podcast</span>
-      <h1>Vida real na Europa, <em>sem filtro.</em></h1>
-      <p class="lede">Imigração, dinheiro e negócios em Portugal, numa conversa direta e descontraída. Cada episódio tem a transcrição completa, para você ler, buscar e voltar quando precisar.</p>
-      {(PODCAST_LINKS.youtube || PODCAST_LINKS.spotify) && (
+      <span class="eyebrow">Podcast · só para empresários</span>
+      <h1>Histórias reais de quem <em>empreende</em> entre o Brasil e Portugal.</h1>
+      <ul class="seasons">
+        <li><strong>T1</strong> Brasileiros empreendendo em Portugal</li>
+        <li><strong>T2</strong> Brasileiros no Brasil a caminho da Europa</li>
+        <li><strong>T3</strong> Portugueses e imigrantes empreendendo em Portugal</li>
+      </ul>
+      {PODCAST_LINKS.youtube && (
         <div class="ctas">
-          {PODCAST_LINKS.youtube && <a href={PODCAST_LINKS.youtube} class="btn btn-gold" target="_blank" rel="noopener">Assistir no YouTube</a>}
-          {PODCAST_LINKS.spotify && <a href={PODCAST_LINKS.spotify} class="btn btn-light" target="_blank" rel="noopener">Ouvir no Spotify</a>}
+          <a href={PODCAST_LINKS.youtube} class="btn btn-gold" target="_blank" rel="noopener">Ir para o canal no YouTube</a>
+          {PODCAST_LINKS.spotify && <a href={PODCAST_LINKS.spotify} class="btn btn-ghost" target="_blank" rel="noopener">Ouvir no Spotify</a>}
         </div>
       )}
     </div>
@@ -57,6 +61,8 @@ const dateFmt = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long'
 </Base>
 
 <style>
+  .seasons { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 14px; color: var(--nevoa); font-size: .92rem; }
+  .seasons strong { color: var(--areia); margin-right: 4px; }
   .eps { display: flex; flex-direction: column; border-top: 1px solid var(--border-strong); }
   .ep { display: grid; grid-template-columns: 280px 1fr; gap: 28px; padding: 28px 0; border-bottom: 1px solid var(--border-strong); align-items: center; }
   .ep img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; background: var(--oceano); }

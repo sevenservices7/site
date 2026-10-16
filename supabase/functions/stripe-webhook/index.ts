@@ -76,11 +76,11 @@ async function fulfill(sb: any, session: Stripe.Checkout.Session) {
     if (!booking || booking.status === 'confirmed') return;
     let calendarEventId: string | null = null;
     try {
-      calendarEventId = await createCalendarEvent({ summary: `Consulta ${booking.language?.toUpperCase?.() || ''} — ${booking.customer_name}`, description: `Seven Services · ${booking.unit_slug || ''}`.trim(), start: booking.slot_start, end: booking.slot_end, attendeeEmail: booking.customer_email });
+      calendarEventId = await createCalendarEvent({ summary: `Consulta ${({ imigratoria: 'imigratória', contabil: 'contábil', juridica: 'jurídica' } as Record<string, string>)[booking.consult_type] ?? ''} ${booking.language?.toUpperCase?.() || ''} — ${booking.customer_name}`.replace(/\s+/g, ' '), description: `Seven Services · ${booking.unit_slug || ''}`.trim(), start: booking.slot_start, end: booking.slot_end, attendeeEmail: booking.customer_email });
     } catch (e) { console.error('calendar event', e); }
     await sb.from('bookings').update({ status: 'confirmed', stripe_payment_intent: intent, calendar_event_id: calendarEventId }).eq('id', bookingId);
     await sb.from('payments').insert({ booking_id: bookingId, provider: 'stripe', stripe_session_id: session.id, stripe_payment_intent: intent, payment_method: pm, amount: booking.amount, status: 'succeeded', raw_event: { id: session.id } });
-    await tryKommo(sb, 'bookings', bookingId, { name: booking.customer_name, email: booking.customer_email, phone: booking.customer_phone, unit_slug: booking.unit_slug, language: booking.language, service_code: booking.service_code, source: 'website-booking', whatsapp_consent: booking.whatsapp_consent === true });
+    await tryKommo(sb, 'bookings', bookingId, { name: booking.customer_name, email: booking.customer_email, phone: booking.customer_phone, unit_slug: booking.unit_slug, language: booking.language, service_code: booking.consult_type ? `CONSULT-${String(booking.consult_type).toUpperCase()}` : booking.service_code, source: 'website-booking', whatsapp_consent: booking.whatsapp_consent === true });
     if (booking.customer_email) { const m = bookingEmail(booking.language || 'pt', booking.slot_start); await sendEmail(booking.customer_email, m.subject, m.html).catch(() => {}); }
   }
 }

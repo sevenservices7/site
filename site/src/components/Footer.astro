@@ -3,6 +3,7 @@ import { useTranslations, getRoute, unitPath, type Lang } from '../i18n/ui';
 import { getOffices } from '../lib/data';
 import { STAGES, solutionsFor, solutionPath } from '../data/solucoes';
 import { getUi } from '../data/ui';
+import { SOCIAL } from '../lib/site';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
@@ -17,6 +18,16 @@ const footerSolutions = [...solutionsFor(lang)]
   .slice(0, 8);
 
 const unitHref = (slug: string) => unitPath(slug, lang);
+const social = SOCIAL.filter((n) => n.href);
+// Ícones simples (traço), cor herdada do texto.
+const ICONS: Record<string, string> = {
+  instagram: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+  facebook: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.4V14h2.7v8h3.4z"/></svg>',
+  youtube: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .6 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .4-4.8 31 31 0 0 0-.4-4.8zM9.7 15.1V8.9L15.5 12l-5.8 3.1z"/></svg>',
+  linkedin: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zm7 0h3.8v1.5h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6v6.5h-4v-5.8c0-1.4 0-3.2-2-3.2s-2.3 1.5-2.3 3.1v5.9h-4z"/></svg>',
+  tiktok: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16.6 3c.4 2.1 1.8 3.6 4 3.8v3.1c-1.5.1-2.8-.4-4-1.2v6.2c0 3.5-2.6 5.8-5.8 5.8A5.7 5.7 0 0 1 5 15c0-3.4 2.9-6 6.4-5.6v3.2c-1.6-.4-3.2.8-3.2 2.4 0 1.4 1.1 2.5 2.6 2.5s2.6-1 2.6-2.7V3h3.2z"/></svg>',
+  threads: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17.5 8.5c-.8-2.6-2.9-4-5.7-4-3.9 0-6.3 2.9-6.3 7.5s2.4 7.5 6.3 7.5c3.3 0 5.6-1.9 5.6-4.6 0-2.4-1.9-3.9-4.8-3.9-2.2 0-3.6 1.1-3.6 2.6 0 1.3 1.1 2.2 2.6 2.2 2.3 0 3.4-1.8 3.3-5.6"/></svg>',
+};
 const cookiePrefs = { pt: 'Preferências de cookies', en: 'Cookie preferences', es: 'Preferencias de cookies', fr: 'Préférences de cookies' }[lang];
 ---
 <footer class="footer">
@@ -26,7 +37,11 @@ const cookiePrefs = { pt: 'Preferências de cookies', en: 'Cookie preferences', 
         <img src="/brand/seven-horizontal-areia.svg" alt="SEVEN" width="196" height="40" />
         <p class="footer-slogan">{t('brand.slogan')}</p>
         <p>{t('footer.tagline')}</p>
-        <p class="footer-legal">{t('footer.legalEntity')}</p>
+        {social.length > 0 && (
+          <ul class="footer-social">
+            {social.map((n) => <li><a href={n.href} target="_blank" rel="noopener" aria-label={n.label} title={n.label} set:html={ICONS[n.key]} /></li>)}
+          </ul>
+        )}
       </div>
 
       <div class="footer-col">
@@ -41,7 +56,7 @@ const cookiePrefs = { pt: 'Preferências de cookies', en: 'Cookie preferences', 
         <h5>SEVEN</h5>
         <ul>
           <li><a href={getRoute('about', lang)}>{t('nav.about')}</a></li>
-          <li><a href={`${getRoute('about', lang)}#equipe`}>{t('nav.team')}</a></li>
+          <li><a href={getRoute('team', lang)}>{t('nav.team')}</a></li>
           <li><a href={getRoute('expert', lang)}>{t('nav.booking')}</a></li>
           <li><a href={getRoute('booking', lang)}>{u.common.bookConsult}</a></li>
           {isPt && <li><a href="/blog">{t('nav.blog')}</a></li>}
@@ -62,8 +77,8 @@ const cookiePrefs = { pt: 'Preferências de cookies', en: 'Cookie preferences', 
     </div>
 
     <div class="footer-fine">
-      <span>© {year} SEVEN · {t('site.tagline')}</span>
-      <span>NIPC 518 146 529</span>
+      <span>© {year} SANTOS JESUS, Unipessoal Lda. {t('footer.rights')}</span>
+      <span>SEVEN · {t('site.tagline')}</span>
     </div>
   </div>
 </footer>
@@ -74,7 +89,9 @@ const cookiePrefs = { pt: 'Preferências de cookies', en: 'Cookie preferences', 
   .footer-brand img { height: 40px; width: auto; margin-bottom: 20px; }
   .footer-slogan { font-family: var(--font-head); font-weight: 500; color: var(--areia) !important; font-size: 1.05rem !important; max-width: none !important; margin-bottom: 12px; }
   .footer-brand p { color: var(--complementar-2); font-size: .9rem; max-width: 30ch; line-height: 1.6; }
-  .footer-legal { margin-top: 12px; font-size: .8rem; color: var(--complementar-2) !important; }
+  .footer-social { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .footer-social a { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid var(--complementar-1); color: var(--nevoa); transition: color .15s, border-color .15s; }
+  .footer-social a:hover { color: var(--areia); border-color: var(--areia); }
   .footer-col h5 { font-family: var(--font-head); font-weight: 500; font-size: .72rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--areia); margin-bottom: 16px; }
   .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
   .footer-col a { color: var(--nevoa); font-size: .92rem; transition: color var(--dur-fast) var(--ease-out); }

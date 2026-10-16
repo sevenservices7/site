@@ -1,6 +1,8 @@
 import { preflight, json } from '../_shared/cors.ts';
 import { adminClient, stripeClient, checkoutUrls } from '../_shared/clients.ts';
 
+const CONSULT_NAMES: Record<string, string> = { imigratoria: 'Consultoria imigratória', contabil: 'Consultoria contábil', juridica: 'Consultoria jurídica' };
+
 Deno.serve(async (req) => {
   const pf = preflight(req);
   if (pf) return pf;
@@ -57,10 +59,25 @@ Deno.serve(async (req) => {
       if (body.kommo_lead_id) metadata.kommo_lead_id = String(body.kommo_lead_id);
       collectInStripe = true;
     } else if (mode === 'booking') {
-      const { data: booking, error } = await sb.from('bookings').select('id,amount,service_code,language,slot_start').eq('id', body.booking_id).single();
+      const { data: booking, error } = await sb.from('bookings').select('id,amount,service_code,language,slot_start,consult_type').eq('id', body.booking_id).single();
       if (error || !booking) return json({ error: 'booking_not_found' }, 404, origin);
-      lineItems = [{ quantity: 1, price_data: { currency: 'eur', unit_amount: Math.round(Number(booking.amount) * 100), product_data: { name: `Consultoria (${booking.language})` } } }];
+      lineItems = [{ quantity: 1, price_data: { currency: 'eur', unit_amount: Math.round(Number(booking.amount) * 100), product_data: { name: `${CONSULT_NAMES[booking.consult_type as string] ?? 'Consultoria'} (${String(booking.language).toUpperCase()})` } } }];
       metadata = { booking_id: booking.id };
+    } else if (mode === 'custom') {
+      // Cobrança avulsa gerada pela equipa (página oculta /equipe-pagamento): serviço e valor livres,
+      // protegida pelo código da equipa (secret TEAM_PAY_CODE). Sem código configurado, fica bloqueada.
+      const teamCode = Deno.env.get('TEAM_PAY_CODE');
+      if (!teamCode || String(body.team_code || '') !== teamCode) return json({ error: 'forbidden' }, 403, origin);
+      const service = String(body.service || '').trim().slice(0, 200);
+      const amount = Math.round(Number(String(body.amount || '').replace(',', '.')) * 100) / 100;
+      if (!service || !(amount >= 1 && amount <= 20000)) return json({ error: 'invalid_fields' }, 400, origin);
+      const name = String(body.customer?.name || '').trim().slice(0, 200);
+      lineItems = [{ quantity: 1, price_data: { currency: 'eur', unit_amount: Math.round(amount * 100), product_data: { name: service } } }];
+      const { data: order, error: oErr } = await sb.from('orders').insert({ status: 'pending', amount_total: amount, locale, unit_slug: body.unit_slug || '', customer_name: name, customer_email: body.customer?.email || '', customer_phone: body.customer?.phone || '' }).select('id').single();
+      if (oErr) throw oErr;
+      await sb.from('order_items').insert([{ order_id: order.id, service_code: 'CUSTOM', name_snapshot: service, unit_price: amount, quantity: 1 }]);
+      metadata = { order_id: order.id, source: 'team-link' };
+      collectInStripe = true;
     } else {
       return json({ error: 'invalid_mode' }, 400, origin);
     }

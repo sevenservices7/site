@@ -13,8 +13,7 @@ const str = (v: unknown, max = 200) => (typeof v === 'string' ? v.trim().slice(0
 const pick = (v: unknown, allowed: Record<string, string>) => { const s = str(v, 40); return s in allowed ? s : null; };
 
 async function notifyTeam(subject: string, lead: any) {
-  const to = Deno.env.get('LEAD_NOTIFY_EMAIL');
-  if (!to) return false;
+  const to = Deno.env.get('LEAD_NOTIFY_EMAIL') || 'contato@seveneu.com';
   const html = `<pre style="font:14px/1.6 system-ui,sans-serif;white-space:pre-wrap">${esc(leadSummary(lead))}</pre>`;
   return sendEmail(to, subject, html);
 }

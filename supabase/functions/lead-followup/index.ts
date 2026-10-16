@@ -35,7 +35,7 @@ Deno.serve(async (req) => {
     .gt('created_at', new Date(now - 7 * 864e5).toISOString()).limit(50);
   if (error) { console.error('followup', error); return new Response('error', { status: 500 }); }
   const from = Deno.env.get('FOLLOWUP_FROM') || 'SEVEN <contato@sevenservicess.com>';
-  const replyTo = Deno.env.get('LEAD_REPLY_TO') || Deno.env.get('LEAD_NOTIFY_EMAIL') || undefined;
+  const replyTo = Deno.env.get('LEAD_REPLY_TO') || Deno.env.get('LEAD_NOTIFY_EMAIL') || 'contato@seveneu.com';
   let sent = 0;
   for (const l of leads ?? []) {
     const lang = COPY[l.site_lang] ? l.site_lang : 'pt';

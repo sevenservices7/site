@@ -22,6 +22,14 @@
 .pg-highlights > div + div { padding-left: 20px; }
 @media (max-width: 760px) { .pg-highlights { grid-template-columns: 1fr 1fr; } .pg-highlights > div:nth-child(odd) { padding-left: 0; } .pg-highlights > div:nth-child(even) { padding-left: 16px; } }
 
+/* ---- Hero compacto (páginas internas: blog, podcast, sobre, equipe...) ---- */
+.pg-hero--compact { padding: clamp(36px, 5vw, 60px) 0 clamp(32px, 4.5vw, 52px); }
+.pg-hero--compact h1 { font-size: clamp(1.9rem, 3.8vw, 2.8rem); max-width: 26ch; }
+.pg-hero--compact .lede { margin: 12px 0 0; font-size: 1.02rem; }
+.pg-hero--compact .ctas { margin-top: 20px; }
+.pg-hero--compact .crumbs { margin-bottom: 14px; }
+.pg-hero--compact .pg-hero-mark { width: 240px; height: 240px; right: -40px; bottom: -60px; opacity: .08; }
+
 /* ---- Migalhas ---- */
 .crumbs { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin-bottom: 22px; font-size: 13px; color: var(--complementar-2); }
 .crumbs a { color: var(--complementar-2); border-bottom: 1px solid transparent; }

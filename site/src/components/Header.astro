@@ -25,8 +25,20 @@ const shortcut = (key: string, label: string) => {
 const links: { label: string; href: string }[] = [
   ...shortcut('abrir-empresa-em-portugal', t('nav.companies')),
   ...shortcut('contabilidade-em-portugal', t('nav.accounting')),
-  ...(isPt ? [{ label: t('nav.blog'), href: '/blog' }, { label: t('nav.podcast'), href: '/podcast' }] : []),
-  { label: t('nav.about'), href: getRoute('about', lang) },
+];
+// Menu "Sobre" suspenso: institucional + conteúdo (blog e podcast só em PT).
+const aboutLabels = {
+  pt: { us: 'Sobre nós', values: 'Missão e valores', team: 'Equipe', units: 'Unidades' },
+  en: { us: 'About us', values: 'Mission and values', team: 'Team', units: 'Locations' },
+  es: { us: 'Sobre nosotros', values: 'Misión y valores', team: 'Equipo', units: 'Sedes' },
+  fr: { us: 'À propos', values: 'Mission et valeurs', team: 'Équipe', units: 'Agences' },
+}[lang];
+const aboutItems: { label: string; href: string }[] = [
+  { label: aboutLabels.us, href: getRoute('about', lang) },
+  { label: aboutLabels.values, href: getRoute('values', lang) },
+  { label: aboutLabels.team, href: getRoute('team', lang) },
+  { label: aboutLabels.units, href: getRoute('units', lang) },
+  ...(isPt ? [{ label: t('nav.podcast'), href: '/podcast' }, { label: t('nav.blog'), href: '/blog' }] : []),
 ];
 const groups = STAGES
   .map((st) => ({ id: st.id, title: u.stages[st.id].title, items: solutionsByStageFor(lang, st.id) }))
@@ -62,6 +74,12 @@ const groups = STAGES
           </li>
         )}
         {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        <li class="nav-drop nav-drop--small">
+          <a href={getRoute('about', lang)} class="nav-drop-btn" aria-haspopup="true">{t('nav.about')}<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <div class="nav-mega nav-mega--small">
+            <ul>{aboutItems.map((it) => <li><a href={it.href}>{it.label}</a></li>)}</ul>
+          </div>
+        </li>
       </ul>
       <div class="nav-actions">
         <LangSwitcher lang={lang} routeKey={routeKey} alternates={alternates} />
@@ -90,7 +108,7 @@ const groups = STAGES
   .nav-actions .btn { white-space: nowrap; }
   .nav-book { color: var(--areia); font-family: var(--font-head); font-weight: 600; font-size: .8rem; white-space: nowrap; border-bottom: 1px solid transparent; }
   .nav-book:hover { border-color: var(--areia); }
-  @media (min-width: 961px) and (max-width: 1400px) { .nav-book { display: none; } }
+  @media (min-width: 961px) and (max-width: 1180px) { .nav-book { display: none; } }
   @media (max-width: 1360px) { .nav-menu, .nav-links { gap: 22px; } }
   .nav-drop { position: relative; }
   .nav-drop-btn { display: inline-flex; align-items: center; gap: 6px; }
@@ -100,6 +118,7 @@ const groups = STAGES
   }
   .nav-drop::after { content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 32px; }
   .nav-drop:hover .nav-mega, .nav-drop:focus-within .nav-mega { display: block; }
+  .nav-mega--small { width: 240px; left: -20px; padding: 18px 22px; }
   .nav-mega-in { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 32px; }
   .nav-mega-h { display: block; font-size: 12px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 10px; }
   .nav-mega ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }

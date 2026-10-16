@@ -36,9 +36,19 @@ export function faqLd(faqs: { q: string; a: string }[]) {
 
 /** Links do podcast. Preencha quando o canal estiver no ar; vazio = botão escondido. */
 export const PODCAST_LINKS = {
-  youtube: 'https://www.youtube.com/@Seven.Business',
+  youtube: 'https://www.youtube.com/@canaldaseven',
   spotify: '',
 };
+
+/** Redes sociais da SEVEN (rodapé). Vazio = ícone escondido até ter o link. */
+export const SOCIAL: { key: string; label: string; href: string }[] = [
+  { key: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/_sevenservices' },
+  { key: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/sevenservices7' },
+  { key: 'youtube', label: 'YouTube', href: 'https://www.youtube.com/@canaldaseven' },
+  { key: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/company/sevenservicesac/' },
+  { key: 'tiktok', label: 'TikTok', href: 'https://www.tiktok.com/@sevenservices' },
+  { key: 'threads', label: 'Threads', href: 'https://www.threads.com/@_sevenservices' },
+];
 
 /** Article JSON-LD. */
 export function articleLd(a: { title: string; description: string; path: string; pubDate: Date; updatedDate?: Date; author: string }) {

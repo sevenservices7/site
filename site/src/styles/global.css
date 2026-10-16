@@ -67,6 +67,8 @@ section { padding-block: clamp(56px, 9vw, 96px); }
 /* Secundário: contorno */
 .btn-ghost { --bg: transparent; --fg: var(--heading); border-color: var(--border-strong); }
 .btn-ghost:hover { --bg: var(--surface-alt); --fg: var(--heading); }
+.bg-navy .btn-ghost, .hero .btn-ghost, .pg-hero .btn-ghost, .sign-band .btn-ghost, .on-brand .btn-ghost { --fg: var(--nevoa); border-color: var(--complementar-2); }
+.bg-navy .btn-ghost:hover, .hero .btn-ghost:hover, .pg-hero .btn-ghost:hover, .sign-band .btn-ghost:hover, .on-brand .btn-ghost:hover { --bg: rgba(255,255,255,.08); --fg: var(--branco); border-color: var(--areia); }
 .btn-light { --bg: transparent; --fg: var(--nevoa); border-color: var(--complementar-2); }
 .btn-light:hover { --bg: transparent; border-color: var(--areia); --fg: var(--areia); }
 .btn-wa { --bg: #25D366; --fg: #08351d; }

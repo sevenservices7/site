@@ -6,11 +6,18 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 const copy = {
-  pt: { title: 'Agendar consultoria', step1: '1. Idioma da consultoria', step2: '2. Escolha o dia e o horário', step3: '3. Seus dados', noslots: 'Os horários online vão estar disponíveis em breve. Enquanto isso, fale com um especialista:', name: 'Nome completo', email: 'E-mail', phone: 'Celular', pay: 'Pagar e confirmar', loading: 'Carregando horários…', book: 'Reservar e pagar' },
-  en: { title: 'Book a consultation', step1: '1. Consultation language', step2: '2. Choose a day and time', step3: '3. Your details', noslots: 'Online time slots will be available soon. In the meantime, talk to a specialist:', name: 'Full name', email: 'Email', phone: 'Mobile phone', pay: 'Pay and confirm', loading: 'Loading time slots…', book: 'Book and pay' },
-  es: { title: 'Agendar consultoría', step1: '1. Idioma de la consultoría', step2: '2. Elige el día y la hora', step3: '3. Tus datos', noslots: 'Los horarios online estarán disponibles pronto. Mientras tanto, habla con un especialista:', name: 'Nombre completo', email: 'Correo electrónico', phone: 'Celular', pay: 'Pagar y confirmar', loading: 'Cargando horarios…', book: 'Reservar y pagar' },
-  fr: { title: 'Prendre rendez-vous', step1: '1. Langue de la consultation', step2: '2. Choisissez le jour et l’heure', step3: '3. Vos coordonnées', noslots: 'Les créneaux en ligne seront bientôt disponibles. En attendant, parlez à un spécialiste :', name: 'Nom complet', email: 'E-mail', phone: 'Téléphone portable', pay: 'Payer et confirmer', loading: 'Chargement des créneaux…', book: 'Réserver et payer' },
+  pt: { title: 'Agendar consultoria', step1: '2. Idioma da consultoria', step2: '3. Escolha o dia e o horário', step3: '4. Seus dados', noslots: 'Os horários online vão estar disponíveis em breve. Enquanto isso, fale com um especialista:', name: 'Nome completo', email: 'E-mail', phone: 'Celular', pay: 'Pagar e confirmar', loading: 'Carregando horários…', book: 'Reservar e pagar' },
+  en: { title: 'Book a consultation', step1: '2. Consultation language', step2: '3. Choose a day and time', step3: '4. Your details', noslots: 'Online time slots will be available soon. In the meantime, talk to a specialist:', name: 'Full name', email: 'Email', phone: 'Mobile phone', pay: 'Pay and confirm', loading: 'Loading time slots…', book: 'Book and pay' },
+  es: { title: 'Agendar consultoría', step1: '2. Idioma de la consultoría', step2: '3. Elige el día y la hora', step3: '4. Tus datos', noslots: 'Los horarios online estarán disponibles pronto. Mientras tanto, habla con un especialista:', name: 'Nombre completo', email: 'Correo electrónico', phone: 'Celular', pay: 'Pagar y confirmar', loading: 'Cargando horarios…', book: 'Reservar y pagar' },
+  fr: { title: 'Prendre rendez-vous', step1: '2. Langue de la consultation', step2: '3. Choisissez le jour et l’heure', step3: '4. Vos coordonnées', noslots: 'Les créneaux en ligne seront bientôt disponibles. En attendant, parlez à un spécialiste :', name: 'Nom complet', email: 'E-mail', phone: 'Téléphone portable', pay: 'Payer et confirmer', loading: 'Chargement des créneaux…', book: 'Réserver et payer' },
 }[lang];
+// Área da consultoria (todas 80 €, descontados se o cliente seguir com o serviço).
+const types = {
+  pt: { title: '1. Que consultoria você precisa?', lede: 'Consultoria de 30 minutos com um especialista, online ou presencial: 80 €, descontados se você seguir com o serviço.', missing: 'Escolha a área da consultoria.', items: [['imigratoria', 'Imigratória', 'Vistos, residência, renovação, família e nacionalidade.'], ['contabil', 'Contábil', 'Empresa, trabalhador independente, IRS e impostos.'], ['juridica', 'Jurídica', 'Recursos, indeferimentos e casos complexos, com advogada.']] },
+  en: { title: '1. Which consultation do you need?', lede: '30-minute consultation with a specialist, online or in person: €80, deducted if you go ahead with the service.', missing: 'Please choose the consultation area.', items: [['imigratoria', 'Immigration', 'Visas, residence, renewal, family and citizenship.'], ['contabil', 'Accounting', 'Company, self-employment, IRS and taxes.'], ['juridica', 'Legal', 'Appeals, refusals and complex cases, with our lawyer.']] },
+  es: { title: '1. ¿Qué consultoría necesitas?', lede: 'Consultoría de 30 minutos con un especialista, online o presencial: 80 €, que se descuentan si sigues con el servicio.', missing: 'Elige el área de la consultoría.', items: [['imigratoria', 'Inmigración', 'Visados, residencia, renovación, familia y nacionalidad.'], ['contabil', 'Contable', 'Empresa, autónomos, IRS e impuestos.'], ['juridica', 'Jurídica', 'Recursos, denegaciones y casos complejos, con abogada.']] },
+  fr: { title: '1. De quelle consultation avez-vous besoin ?', lede: 'Consultation de 30 minutes avec un spécialiste, en ligne ou sur place : 80 €, déduits si vous poursuivez avec le service.', missing: 'Choisissez le domaine de la consultation.', items: [['imigratoria', 'Immigration', 'Visas, titre de séjour, renouvellement, famille et nationalité.'], ['contabil', 'Comptabilité', 'Entreprise, indépendants, IRS et impôts.'], ['juridica', 'Juridique', 'Recours, refus et dossiers complexes, avec notre avocate.']] },
+}[lang] as { title: string; lede: string; missing: string; items: [string, string, string][] };
 // Consultas são feitas em PT/EN/ES; para FR, o idioma inicial sugerido é o inglês.
 const consultLang = lang === 'fr' ? 'en' : lang;
 const msgs = {
@@ -28,17 +35,25 @@ const waConsent = {
   fr: 'J’autorise SEVEN à me contacter sur WhatsApp au sujet de ce rendez-vous, y compris par des rappels. Je peux retirer mon accord à tout moment.',
 }[lang];
 ---
-<section class="bg-navy center">
-  <div class="container" style="max-width:720px">
+<section class="pg-hero pg-hero--compact">
+  <div class="container">
     <span class="eyebrow">{({ pt: 'Consultoria', en: 'Consultation', es: 'Consultoría', fr: 'Consultation' } as const)[lang]}</span>
     <h1>{copy.title}</h1>
-    <p class="lead" style="margin-inline:auto">{t('home.cta.body')}</p>
+    <p class="lede">{types.lede}</p>
   </div>
+  <div class="pg-hero-mark" aria-hidden="true"></div>
 </section>
 
 <section>
   <div class="container book" style="max-width:720px"
-    data-lang={lang} data-consult={consultLang} data-tz={tzNote} data-err={msgs.err} data-taken={msgs.taken} data-missing={msgs.missing} data-loading={copy.loading} data-noslots={copy.noslots}>
+    data-lang={lang} data-consult={consultLang} data-tz={tzNote} data-err={msgs.err} data-taken={msgs.taken} data-missing={msgs.missing} data-missing-type={types.missing} data-loading={copy.loading} data-noslots={copy.noslots}>
+    <div class="book-step">
+      <h3>{types.title}</h3>
+      <div class="book-types" data-book-types>
+        {types.items.map(([k, title, body]) => <button type="button" class="type-opt" data-c={k} aria-pressed="false"><strong>{title}</strong><span>{body}</span></button>)}
+      </div>
+    </div>
+
     <div class="book-step">
       <h3>{copy.step1}</h3>
       <div class="book-langs" data-book-langs>
@@ -75,6 +90,15 @@ const waConsent = {
   .book-step { margin-bottom: 32px; }
   .book-step h3 { margin-bottom: 14px; }
   .book-langs, .book-days, .book-times { display: flex; flex-wrap: wrap; gap: 10px; }
+  .book-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .type-opt { display: grid; gap: 6px; text-align: left; cursor: pointer; padding: 16px; border: 1px solid var(--border-strong); background: var(--surface); font: inherit; color: var(--ink); }
+  .type-opt strong { font-family: var(--font-head); font-size: 1.02rem; color: var(--heading); }
+  .type-opt span { font-size: .86rem; line-height: 1.45; color: var(--ink-muted); }
+  .type-opt:hover { border-color: var(--heading); }
+  .type-opt[aria-pressed='true'] { background: var(--heading); border-color: var(--heading); }
+  .type-opt[aria-pressed='true'] strong { color: var(--accent); }
+  .type-opt[aria-pressed='true'] span { color: var(--nevoa); }
+  @media (max-width: 640px) { .book-types { grid-template-columns: 1fr; } }
   .book-picker { display: grid; grid-template-columns: minmax(0, 340px) 1fr; gap: 28px; align-items: start; }
   .book-times { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; }
   .book-times-head { font-family: var(--font-head); font-weight: 600; color: var(--heading); margin-bottom: 12px; }
@@ -114,6 +138,13 @@ const waConsent = {
   const lang = root.dataset.lang || 'pt';
   let selectedLang = root.dataset.consult || lang;
   let selectedSlot: { start: string; end: string } | null = null;
+  let selectedType = '';
+  document.querySelectorAll<HTMLElement>('[data-book-types] .type-opt').forEach((b) =>
+    b.addEventListener('click', () => {
+      selectedType = b.dataset.c || '';
+      document.querySelectorAll('[data-book-types] .type-opt').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    })
+  );
 
   const slotsEl = document.querySelector('[data-slots]') as HTMLElement;
   const fallbackEl = document.querySelector('[data-slots-fallback]') as HTMLElement;
@@ -208,6 +239,7 @@ const waConsent = {
     const val = (sel: string) => (document.querySelector(sel) as HTMLInputElement).value.trim();
     const name = val('[data-b-name]'), email = val('[data-b-email]'), phone = val('[data-b-phone]');
     payMsg.hidden = true;
+    if (!selectedType) { payMsg.textContent = root.dataset.missingType || ''; payMsg.hidden = false; document.querySelector('[data-book-types]')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
     if (!name || !/^\S+@\S+\.\S+$/.test(email) || phone.replace(/\D/g, '').length < 6) {
       payMsg.textContent = root.dataset.missing || ''; payMsg.hidden = false; return;
     }
@@ -216,6 +248,7 @@ const waConsent = {
       const { booking_id } = await createBooking({
         language: selectedLang,
         service_code: 'CONSULT',
+        consult_type: selectedType,
         slot_start: selectedSlot.start,
         slot_end: selectedSlot.end,
         whatsapp_consent: (document.querySelector('[data-b-wa]') as HTMLInputElement)?.checked ?? false,

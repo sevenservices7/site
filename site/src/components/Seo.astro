@@ -1,6 +1,7 @@
 ---
 import { getRoute, type Lang, type RouteKey } from '../i18n/ui';
 import { getOffices } from '../lib/data';
+import { SOCIAL } from '../lib/site';
 
 interface Props {
   title: string;
@@ -43,7 +44,7 @@ const org = {
   description: 'Assessoria especialista em imigração, empresas e contabilidade para brasileiros em Portugal.',
   areaServed: [{ '@type': 'Country', name: 'Portugal' }, { '@type': 'Country', name: 'Brasil' }],
   knowsLanguage: ['pt-BR', 'pt-PT', 'en', 'es'],
-  sameAs: ['https://www.youtube.com/@Seven.Business'],
+  sameAs: SOCIAL.map((n) => n.href).filter(Boolean),
   aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '178', bestRating: '5' },
   department: offices.filter((o) => o.is_open).map((o) => ({
     '@type': 'ProfessionalService',

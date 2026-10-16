@@ -72,6 +72,7 @@ export function createBooking(input: {
   service_code?: string;
   slot_start: string;
   whatsapp_consent?: boolean;
+  consult_type?: string;
   slot_end: string;
   customer: { name: string; email: string; phone?: string };
   unit_slug?: string;
@@ -118,4 +119,12 @@ export function leadComplete(input: {
   consulted_others: string; preferred_contact: string; unit_slug: string; language: string;
 }): Promise<{ ok: boolean }> {
   return callFn('lead', { action: 'complete', ...input });
+}
+
+/** Página oculta da equipe: cobrança avulsa (serviço e valor livres), protegida por código. */
+export function createCustomCheckout(input: {
+  team_code: string; service: string; amount: string; locale: string;
+  customer: { name: string; email?: string };
+}): Promise<{ url: string }> {
+  return callFn('create-checkout-session', { mode: 'custom', ...input });
 }
