@@ -1,46 +1,17 @@
 ---
-import { type Lang } from '../i18n/ui';
-import PreQualForm from './PreQualForm.astro';
+// Os botões "Falar com especialista" ([data-open-attendance]) levam à página do formulário em tela cheia.
+import { getRoute, type Lang } from '../i18n/ui';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
-const closeLabel = { pt: 'Fechar', en: 'Close', es: 'Cerrar', fr: 'Fermer' }[lang];
-const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 ---
-<div class="att" data-attendance hidden role="dialog" aria-modal="true" aria-label={{ pt: 'Falar com especialista', en: 'Talk to a specialist', es: 'Hablar con un especialista', fr: 'Parler à un spécialiste' }[lang]}>
-  <div class="att-panel">
-    <button class="att-x" data-att-close aria-label={closeLabel}>&times;</button>
-    <PreQualForm lang={lang} idp="m" />
-  </div>
-</div>
-
-{turnstileKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
-
-<style>
-  .att {
-    position: fixed; inset: 0; z-index: 220;
-    background: rgba(1,32,63,.72);
-    display: flex; align-items: center; justify-content: center; padding: clamp(12px, 4vw, 40px); overflow-y: auto;
-  }
-  .att[hidden] { display: none; }
-  .att-panel {
-    position: relative; width: 100%; max-width: 580px; background: var(--surface); margin: auto;
-    border-top: 4px solid var(--accent); padding: clamp(24px, 4vw, 38px);
-  }
-  .att-x { position: absolute; top: 12px; right: 16px; background: none; border: 0; font-size: 1.8rem; color: var(--ink-muted); cursor: pointer; }
-  .att-x:hover { color: var(--heading); }
-</style>
+<div hidden data-attendance-href={getRoute('expert', lang)}></div>
 
 <script>
-  const modal = document.querySelector('[data-attendance]') as HTMLElement | null;
-  const open = () => { modal?.removeAttribute('hidden'); document.body.style.overflow = 'hidden'; };
-  const close = () => { modal?.setAttribute('hidden', ''); document.body.style.overflow = ''; };
+  const href = document.querySelector<HTMLElement>('[data-attendance-href]')?.dataset.attendanceHref || '/falar-com-especialista';
+  const open = () => { location.href = href; };
   window.addEventListener('seven:open-attendance', open);
-  // Delegação: qualquer botão [data-open-attendance] no site abre o formulário.
   document.addEventListener('click', (e) => {
     if ((e.target as HTMLElement)?.closest('[data-open-attendance]')) { e.preventDefault(); open(); }
   });
-  modal?.querySelectorAll('[data-att-close]').forEach((b) => b.addEventListener('click', close));
-  modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal && !modal.hasAttribute('hidden')) close(); });
 </script>

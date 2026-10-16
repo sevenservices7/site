@@ -107,17 +107,21 @@ export function sendLead(input: {
 
 /** "Falar com especialista", etapa 1: grava o contato como lead parcial e devolve id + token. */
 export function leadStart(input: {
-  name: string; email: string; phone: string; consent: boolean;
+  name: string; email: string; phone?: string; consent: boolean;
   site_lang: string; language: string; page: string; turnstile_token?: string;
 }): Promise<{ ok: boolean; lead_id: number; token: string }> {
   return callFn('lead', { action: 'start', ...input });
 }
 
-/** "Falar com especialista", etapas 2 e 3: completa a pré-qualificação do lead. */
-export function leadComplete(input: {
-  lead_id: number; token: string; topic: string; message: string; urgency: string; location: string;
-  consulted_others: string; preferred_contact: string; unit_slug: string; language: string;
-}): Promise<{ ok: boolean }> {
+type LeadAnswers = Partial<Record<'phone' | 'topic' | 'urgency' | 'location' | 'preferred_contact' | 'message', string>>;
+
+/** "Falar com especialista": grava uma resposta assim que a pessoa avança. */
+export function leadUpdate(input: { lead_id: number; token: string } & LeadAnswers): Promise<{ ok: boolean }> {
+  return callFn('lead', { action: 'update', ...input });
+}
+
+/** "Falar com especialista": última resposta, marca o lead como completo. */
+export function leadComplete(input: { lead_id: number; token: string } & LeadAnswers): Promise<{ ok: boolean }> {
   return callFn('lead', { action: 'complete', ...input });
 }
 

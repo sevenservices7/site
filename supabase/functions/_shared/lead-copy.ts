@@ -13,7 +13,7 @@ export const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '
 
 export function leadSummary(l: any): string {
   return [
-    `Nome: ${l.name}`, `WhatsApp: ${l.phone}`, `E-mail: ${l.email}`,
+    `Nome: ${l.name}`, `WhatsApp: ${l.phone || '—'}`, `E-mail: ${l.email}`,
     `Autorizou contato (WhatsApp/e-mail): ${l.whatsapp_consent ? 'sim' : 'não'}`,
     `Assunto: ${label(TOPICS, l.topic)}`, `Urgência: ${label(URGENCY, l.urgency)}`, `Onde está: ${label(LOCATION, l.location)}`,
     `Já consultou outra empresa: ${label(CONSULTED, l.consulted_others)}`, `Prefere contato por: ${label(CONTACT, l.preferred_contact)}`,

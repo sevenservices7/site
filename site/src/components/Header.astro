@@ -69,7 +69,10 @@ const groups = STAGES
                   </div>
                 ))}
               </div>
-              <a href={hub} class="nav-mega-all">{u.common.seeAllSolutions}</a>
+              <div class="nav-mega-foot">
+                <a href={hub} class="nav-mega-all">{u.common.seeAllSolutions}</a>
+                <a href={getRoute('booking', lang)} class="nav-mega-book">{u.common.bookConsult} · 80 € →</a>
+              </div>
             </div>
           </li>
         )}
@@ -83,7 +86,6 @@ const groups = STAGES
       </ul>
       <div class="nav-actions">
         <LangSwitcher lang={lang} routeKey={routeKey} alternates={alternates} />
-        <a href={getRoute('booking', lang)} class="nav-book">{u.common.bookConsult}</a>
         <a href={getRoute('expert', lang)} class="btn btn-gold btn-sm">{t('nav.booking')}</a>
       </div>
     </nav>
@@ -106,9 +108,6 @@ const groups = STAGES
   .nav-links a:hover { color: var(--g1); }
   .nav-actions { display: flex; align-items: center; gap: 16px; }
   .nav-actions .btn { white-space: nowrap; }
-  .nav-book { color: var(--areia); font-family: var(--font-head); font-weight: 600; font-size: .8rem; white-space: nowrap; border-bottom: 1px solid transparent; }
-  .nav-book:hover { border-color: var(--areia); }
-  @media (min-width: 961px) and (max-width: 1180px) { .nav-book { display: none; } }
   @media (max-width: 1360px) { .nav-menu, .nav-links { gap: 22px; } }
   .nav-drop { position: relative; }
   .nav-drop-btn { display: inline-flex; align-items: center; gap: 6px; }
@@ -124,7 +123,10 @@ const groups = STAGES
   .nav-mega ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
   .nav-mega a { color: var(--heading); font-size: .92rem; font-weight: 500; text-transform: none; letter-spacing: 0; }
   .nav-mega a:hover { color: var(--complementar-1); text-decoration: underline; text-underline-offset: 3px; }
-  .nav-mega .nav-mega-all { display: inline-block; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--border); width: 100%; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  .nav-mega-foot { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .nav-mega .nav-mega-all { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  .nav-mega .nav-mega-book { background: var(--accent); color: var(--surface-brand); padding: 9px 14px; font-size: 13px; font-weight: 700; }
+  .nav-mega .nav-mega-book:hover { color: var(--surface-brand); text-decoration: none; filter: brightness(1.05); }
   .nav-burger { display: none; flex-direction: column; gap: 5px; background: none; border: 0; cursor: pointer; padding: 8px; }
   .nav-burger span { width: 24px; height: 2px; background: var(--nevoa); }
 
@@ -146,7 +148,9 @@ const groups = STAGES
     .nav-mega-in { grid-template-columns: 1fr; gap: 12px; }
     .nav-mega-h { color: var(--complementar-2); margin-bottom: 4px; }
     .nav-mega a { color: var(--nevoa); padding: 4px 0; }
-    .nav-mega .nav-mega-all { border-color: var(--complementar-1); color: var(--areia); margin-top: 8px; }
+    .nav-mega-foot { border-color: var(--complementar-1); margin-top: 8px; flex-direction: column; align-items: flex-start; gap: 10px; }
+    .nav-mega .nav-mega-all { color: var(--areia); }
+    .nav-mega .nav-mega-book { padding: 8px 12px; }
     .nav-menu { max-height: calc(100vh - 72px); overflow-y: auto; }
     .nav-actions { flex-wrap: wrap; gap: 14px; padding-top: 8px; width: 100%; }
   }

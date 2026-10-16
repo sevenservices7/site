@@ -1,6 +1,7 @@
 import { adminClient, SITE_URL } from '../_shared/clients.ts';
 import { sendEmail } from '../_shared/email.ts';
 import { esc } from '../_shared/lead-copy.ts';
+import { createKommoLead } from '../_shared/kommo.ts';
 
 // Chamado pelo pg_cron a cada 10 minutos. Para quem começou o formulário "Falar com especialista",
 // autorizou contato e não terminou em 30 minutos, envia UM e-mail convidando a contar o caso.
@@ -42,6 +43,16 @@ Deno.serve(async (req) => {
     const link = `${SITE_URL}${PATHS[lang]}?lead=${l.id}&t=${l.token}`;
     const ok = await sendEmail(l.email, COPY[lang].subject, html(lang, l.name, link), { from, replyTo });
     if (ok) { await sb.from('leads').update({ followup_sent_at: new Date().toISOString() }).eq('id', l.id); sent++; }
+  }
+  // Quem parou antes do WhatsApp ainda não tem lead no Kommo (que deduplica pelo telefone): cria só com o e-mail.
+  const { data: noPhone } = await sb.from('leads').select('id,name,email,language,whatsapp_consent')
+    .eq('status', 'partial').is('phone', null).is('kommo_lead_id', null).is('kommo_error', null)
+    .lt('created_at', new Date(now - DELAY_MIN * 60000).toISOString()).limit(20);
+  for (const l of noPhone ?? []) {
+    try {
+      const { lead_id } = await createKommoLead({ name: l.name, email: l.email, phone: '', language: l.language, source: 'website-prequal', whatsapp_consent: l.whatsapp_consent === true });
+      await sb.from('leads').update(lead_id ? { kommo_lead_id: lead_id } : { kommo_error: 'sem id' }).eq('id', l.id);
+    } catch (e) { await sb.from('leads').update({ kommo_error: String(e).slice(0, 500) }).eq('id', l.id); }
   }
   return new Response(JSON.stringify({ candidates: leads?.length ?? 0, sent, resend: Boolean(Deno.env.get('RESEND_API_KEY')) }), { headers: { 'Content-Type': 'application/json' } });
 });
