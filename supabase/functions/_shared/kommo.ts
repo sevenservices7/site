@@ -71,8 +71,8 @@ export async function createKommoLead(lead: LeadInput): Promise<{ ok: boolean; l
   if (lead.email) contactCFV.push({ field_code: 'EMAIL', values: [{ enum_code: 'WORK', value: lead.email }] });
   // Uma etiqueta só, que diz de onde veio o lead e em que etapa está (ex.: "Site - Completo").
   const tags = (lead.tags?.length ? lead.tags : ['Site']).map((name) => ({ name }));
+  // Sem "name": o Kommo numera o lead sozinho (Lead #12345); a equipa renomeia depois, se quiser.
   const leadBase: any = {
-    name: `Atendimento Online — ${lead.name}`,
     ...(pipelineId ? { pipeline_id: pipelineId } : {}),
     ...(statusId ? { status_id: statusId } : {}),
     ...(leadCFV.length ? { custom_fields_values: leadCFV } : {}),
