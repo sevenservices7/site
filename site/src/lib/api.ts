@@ -126,9 +126,13 @@ export function leadComplete(input: { lead_id: number; token: string } & LeadAns
 }
 
 /** Página oculta da equipe: cobrança avulsa (serviço e valor livres), protegida por código. */
+export function teamLogin(team_code: string): Promise<{ ok: boolean }> {
+  return callFn('create-checkout-session', { mode: 'team-login', team_code });
+}
+
 export function createCustomCheckout(input: {
-  team_code: string; service: string; amount: string; locale: string;
+  team_code: string; service: string; amount: string; locale: string; unit_slug: string;
   customer: { name: string; email?: string };
-}): Promise<{ url: string }> {
+}): Promise<{ url: string; emailed?: boolean }> {
   return callFn('create-checkout-session', { mode: 'custom', ...input });
 }

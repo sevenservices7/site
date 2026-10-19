@@ -1,4 +1,4 @@
-const FROM = Deno.env.get('EMAIL_FROM') || 'Seven Services <noreply@sevens.services>';
+const FROM = Deno.env.get('EMAIL_FROM') || 'SEVEN <contato@seveneu.com>';
 export async function sendEmail(to: string, subject: string, html: string, opts: { from?: string; replyTo?: string } = {}): Promise<boolean> {
   const key = Deno.env.get('RESEND_API_KEY');
   if (!key || !to) return false;

@@ -1,5 +1,23 @@
 import { preflight, json } from '../_shared/cors.ts';
 import { adminClient, stripeClient, checkoutUrls } from '../_shared/clients.ts';
+import { sendEmail } from '../_shared/email.ts';
+
+// E-mail com o link de pagamento gerado pela equipa (modo custom, quando há e-mail do cliente).
+const PAY_MAIL: Record<string, { subject: string; hi: string; body: string; cta: string; note: string }> = {
+  pt: { subject: 'Seu link de pagamento SEVEN', hi: 'Olá', body: 'Segue o link para pagar', cta: 'Pagar agora', note: 'O link é válido por 24 horas. Dúvidas? É só responder este e-mail.' },
+  en: { subject: 'Your SEVEN payment link', hi: 'Hello', body: 'Here is the link to pay for', cta: 'Pay now', note: 'The link is valid for 24 hours. Questions? Just reply to this email.' },
+  es: { subject: 'Tu enlace de pago SEVEN', hi: 'Hola', body: 'Aquí tienes el enlace para pagar', cta: 'Pagar ahora', note: 'El enlace es válido durante 24 horas. ¿Dudas? Responde a este correo.' },
+  fr: { subject: 'Votre lien de paiement SEVEN', hi: 'Bonjour', body: 'Voici le lien pour régler', cta: 'Payer maintenant', note: 'Le lien est valable 24 heures. Des questions ? Répondez simplement à cet e-mail.' },
+};
+const escHtml = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+function payMailHtml(locale: string, name: string, service: string, amount: number, url: string): string {
+  const c = PAY_MAIL[locale] ?? PAY_MAIL.pt;
+  const first = escHtml(name.split(/\s+/)[0] || '');
+  return `<div style="font:16px/1.6 Arial,sans-serif;color:#01203F;max-width:560px">
+<p>${c.hi}${first ? `, ${first}` : ''}!</p><p>${c.body} <b>${escHtml(service)}</b>: <b>€${amount.toFixed(2)}</b>.</p>
+<p style="margin:28px 0"><a href="${url}" style="background:#D6C496;color:#01203F;padding:12px 22px;text-decoration:none;font-weight:bold;display:inline-block">${c.cta}</a></p>
+<p style="color:#5b6b7f">${c.note}</p><p style="color:#5b6b7f">SEVEN · Clareza para ir além.</p></div>`;
+}
 
 const CONSULT_NAMES: Record<string, string> = { imigratoria: 'Consultoria imigratória', contabil: 'Consultoria contábil', juridica: 'Consultoria jurídica' };
 
@@ -11,6 +29,12 @@ Deno.serve(async (req) => {
   try {
     const body = await req.json();
     const { mode, locale = 'pt' } = body;
+    // Página da equipe: confere só o código, antes de mostrar o formulário.
+    if (mode === 'team-login') {
+      const teamCode = Deno.env.get('TEAM_PAY_CODE');
+      if (!teamCode || String(body.team_code || '') !== teamCode) return json({ error: 'forbidden' }, 403, origin);
+      return json({ ok: true }, 200, origin);
+    }
     const sb = adminClient();
     const stripe = stripeClient();
     const urls = checkoutUrls(locale);
@@ -70,10 +94,11 @@ Deno.serve(async (req) => {
       if (!teamCode || String(body.team_code || '') !== teamCode) return json({ error: 'forbidden' }, 403, origin);
       const service = String(body.service || '').trim().slice(0, 200);
       const amount = Math.round(Number(String(body.amount || '').replace(',', '.')) * 100) / 100;
-      if (!service || !(amount >= 1 && amount <= 20000)) return json({ error: 'invalid_fields' }, 400, origin);
+      const unit = String(body.unit_slug || '');
+      if (!service || !(amount >= 1 && amount <= 20000) || !['albufeira', 'faro', 'porto'].includes(unit)) return json({ error: 'invalid_fields' }, 400, origin);
       const name = String(body.customer?.name || '').trim().slice(0, 200);
       lineItems = [{ quantity: 1, price_data: { currency: 'eur', unit_amount: Math.round(amount * 100), product_data: { name: service } } }];
-      const { data: order, error: oErr } = await sb.from('orders').insert({ status: 'pending', amount_total: amount, locale, unit_slug: body.unit_slug || '', customer_name: name, customer_email: body.customer?.email || '', customer_phone: body.customer?.phone || '' }).select('id').single();
+      const { data: order, error: oErr } = await sb.from('orders').insert({ status: 'pending', amount_total: amount, locale, unit_slug: unit, customer_name: name, customer_email: body.customer?.email || '', customer_phone: body.customer?.phone || '' }).select('id').single();
       if (oErr) throw oErr;
       await sb.from('order_items').insert([{ order_id: order.id, service_code: 'CUSTOM', name_snapshot: service, unit_price: amount, quantity: 1 }]);
       metadata = { order_id: order.id, source: 'team-link' };
@@ -100,7 +125,14 @@ Deno.serve(async (req) => {
     });
     if (metadata.order_id) await sb.from('orders').update({ stripe_session_id: session.id }).eq('id', metadata.order_id);
     if (metadata.booking_id) await sb.from('bookings').update({ stripe_session_id: session.id }).eq('id', metadata.booking_id);
-    return json({ url: session.url }, 200, origin);
+    let emailed = false;
+    const email = String(body.customer?.email || '').trim();
+    if (mode === 'custom' && /^\S+@\S+\.\S+$/.test(email) && session.url) {
+      const c = PAY_MAIL[locale] ?? PAY_MAIL.pt;
+      const item = lineItems[0];
+      emailed = await sendEmail(email, c.subject, payMailHtml(locale, String(body.customer?.name || ''), item.price_data.product_data.name, item.price_data.unit_amount / 100, session.url), { replyTo: Deno.env.get('LEAD_NOTIFY_EMAIL') || 'contato@seveneu.com' }).catch(() => false);
+    }
+    return json({ url: session.url, emailed }, 200, origin);
   } catch (e) {
     console.error('create-checkout-session', e);
     return json({ error: 'internal_error' }, 500, origin);

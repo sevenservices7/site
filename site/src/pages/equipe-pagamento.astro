@@ -1,16 +1,34 @@
 ---
 // Página interna da equipe (não aparece em menus, nem no sitemap, nem no Google).
-// Gera um link de pagamento Stripe com serviço e valor livres (cartão, MB Way, Klarna... conforme o Dashboard do Stripe).
+// 1) senha da equipe  2) unidade  3) dados da cobrança → link de pagamento Stripe
+// (cartão, MB Way, Klarna... conforme o Dashboard do Stripe).
 import Base from '../layouts/Base.astro';
+const UNITS = [['albufeira', 'Albufeira'], ['faro', 'Faro'], ['porto', 'Porto']];
 ---
 <Base title="Pagamento SEVEN (equipe)" description="Uso interno" noindex bare>
   <section class="tp">
     <div class="tp-card">
-      <img src="/brand/seven-horizontal-areia.svg" alt="SEVEN" width="160" height="33" class="tp-logo" />
-      <h1>Gerar link de pagamento</h1>
-      <p class="tp-lead">Uso interno da equipe. Preencha, gere o link e envie ao cliente, ou abra o pagamento aqui mesmo.</p>
-      <form data-tp novalidate>
-        <label>Código da equipe<input name="code" type="password" required autocomplete="off" /></label>
+      <img src="/brand/seven-horizontal-oceano.svg" alt="SEVEN" width="160" height="33" class="tp-logo" />
+
+      <!-- 1. Senha -->
+      <form class="tp-step" data-tp-step="login" novalidate>
+        <label class="tp-q" for="tp-code">Senha da equipe</label>
+        <input id="tp-code" class="tp-pin" name="code" type="password" inputmode="numeric" autocomplete="off" autofocus />
+        <p class="tp-msg" data-tp-msg hidden></p>
+        <p class="tp-hint">Digite a senha e pressione Enter.</p>
+      </form>
+
+      <!-- 2. Unidade -->
+      <div class="tp-step" data-tp-step="unit" hidden>
+        <p class="tp-q">De qual unidade é o serviço?</p>
+        <div class="tp-units">
+          {UNITS.map(([slug, name]) => <button type="button" class="tp-unit" data-unit={slug}>{name}</button>)}
+        </div>
+      </div>
+
+      <!-- 3. Cobrança -->
+      <form class="tp-step" data-tp-step="form" hidden novalidate>
+        <p class="tp-unit-tag">Unidade: <strong data-tp-unit-name></strong> · <button type="button" class="tp-link" data-tp-change>trocar</button></p>
         <label>Nome do cliente<input name="name" required /></label>
         <label>E-mail do cliente (opcional)<input name="email" type="email" /></label>
         <label>Serviço<input name="service" required placeholder="Ex.: Renovação de residência" /></label>
@@ -19,14 +37,17 @@ import Base from '../layouts/Base.astro';
         <button type="submit" class="btn btn-gold btn-block">Gerar link de pagamento</button>
         <p class="tp-msg" data-tp-msg hidden></p>
       </form>
-      <div class="tp-out" data-tp-out hidden>
+
+      <!-- 4. Link pronto -->
+      <div class="tp-step tp-out" data-tp-step="out" hidden>
         <p><strong>Link pronto</strong> (válido por 24 horas):</p>
+        <p class="tp-sent" data-tp-sent hidden></p>
         <input data-tp-url readonly />
         <div class="tp-actions">
           <button type="button" class="btn btn-ghost" data-tp-copy>Copiar link</button>
           <a class="btn btn-gold" data-tp-open target="_blank" rel="noopener">Abrir pagamento</a>
         </div>
-        <button type="button" class="tp-new" data-tp-new>Gerar outro</button>
+        <button type="button" class="tp-link" data-tp-new>Gerar outro</button>
       </div>
     </div>
   </section>
@@ -35,43 +56,97 @@ import Base from '../layouts/Base.astro';
 <style>
   .tp { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; background: var(--surface-brand); }
   .tp-card { width: 100%; max-width: 460px; background: var(--surface); border-top: 4px solid var(--accent); padding: 28px; }
-  .tp-logo { display: block; height: 30px; width: auto; margin-bottom: 18px; background: var(--surface-brand); padding: 8px 10px; box-sizing: content-box; }
-  .tp h1 { font-size: 1.4rem; }
-  .tp-lead { color: var(--ink-muted); font-size: .9rem; margin: 6px 0 18px; }
-  .tp form { display: grid; gap: 12px; }
+  .tp-logo { display: block; height: 30px; width: auto; margin-bottom: 22px; }
+  .tp-step { display: grid; gap: 12px; }
+  .tp-step[hidden] { display: none; }
+  .tp-q { font-family: var(--font-head); font-weight: 600; font-size: 1.2rem; color: var(--heading); }
+  .tp-pin { font: inherit; font-size: 1.8rem; letter-spacing: .5em; text-align: center; padding: 12px; border: 1px solid var(--border-strong); background: var(--surface-alt); width: 100%; }
+  .tp-pin:focus { outline: none; border-color: var(--heading); background: var(--surface); }
+  .tp-hint { font-size: .82rem; color: var(--ink-muted); }
+  .tp-units { display: grid; gap: 10px; }
+  .tp-unit { font: inherit; font-weight: 600; font-size: 1.05rem; padding: 16px; text-align: left; cursor: pointer; background: var(--surface-alt); border: 1px solid var(--border-strong); color: var(--heading); }
+  .tp-unit:hover, .tp-unit:focus-visible { border-color: var(--heading); background: var(--surface); outline: none; }
+  .tp-unit-tag { font-size: .9rem; color: var(--ink-muted); }
+  .tp-unit-tag strong { color: var(--heading); }
   .tp label { display: grid; gap: 6px; font-size: .85rem; font-weight: 600; color: var(--heading); }
-  .tp input, .tp select { font: inherit; font-weight: 400; padding: 10px 12px; border: 1px solid var(--border-strong); background: var(--surface-alt); width: 100%; }
+  .tp form input:not(.tp-pin), .tp select, .tp-out input { font: inherit; font-weight: 400; padding: 10px 12px; border: 1px solid var(--border-strong); background: var(--surface-alt); width: 100%; }
   .tp-msg { padding: 10px 12px; background: #FEE2E2; color: #991B1B; font-size: .88rem; }
-  .tp-out { display: grid; gap: 12px; margin-top: 4px; }
+  .tp-sent { font-size: .88rem; padding: 8px 12px; background: #DCFCE7; color: #166534; }
+  .tp-sent--fail { background: #FEF3C7; color: #92400E; }
   .tp-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-  .tp-new { background: none; border: 0; color: var(--heading); text-decoration: underline; cursor: pointer; justify-self: start; padding: 0; font: inherit; font-size: .88rem; }
+  .tp-link { background: none; border: 0; color: var(--heading); text-decoration: underline; cursor: pointer; justify-self: start; padding: 0; font: inherit; font-size: .88rem; }
 </style>
 
 <script>
-  import { createCustomCheckout } from '../lib/api';
-  const form = document.querySelector<HTMLFormElement>('[data-tp]')!;
-  const msg = document.querySelector<HTMLElement>('[data-tp-msg]')!;
-  const out = document.querySelector<HTMLElement>('[data-tp-out]')!;
-  const urlEl = document.querySelector<HTMLInputElement>('[data-tp-url]')!;
-  const open = document.querySelector<HTMLAnchorElement>('[data-tp-open]')!;
-  const fail = (t: string) => { msg.textContent = t; msg.hidden = false; };
+  import { teamLogin, createCustomCheckout } from '../lib/api';
+  const KEY = 'seven_team_code';
+  const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const steps = Array.from(document.querySelectorAll<HTMLElement>('[data-tp-step]'));
+  const show = (name: string) => steps.forEach((s) => (s.hidden = s.dataset.tpStep !== name));
+  const fail = (step: string, t: string) => { const m = $(`[data-tp-step="${step}"] [data-tp-msg]`); m.textContent = t; m.hidden = false; };
+  let code = '';
+  let unit = '';
+  try { code = sessionStorage.getItem(KEY) || ''; } catch {}
+  if (code) show('unit');
+
+  // 1. Senha: Enter, ou 4 dígitos, já confere.
+  const login = $<HTMLFormElement>('[data-tp-step="login"]');
+  const pin = $<HTMLInputElement>('#tp-code');
+  let checking = false;
+  async function check() {
+    const v = pin.value.trim();
+    if (!v || checking) return;
+    checking = true;
+    $('[data-tp-step="login"] [data-tp-msg]').hidden = true;
+    try {
+      await teamLogin(v);
+      code = v; try { sessionStorage.setItem(KEY, v); } catch {}
+      show('unit'); (document.querySelector('.tp-unit') as HTMLElement)?.focus();
+    } catch (err) {
+      fail('login', String((err as Error).message).includes('403') ? 'Senha incorreta.' : 'Sem ligação. Tente de novo.');
+      pin.value = ''; pin.focus();
+    } finally { checking = false; }
+  }
+  login.addEventListener('submit', (e) => { e.preventDefault(); check(); });
+  pin.addEventListener('input', () => { if (/^\d{4}$/.test(pin.value)) check(); });
+
+  // 2. Unidade
+  document.querySelectorAll<HTMLButtonElement>('[data-unit]').forEach((b) => b.addEventListener('click', () => {
+    unit = b.dataset.unit!;
+    $('[data-tp-unit-name]').textContent = b.textContent;
+    show('form'); ($('[data-tp-step="form"] input[name=name]') as HTMLInputElement).focus();
+  }));
+  $('[data-tp-change]').addEventListener('click', () => show('unit'));
+
+  // 3. Cobrança
+  const form = $<HTMLFormElement>('[data-tp-step="form"]');
+  const urlEl = $<HTMLInputElement>('[data-tp-url]');
+  const open = $<HTMLAnchorElement>('[data-tp-open]');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    msg.hidden = true;
+    $('[data-tp-step="form"] [data-tp-msg]').hidden = true;
     const fd = new FormData(form);
     const g = (k: string) => String(fd.get(k) || '').trim();
     const amount = Number(g('amount').replace(',', '.'));
-    if (!g('code') || !g('name') || !g('service') || !(amount >= 1)) return fail('Preencha código, nome, serviço e um valor válido.');
-    const btn = form.querySelector('button')!; btn.disabled = true;
+    if (!g('name') || !g('service') || !(amount >= 1)) return fail('form', 'Preencha nome, serviço e um valor válido.');
+    const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!; btn.disabled = true;
     try {
-      const { url } = await createCustomCheckout({ team_code: g('code'), service: g('service'), amount: g('amount'), locale: g('locale') || 'pt', customer: { name: g('name'), email: g('email') || undefined } });
-      urlEl.value = url; open.href = url; form.hidden = true; out.hidden = false;
+      const { url, emailed } = await createCustomCheckout({ team_code: code, unit_slug: unit, service: g('service'), amount: g('amount'), locale: g('locale') || 'pt', customer: { name: g('name'), email: g('email') || undefined } });
+      urlEl.value = url; open.href = url;
+      const sent = $('[data-tp-sent]');
+      sent.hidden = !g('email');
+      sent.textContent = emailed ? `✓ Também enviado por e-mail para ${g('email')}.` : `Não foi possível enviar o e-mail para ${g('email')}. Envie o link manualmente.`;
+      sent.classList.toggle('tp-sent--fail', !emailed);
+      show('out');
     } catch (err) {
-      fail(String((err as Error).message).includes('403') ? 'Código da equipe incorreto.' : 'Não foi possível gerar o link. Tente de novo.');
+      if (String((err as Error).message).includes('403')) { try { sessionStorage.removeItem(KEY); } catch {} show('login'); return fail('login', 'Senha incorreta.'); }
+      fail('form', 'Não foi possível gerar o link. Tente de novo.');
     } finally { btn.disabled = false; }
   });
-  document.querySelector('[data-tp-copy]')!.addEventListener('click', async (e) => {
+
+  // 4. Link pronto
+  $('[data-tp-copy]').addEventListener('click', async (e) => {
     try { await navigator.clipboard.writeText(urlEl.value); (e.target as HTMLElement).textContent = 'Copiado!'; } catch { urlEl.select(); }
   });
-  document.querySelector('[data-tp-new]')!.addEventListener('click', () => { form.reset(); form.hidden = false; out.hidden = true; });
+  $('[data-tp-new]').addEventListener('click', () => { form.reset(); ($('[data-tp-copy]')).textContent = 'Copiar link'; show('unit'); });
 </script>
