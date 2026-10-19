@@ -2,10 +2,16 @@ export interface LeadInput {
   name: string; email: string; phone: string;
   unit_slug?: string; language?: string; service_code?: string; message?: string; source?: string;
   nif?: string; won?: boolean;
+  /** Etiquetas extra (ex.: etapa do formulário do site). */
+  tags?: string[];
   /** RGPD: autorizou contacto por WhatsApp (undefined = não perguntado, ex.: leads criados por outros fluxos). */
   whatsapp_consent?: boolean;
 }
 const TRANSPORT = Deno.env.get('KOMMO_TRANSPORT') || 'api';
+// Funil "Canais digitais", onde caem os leads criados pelo site (KOMMO_PIPELINE_ID substitui).
+const SITE_PIPELINE_ID = 12916319;
+/** Etiquetas de etapa do formulário "Falar com especialista": só uma fica no lead de cada vez. */
+export const SITE_STAGE = { incompleto: 'Site - Incompleto', qualificado: 'Site - Pré-qualificado', completo: 'Site - Completo', pago: 'Site - Pagamento', consultoria: 'Site - Consultoria paga' };
 function firstLast(full: string): { first: string; last: string } {
   const parts = (full || '').trim().split(/\s+/);
   return { first: parts[0] || '', last: parts.slice(1).join(' ') };
@@ -48,7 +54,7 @@ export async function createKommoLead(lead: LeadInput): Promise<{ ok: boolean; l
   const subdomain = Deno.env.get('KOMMO_SUBDOMAIN');
   const token = Deno.env.get('KOMMO_LONG_LIVED_TOKEN');
   if (!subdomain || !token) throw new Error('KOMMO_SUBDOMAIN/KOMMO_LONG_LIVED_TOKEN nao configurados');
-  const pipelineId = Number(Deno.env.get('KOMMO_PIPELINE_ID') || 0) || undefined;
+  const pipelineId = Number(Deno.env.get('KOMMO_PIPELINE_ID') || 0) || SITE_PIPELINE_ID;
   const statusId = lead.won ? wonStatusId() : (Number(Deno.env.get('KOMMO_STATUS_ID') || 0) || undefined);
   const fId = (k: string) => Number(Deno.env.get(k) || 0) || undefined;
   const { first, last } = firstLast(lead.name);
@@ -63,8 +69,8 @@ export async function createKommoLead(lead: LeadInput): Promise<{ ok: boolean; l
   const contactCFV: any[] = [];
   if (lead.phone) contactCFV.push({ field_code: 'PHONE', values: [{ enum_code: 'MOB', value: lead.phone }] });
   if (lead.email) contactCFV.push({ field_code: 'EMAIL', values: [{ enum_code: 'WORK', value: lead.email }] });
-  const consentTag = lead.whatsapp_consent === undefined ? null : { name: lead.whatsapp_consent ? 'whatsapp:autorizado' : 'whatsapp:nao-autorizado' };
-  const tags = [{ name: 'website' }, lead.unit_slug ? { name: `unidade:${lead.unit_slug}` } : null, lead.language ? { name: `idioma:${lead.language}` } : null, consentTag].filter(Boolean);
+  // Uma etiqueta só, que diz de onde veio o lead e em que etapa está (ex.: "Site - Completo").
+  const tags = (lead.tags?.length ? lead.tags : ['Site']).map((name) => ({ name }));
   const leadBase: any = {
     name: `Atendimento Online — ${lead.name}`,
     ...(pipelineId ? { pipeline_id: pipelineId } : {}),
@@ -112,13 +118,17 @@ export async function markKommoLeadWon(leadId: number): Promise<{ ok: boolean }>
   return { ok: true };
 }
 
-/** Acrescenta uma nota e etiquetas a um lead existente (ex.: respostas da pré-qualificação). */
-export async function updateKommoLead(leadId: number, note: string, tags: string[]): Promise<void> {
+/** Acrescenta uma nota e troca etiquetas de um lead existente (ex.: etapa da pré-qualificação). */
+export async function updateKommoLead(leadId: number, note: string, addTags: string[], removeTags: string[] = []): Promise<void> {
   const subdomain = Deno.env.get('KOMMO_SUBDOMAIN');
   const token = Deno.env.get('KOMMO_LONG_LIVED_TOKEN');
   if (!subdomain || !token || !leadId) throw new Error('KOMMO_SUBDOMAIN/KOMMO_LONG_LIVED_TOKEN nao configurados');
   const h = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` };
   const base = `https://${subdomain}.kommo.com/api/v4/leads`;
-  if (tags.length) await fetch(`${base}/${leadId}`, { method: 'PATCH', headers: h, body: JSON.stringify({ _embedded: { tags: tags.map((name) => ({ name })) } }) });
+  // tags_to_add / tags_to_delete mexem só nessas etiquetas e mantêm as outras (idioma, WhatsApp...).
+  if (addTags.length || removeTags.length) {
+    const r = await fetch(`${base}/${leadId}`, { method: 'PATCH', headers: h, body: JSON.stringify({ tags_to_add: addTags.map((name) => ({ name })), tags_to_delete: removeTags.map((name) => ({ name })) }) });
+    if (!r.ok) throw new Error(`Kommo tags ${r.status}: ${await r.text().catch(() => '')}`);
+  }
   if (note) await fetch(`${base}/${leadId}/notes`, { method: 'POST', headers: h, body: JSON.stringify([{ note_type: 'common', params: { text: note } }]) });
 }

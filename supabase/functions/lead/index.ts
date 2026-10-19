@@ -1,6 +1,6 @@
 import { preflight, json } from '../_shared/cors.ts';
 import { adminClient } from '../_shared/clients.ts';
-import { createKommoLead, updateKommoLead } from '../_shared/kommo.ts';
+import { createKommoLead, updateKommoLead, SITE_STAGE } from '../_shared/kommo.ts';
 import { verifyTurnstile } from '../_shared/turnstile.ts';
 import { sendEmail } from '../_shared/email.ts';
 import { leadSummary, esc, TOPICS, URGENCY, LOCATION, CONSULTED, CONTACT } from '../_shared/lead-copy.ts';
@@ -34,8 +34,8 @@ async function findLead(sb: any, body: any) {
 // Kommo (melhor esforço). Criado quando há telefone, porque a deduplicação de contatos é pelo telefone.
 async function syncKommo(sb: any, lead: any) {
   try {
-    const { lead_id } = await createKommoLead({ name: lead.name, email: lead.email, phone: lead.phone || '', language: lead.language, source: 'website-prequal', whatsapp_consent: lead.whatsapp_consent === true });
-    if (lead_id) { await sb.from('leads').update({ kommo_lead_id: lead_id }).eq('id', lead.id); await updateKommoLead(lead_id, '', ['formulario-incompleto']).catch(() => {}); }
+    const { lead_id } = await createKommoLead({ name: lead.name, email: lead.email, phone: lead.phone || '', language: lead.language, source: 'website-prequal', whatsapp_consent: lead.whatsapp_consent === true, tags: [SITE_STAGE.incompleto] });
+    if (lead_id) await sb.from('leads').update({ kommo_lead_id: lead_id }).eq('id', lead.id);
   } catch (e) { await sb.from('leads').update({ kommo_error: String(e).slice(0, 500) }).eq('id', lead.id); }
 }
 
@@ -87,6 +87,10 @@ Deno.serve(async (req) => {
       const { data: lead, error } = await sb.from('leads').update(patch).eq('id', cur.id).select('*').single();
       if (error) throw error;
       if (lead.phone && !lead.kommo_lead_id) await syncKommo(sb, lead);
+      // Respondeu assunto e urgência: passa de "incompleto" para "pré-qualificado".
+      else if (lead.kommo_lead_id && 'urgency' in body && lead.topic && lead.urgency) {
+        await updateKommoLead(lead.kommo_lead_id, '', [SITE_STAGE.qualificado], [SITE_STAGE.incompleto]).catch(async (e) => { await sb.from('leads').update({ kommo_error: String(e).slice(0, 500) }).eq('id', lead.id); });
+      }
       return json({ ok: true }, 200, origin);
     }
 
@@ -100,7 +104,7 @@ Deno.serve(async (req) => {
       try {
         if (!lead.kommo_lead_id && lead.phone) await syncKommo(sb, lead);
         const { data: fresh } = await sb.from('leads').select('kommo_lead_id').eq('id', lead.id).single();
-        if (fresh?.kommo_lead_id) await updateKommoLead(fresh.kommo_lead_id, leadSummary(lead), ['pre-qualificado']);
+        if (fresh?.kommo_lead_id) await updateKommoLead(fresh.kommo_lead_id, leadSummary(lead), [SITE_STAGE.completo], [SITE_STAGE.incompleto, SITE_STAGE.qualificado]);
       } catch (e) { await sb.from('leads').update({ kommo_error: String(e).slice(0, 500) }).eq('id', lead.id); }
       const urgent = lead.urgency === 'urgente' ? '[URGENTE] ' : '';
       await notifyTeam(`${urgent}Pré-qualificação concluída — ${lead.name}`, lead);

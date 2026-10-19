@@ -1,6 +1,6 @@
 import Stripe from 'npm:stripe@17';
 import { adminClient, stripeClient } from '../_shared/clients.ts';
-import { createKommoLead, markKommoLeadWon } from '../_shared/kommo.ts';
+import { createKommoLead, markKommoLeadWon, SITE_STAGE } from '../_shared/kommo.ts';
 import { createCalendarEvent } from '../_shared/google.ts';
 import { sendEmail, orderEmail, bookingEmail } from '../_shared/email.ts';
 
@@ -67,7 +67,7 @@ async function fulfill(sb: any, session: Stripe.Checkout.Session) {
         email,
         phone: order.customer_phone || cd?.phone || '',
         nif: order.customer_nif || customField(session, 'nif'),
-        unit_slug: order.unit_slug, language: order.locale, source: 'website-checkout', won: true,
+        unit_slug: order.unit_slug, language: order.locale, source: 'website-checkout', won: true, tags: [SITE_STAGE.pago],
       });
     }
     if (email) { const m = orderEmail(order.locale || 'pt', order.amount_total); await sendEmail(email, m.subject, m.html).catch(() => {}); }
@@ -80,7 +80,7 @@ async function fulfill(sb: any, session: Stripe.Checkout.Session) {
     } catch (e) { console.error('calendar event', e); }
     await sb.from('bookings').update({ status: 'confirmed', stripe_payment_intent: intent, calendar_event_id: calendarEventId }).eq('id', bookingId);
     await sb.from('payments').insert({ booking_id: bookingId, provider: 'stripe', stripe_session_id: session.id, stripe_payment_intent: intent, payment_method: pm, amount: booking.amount, status: 'succeeded', raw_event: { id: session.id } });
-    await tryKommo(sb, 'bookings', bookingId, { name: booking.customer_name, email: booking.customer_email, phone: booking.customer_phone, unit_slug: booking.unit_slug, language: booking.language, service_code: booking.consult_type ? `CONSULT-${String(booking.consult_type).toUpperCase()}` : booking.service_code, source: 'website-booking', whatsapp_consent: booking.whatsapp_consent === true });
+    await tryKommo(sb, 'bookings', bookingId, { name: booking.customer_name, email: booking.customer_email, phone: booking.customer_phone, unit_slug: booking.unit_slug, language: booking.language, service_code: booking.consult_type ? `CONSULT-${String(booking.consult_type).toUpperCase()}` : booking.service_code, source: 'website-booking', whatsapp_consent: booking.whatsapp_consent === true, tags: [SITE_STAGE.consultoria] });
     if (booking.customer_email) { const m = bookingEmail(booking.language || 'pt', booking.slot_start); await sendEmail(booking.customer_email, m.subject, m.html).catch(() => {}); }
   }
 }
