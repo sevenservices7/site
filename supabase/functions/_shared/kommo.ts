@@ -8,6 +8,8 @@ export interface LeadInput {
   price?: number; paid?: boolean;
   /** Responsável no Kommo e campo "Próximo agendamento" (ISO). */
   responsible_user_id?: number; next_appointment?: string;
+  /** Campo "Jurídico" = Consultoria (consultoria paga pelo site). */
+  juridico_consultoria?: boolean;
   /** RGPD: autorizou contacto por WhatsApp (undefined = não perguntado, ex.: leads criados por outros fluxos). */
   whatsapp_consent?: boolean;
 }
@@ -18,8 +20,8 @@ const SITE_PIPELINE_ID = 12916319;
 export const KOMMO_USERS = { anaKathlyn: 12535887 };
 // Tipo de tarefa "Consultoria". ("Consultoria Online/Presencial" pertencem a outra integração e a API recusa-os.)
 export const KOMMO_TASK = { consultoria: 3711031 };
-const F = { pagamento: 887862, origem: 909033, formaPagamento: 909207, unidade: 907142, proximoAgendamento: 912142, dataVenda: 909222 };
-const E = { pago: 783218, origemSite: 805722, tpa: 801915, unidade: { albufeira: 795892, faro: 795894, porto: 803224 } as Record<string, number> };
+const F = { juridico: 898761, pagamento: 887862, origem: 909033, formaPagamento: 909207, unidade: 907142, proximoAgendamento: 912142, dataVenda: 909222 };
+const E = { juridicoConsultoria: 791089, pago: 783218, origemSite: 805722, tpa: 801915, unidade: { albufeira: 795892, faro: 795894, porto: 803224 } as Record<string, number> };
 const unix = (iso?: string) => (iso ? Math.floor(new Date(iso).getTime() / 1000) : undefined);
 /** Etiquetas de etapa do lead do site: só uma fica no lead de cada vez. */
 export const SITE_STAGE = { incompleto: 'Site - Incompleto', qualificado: 'Site - Pré-qualificado', completo: 'Site - Completo', pago: 'Site - Pagamento', consultoria: 'Site - Consultoria paga' };
@@ -81,6 +83,7 @@ export async function createKommoLead(lead: LeadInput): Promise<{ ok: boolean; l
   leadCFV.push({ field_id: F.origem, values: [{ enum_id: E.origemSite }] });
   if (lead.unit_slug && E.unidade[lead.unit_slug]) leadCFV.push({ field_id: F.unidade, values: [{ enum_id: E.unidade[lead.unit_slug] }] });
   if (lead.next_appointment) leadCFV.push({ field_id: F.proximoAgendamento, values: [{ value: unix(lead.next_appointment) }] });
+  if (lead.juridico_consultoria) leadCFV.push({ field_id: F.juridico, values: [{ enum_id: E.juridicoConsultoria }] });
   if (lead.paid) {
     leadCFV.push({ field_id: F.pagamento, values: [{ enum_id: E.pago }] });
     leadCFV.push({ field_id: F.formaPagamento, values: [{ enum_id: E.tpa }] });
