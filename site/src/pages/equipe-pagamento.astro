@@ -122,6 +122,10 @@ const UNITS = [['albufeira', 'Albufeira'], ['faro', 'Faro'], ['porto', 'Porto']]
   const form = $<HTMLFormElement>('[data-tp-step="form"]');
   const urlEl = $<HTMLInputElement>('[data-tp-url]');
   const open = $<HTMLAnchorElement>('[data-tp-open]');
+  // Enter em qualquer campo (inclusive no idioma) gera o link.
+  form.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey && (e.target as HTMLElement).matches('input, select')) { e.preventDefault(); form.requestSubmit(); }
+  });
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     $('[data-tp-step="form"] [data-tp-msg]').hidden = true;
