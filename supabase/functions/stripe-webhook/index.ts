@@ -1,6 +1,6 @@
 import Stripe from 'npm:stripe@17';
 import { adminClient, stripeClient } from '../_shared/clients.ts';
-import { createKommoLead, markKommoLeadWon, SITE_STAGE } from '../_shared/kommo.ts';
+import { createKommoLead, markKommoLeadWon, updateKommoLead, createKommoTask, SITE_STAGE, KOMMO_USERS, KOMMO_TASK } from '../_shared/kommo.ts';
 import { createCalendarEvent } from '../_shared/google.ts';
 import { sendEmail, orderEmail, bookingEmail } from '../_shared/email.ts';
 
@@ -67,7 +67,7 @@ async function fulfill(sb: any, session: Stripe.Checkout.Session) {
         email,
         phone: order.customer_phone || cd?.phone || '',
         nif: order.customer_nif || customField(session, 'nif'),
-        unit_slug: order.unit_slug, language: order.locale, source: 'website-checkout', won: true, tags: [SITE_STAGE.pago],
+        unit_slug: order.unit_slug, language: order.locale, source: 'website-checkout', won: true, tags: [SITE_STAGE.pago], price: order.amount_total, paid: true,
       });
     }
     if (email) { const m = orderEmail(order.locale || 'pt', order.amount_total); await sendEmail(email, m.subject, m.html).catch(() => {}); }
@@ -80,7 +80,16 @@ async function fulfill(sb: any, session: Stripe.Checkout.Session) {
     } catch (e) { console.error('calendar event', e); }
     await sb.from('bookings').update({ status: 'confirmed', stripe_payment_intent: intent, calendar_event_id: calendarEventId }).eq('id', bookingId);
     await sb.from('payments').insert({ booking_id: bookingId, provider: 'stripe', stripe_session_id: session.id, stripe_payment_intent: intent, payment_method: pm, amount: booking.amount, status: 'succeeded', raw_event: { id: session.id } });
-    await tryKommo(sb, 'bookings', bookingId, { name: booking.customer_name, email: booking.customer_email, phone: booking.customer_phone, unit_slug: booking.unit_slug, language: booking.language, service_code: booking.consult_type ? `CONSULT-${String(booking.consult_type).toUpperCase()}` : booking.service_code, source: 'website-booking', whatsapp_consent: booking.whatsapp_consent === true, tags: [SITE_STAGE.consultoria] });
+    // Consultoria paga: venda ganha em Canais digitais (a automação do Kommo segue a partir daí),
+    // responsável Ana Kathlyn, tarefa no horário marcado e nota interna de "agendamento já pago".
+    const kommoId = await tryKommo(sb, 'bookings', bookingId, { name: booking.customer_name, email: booking.customer_email, phone: booking.customer_phone, unit_slug: booking.unit_slug, language: booking.language, service_code: booking.consult_type ? `CONSULT-${String(booking.consult_type).toUpperCase()}` : booking.service_code, source: 'website-booking', whatsapp_consent: booking.whatsapp_consent === true, tags: [SITE_STAGE.consultoria], won: true, price: booking.amount, paid: true, responsible_user_id: KOMMO_USERS.anaKathlyn, next_appointment: booking.slot_start });
+    if (kommoId) {
+      const area = ({ imigratoria: 'imigratória', contabil: 'contábil', juridica: 'jurídica' } as Record<string, string>)[booking.consult_type] ?? '';
+      const when = new Date(booking.slot_start).toLocaleString('pt-PT', { timeZone: 'Europe/Lisbon', dateStyle: 'short', timeStyle: 'short' });
+      const info = `Consultoria ${booking.unit_slug ? 'Presencial' : 'Online'} - Paga\nÁrea: ${area || '—'} · Idioma: ${String(booking.language || 'pt').toUpperCase()} · €${Number(booking.amount).toFixed(2)} pagos pelo site\nHorário: ${when} (Lisboa)\nCliente: ${booking.customer_name} · ${booking.customer_phone || '—'} · ${booking.customer_email}`.replace(/ {2,}/g, ' ');
+      await createKommoTask(kommoId, { text: info, at: booking.slot_start, typeId: KOMMO_TASK.consultoria, responsibleUserId: KOMMO_USERS.anaKathlyn }).catch((e) => console.error('kommo task', e));
+      await updateKommoLead(kommoId, `Agendamento já pago pelo site.\n${info}`, []).catch((e) => console.error('kommo note', e));
+    }
     if (booking.customer_email) { const m = bookingEmail(booking.language || 'pt', booking.slot_start); await sendEmail(booking.customer_email, m.subject, m.html).catch(() => {}); }
   }
 }
@@ -90,10 +99,11 @@ function customField(session: Stripe.Checkout.Session, key: string): string {
   return (f as any)?.text?.value || '';
 }
 
-async function tryKommo(sb: any, table: string, id: string, lead: any) {
+async function tryKommo(sb: any, table: string, id: string, lead: any): Promise<number | undefined> {
   try {
     const { lead_id } = await createKommoLead(lead);
     if (lead_id) await sb.from(table).update({ kommo_lead_id: lead_id }).eq('id', id);
+    return lead_id;
   } catch (e) {
     console.error('kommo from webhook', e);
   }
