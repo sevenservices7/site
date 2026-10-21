@@ -44,7 +44,8 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         const path = new URL(page).pathname;
-        return !draftPaths.includes(path) && !redirectPaths.includes(path) && !path.startsWith('/checkout') && !path.startsWith('/en/checkout') && !path.startsWith('/es/checkout') && !path.startsWith('/fr/checkout') && !/\/(pagar|pay|equipe-pagamento)\/?$/.test(path);
+        // LPs de diagnóstico (tráfego pago) são noindex e ficam fora do sitemap.
+        return !path.startsWith('/diagnostico/') && !draftPaths.includes(path) && !redirectPaths.includes(path) && !path.startsWith('/checkout') && !path.startsWith('/en/checkout') && !path.startsWith('/es/checkout') && !path.startsWith('/fr/checkout') && !/\/(pagar|pay|equipe-pagamento)\/?$/.test(path);
       },
       i18n: {
         defaultLocale: 'pt',

@@ -24,6 +24,10 @@ jobs:
         env:
           PUBLIC_SUPABASE_URL: https://ywywcffulifkwbllgnts.supabase.co
           PUBLIC_SUPABASE_ANON_KEY: sb_publishable_qJMesIhZLiphEawYv1YqaA_dMy29YUm
+          # Landing pages de diagnóstico (GitHub → Settings → Secrets and variables → Actions → Variables).
+          PUBLIC_META_PIXEL_ID: ${{ vars.META_PIXEL_ID }}
+          PUBLIC_DIAG_WHATSAPP: ${{ vars.DIAG_WHATSAPP }}
+          PUBLIC_DIAG_BOOKING_URL: ${{ vars.DIAG_BOOKING_URL }}
       - uses: actions/upload-pages-artifact@v3
         with: { path: site/dist }
   deploy:

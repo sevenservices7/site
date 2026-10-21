@@ -1,0 +1,439 @@
+---
+// Motor único das landing pages de diagnóstico (tráfego pago). Cada LP é só uma configuração em
+// src/data/diagnosticos/. Fluxo: abertura → captura (lead gravado já aqui) → uma pergunta por tela
+// (cada resposta atualiza o mesmo registo e a `ultima_etapa`) → resultado em semáforo.
+// Lead quente: a equipa liga + botão do WhatsApp. Lead frio: PDF do diagnóstico, opção de receber
+// conteúdos por e-mail e o mesmo botão do WhatsApp.
+import type { Diagnostico } from '../data/diagnosticos/types';
+import { getRoute } from '../i18n/ui';
+import { countryList } from '../lib/countries';
+import { mainWhatsapp } from '../lib/site';
+
+interface Props { config: Diagnostico; }
+const { config } = Astro.props;
+const countries = countryList('pt').slice(2); // PT e BR têm botão próprio
+const wa = (import.meta.env.PUBLIC_DIAG_WHATSAPP || (await mainWhatsapp())).replace(/\D/g, '');
+const bookingUrl = import.meta.env.PUBLIC_DIAG_BOOKING_URL || '';
+const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
+const privacy = getRoute('privacy', 'pt');
+const { a, b } = config.textos;
+---
+<div class="dq on-brand" data-dq data-wa={wa} data-booking={bookingUrl}>
+  <script type="application/json" data-dq-config set:html={JSON.stringify(config)} />
+
+  <header class="dq-top">
+    <img src="/brand/seven-horizontal-areia.svg" alt="SEVEN" width="130" height="27" />
+    <span class="dq-free">Diagnóstico gratuito</span>
+    <div class="dq-progress" role="progressbar" aria-label="Progresso do diagnóstico" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-dq-progress><span data-dq-bar></span></div>
+  </header>
+
+  <div class="dq-stage">
+    <!-- Abertura -->
+    <section class="dq-screen dq-intro" data-dq-screen="intro">
+      <h1 class="dq-h1"><span class="va">{a.titulo}</span>{b && <span class="vb">{b.titulo}</span>}</h1>
+      <p class="dq-lede"><span class="va">{a.subtitulo}</span>{b && <span class="vb">{b.subtitulo}</span>}</p>
+      <button type="button" class="btn btn-gold dq-cta" data-dq-start><span class="va">{a.botao}</span>{b && <span class="vb">{b.botao}</span>}</button>
+      <ul class="dq-trust">
+        <li>Gratuito</li><li>Poucos cliques</li><li>Resultado na hora</li>
+      </ul>
+    </section>
+
+    <!-- Etapa 1: captura -->
+    <form class="dq-screen" data-dq-screen="captura" hidden novalidate>
+      <h2 class="dq-q">Para onde enviamos o seu resultado?</h2>
+      <label class="dq-field"><span>Seu nome</span>
+        <input class="dq-input" name="nome" type="text" autocomplete="name" required maxlength="120" />
+      </label>
+      <fieldset class="dq-field dq-wa">
+        <legend>Seu WhatsApp</legend>
+        <div class="dq-ddi" role="radiogroup" aria-label="País do número">
+          <label><input type="radio" name="ddi_opt" value="+351" checked /><span>Portugal +351</span></label>
+          <label><input type="radio" name="ddi_opt" value="+55" /><span>Brasil +55</span></label>
+          <label><input type="radio" name="ddi_opt" value="outro" /><span>Outro</span></label>
+        </div>
+        <select class="dq-input dq-select" name="ddi_outro" aria-label="Outro país" hidden>
+          {countries.map((c) => <option value={c.dial}>{c.name} ({c.dial})</option>)}
+        </select>
+        <input class="dq-input" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel-national" required maxlength="20" placeholder="912 345 678" aria-label="Número de WhatsApp" />
+      </fieldset>
+      <label class="dq-field"><span>Seu e-mail <small>(opcional)</small></span>
+        <input class="dq-input" name="email" type="email" inputmode="email" autocomplete="email" maxlength="160" />
+      </label>
+      <label class="dq-consent">
+        <input type="checkbox" name="consentimento" value="1" required />
+        <span>Li a <a href={privacy} target="_blank" rel="noopener">Política de Privacidade</a> e autorizo a SEVEN a usar os meus dados para me enviar o resultado e falar comigo sobre ele, inclusive pelo WhatsApp.</span>
+      </label>
+      <input type="text" name="company" tabindex="-1" autocomplete="off" class="dq-hp" aria-hidden="true" />
+      {turnstileKey && <div class="cf-turnstile" data-sitekey={turnstileKey} data-theme="dark"></div>}
+      <p class="dq-msg" data-dq-msg role="alert" hidden></p>
+      <button type="submit" class="btn btn-gold dq-cta">Começar meu diagnóstico</button>
+      <p class="dq-note">Seus dados ficam protegidos e não são compartilhados.</p>
+    </form>
+
+    <!-- Perguntas (preenchidas pelo script a partir da configuração) -->
+    <section class="dq-screen" data-dq-screen="pergunta" hidden>
+      <p class="dq-step" data-dq-step></p>
+      <h2 class="dq-q" id="dq-q" data-dq-q tabindex="-1"></h2>
+      <p class="dq-help" data-dq-help hidden></p>
+      <div class="dq-opts" role="radiogroup" aria-labelledby="dq-q" data-dq-opts></div>
+    </section>
+
+    <!-- Resultado -->
+    <section class="dq-screen dq-result" data-dq-screen="resultado" hidden>
+      <div class="dq-light" data-dq-cor>
+        <span class="dq-dot" aria-hidden="true"></span>
+        <h2 class="dq-q" data-dq-titulo tabindex="-1"></h2>
+      </div>
+      <div class="dq-card">
+        <h3>O que identificamos</h3>
+        <p data-dq-desc></p>
+        <h3>Serviço indicado</h3>
+        <p class="dq-servico" data-dq-servico></p>
+        <div data-dq-tambem hidden>
+          <h3>Também se aplica</h3>
+          <ul></ul>
+        </div>
+      </div>
+
+      <div class="dq-next" data-dq-quente hidden>
+        <p class="dq-lede">Um especialista da SEVEN vai chamar você no WhatsApp para uma <strong>análise gratuita de 15 minutos</strong> do seu caso.</p>
+        <p class="dq-urg">A análise gratuita está disponível para os próximos 7 dias.</p>
+        <a class="btn btn-wa dq-cta" data-dq-wa target="_blank" rel="noopener">Falar agora com um especialista</a>
+        {bookingUrl && <a class="btn btn-ghost dq-cta" data-dq-agendar target="_blank" rel="noopener">Agendar minha análise gratuita de 15 min</a>}
+      </div>
+
+      <div class="dq-next" data-dq-frio hidden>
+        <button type="button" class="btn btn-gold dq-cta" data-dq-pdf>Baixar meu diagnóstico (PDF)</button>
+        <form class="dq-news" data-dq-news novalidate>
+          <label class="dq-consent">
+            <input type="checkbox" name="optin" value="1" />
+            <span>Quero receber conteúdos gratuitos da SEVEN por e-mail sobre o meu caso. Posso cancelar quando quiser.</span>
+          </label>
+          <div class="dq-news-row">
+            <input class="dq-input" name="email" type="email" inputmode="email" autocomplete="email" maxlength="160" placeholder="Seu e-mail" aria-label="Seu e-mail" />
+            <button type="submit" class="btn btn-ghost">Quero receber</button>
+          </div>
+          <p class="dq-msg" data-dq-msg role="status" hidden></p>
+        </form>
+        <a class="btn btn-wa dq-cta" data-dq-wa target="_blank" rel="noopener">Falar agora com um especialista</a>
+      </div>
+
+      <p class="dq-code">Seu código: <strong data-dq-codigo></strong></p>
+    </section>
+  </div>
+
+  <nav class="dq-nav" data-dq-nav hidden>
+    <button type="button" class="dq-back" data-dq-back>← Voltar</button>
+  </nav>
+
+  <footer class="dq-foot">
+    <p>Diagnóstico informativo. Não constitui aconselhamento jurídico.</p>
+    {config.rodapeJuridico && <p>{config.rodapeJuridico}</p>}
+    <p>© SEVEN · <a href={privacy} target="_blank" rel="noopener">Política de Privacidade</a> · <a href="#" data-cookie-prefs>Cookies</a></p>
+  </footer>
+</div>
+
+{turnstileKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<style>
+  .dq { min-height: 100vh; min-height: 100dvh; background: var(--surface-brand); color: var(--nevoa); display: flex; flex-direction: column; }
+  .dq-top { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px clamp(16px, 4vw, 40px); }
+  .dq-top img { height: 26px; width: auto; display: block; }
+  .dq-free { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--areia); }
+  .dq-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--complementar-1); }
+  .dq-progress span { display: block; height: 100%; width: 0; background: var(--areia); transition: width .35s ease; }
+  .dq-stage { flex: 1; display: flex; justify-content: center; padding: clamp(24px, 6vw, 56px) 16px 32px; }
+  .dq-screen { width: min(640px, 100%); display: grid; gap: 18px; align-content: start; animation: dq-in .3s ease both; }
+  .dq-screen[hidden] { display: none; }
+  @keyframes dq-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .dq-screen { animation: none; } .dq-progress span { transition: none; } }
+
+  /* Variantes A/B: ?v=b marca <html data-v="b"> antes da pintura */
+  .vb { display: none; }
+  :global(html[data-v='b']) .dq .va { display: none; }
+  :global(html[data-v='b']) .dq .vb { display: inline; }
+
+  .dq-h1 { font-family: var(--font-head); font-weight: 700; font-size: clamp(1.6rem, 6.4vw, 2.6rem); line-height: 1.18; color: var(--branco); }
+  .dq .dq-lede { font-size: 1.05rem; line-height: 1.55; color: var(--nevoa); }
+  .dq-lede strong { color: var(--branco); }
+  .dq-cta { width: 100%; justify-content: center; text-align: center; font-size: 1.02rem; padding: 16px 20px; min-height: 54px; }
+  @media (min-width: 640px) { .dq-intro .dq-cta { width: auto; } }
+  .dq-trust { display: flex; flex-wrap: wrap; gap: 8px 18px; list-style: none; padding: 0; margin: 0; font-size: .85rem; color: var(--complementar-2); }
+  .dq-trust li::before { content: '✓ '; color: var(--areia); }
+
+  .dq-q { font-family: var(--font-head); font-weight: 600; font-size: clamp(1.3rem, 5vw, 1.75rem); line-height: 1.28; color: var(--branco); outline: none; }
+  .dq-step { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--areia); margin-bottom: -10px; }
+  .dq .dq-help { color: var(--complementar-2); margin-top: -8px; }
+  .dq-field { display: grid; gap: 6px; border: 0; padding: 0; margin: 0; min-width: 0; }
+  .dq-field > span, .dq-field legend { font-size: .9rem; color: var(--nevoa); padding: 0; margin-bottom: 6px; }
+  .dq-field small { color: var(--complementar-2); }
+  .dq-input { width: 100%; font: inherit; font-size: 1.1rem; color: var(--branco); background: rgba(255, 255, 255, .05); border: 1px solid var(--complementar-1); padding: 13px 14px; border-radius: 0; outline: none; }
+  .dq-input:focus { border-color: var(--areia); }
+  .dq-input::placeholder { color: var(--complementar-2); opacity: .7; }
+  .dq-select { font-size: 1rem; }
+  .dq-select option { color: var(--grafite); }
+  .dq-select[hidden] { display: none; }
+  .dq-wa { gap: 10px; }
+  .dq-ddi { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; }
+  .dq-ddi label { position: relative; }
+  .dq-ddi input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .dq-ddi span { display: block; text-align: center; font-size: .92rem; padding: 11px 10px; border: 1px solid var(--complementar-1); white-space: nowrap; }
+  .dq-ddi input:checked + span { border-color: var(--areia); background: rgba(214, 196, 150, .16); color: var(--branco); }
+  .dq-ddi input:focus-visible + span { outline: 2px solid var(--areia); outline-offset: 2px; }
+  .dq-consent { display: flex; gap: 10px; align-items: flex-start; font-size: .86rem; line-height: 1.5; cursor: pointer; }
+  .dq-consent input { width: 20px; height: 20px; margin-top: 1px; flex: none; accent-color: var(--areia); }
+  .dq p, .dq li { color: inherit; }
+  .dq a:not(.btn) { color: var(--areia); text-decoration: underline; text-underline-offset: 2px; }
+  .dq-hp { position: absolute; left: -9999px; width: 1px; height: 1px; }
+  .dq .dq-note { font-size: .8rem; color: var(--complementar-2); text-align: center; }
+  .dq-msg { font-size: .9rem; padding: 8px 12px; background: rgba(254, 226, 226, .12); color: #FCA5A5; border-left: 3px solid #F87171; }
+  .dq-msg.ok { background: rgba(63, 179, 127, .12); color: #A7E3C4; border-left-color: #3FB37F; }
+
+  .dq-opts { display: grid; gap: 10px; }
+  .dq-opts :global(.dq-opt) {
+    display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px; text-align: left; font: inherit; font-size: 1.02rem; line-height: 1.35;
+    color: var(--branco); cursor: pointer; background: rgba(255, 255, 255, .04); border: 1px solid var(--complementar-1); padding: 14px 16px; transition: background .15s, border-color .15s;
+  }
+  .dq-opts :global(.dq-opt:hover) { border-color: var(--areia); }
+  .dq-opts :global(.dq-opt[aria-checked='true']) { border-color: var(--areia); background: rgba(214, 196, 150, .18); }
+  .dq-opts :global(.dq-opt:disabled) { cursor: default; }
+
+  .dq-light { display: flex; align-items: center; gap: 14px; }
+  .dq-dot { width: 22px; height: 22px; border-radius: 50%; flex: none; background: var(--dq-cor, var(--areia)); box-shadow: 0 0 0 6px color-mix(in srgb, var(--dq-cor, var(--areia)) 22%, transparent); }
+  .dq-light[data-cor='verde'] { --dq-cor: #3FB37F; }
+  .dq-light[data-cor='amarelo'] { --dq-cor: #E8B931; }
+  .dq-light[data-cor='vermelho'] { --dq-cor: #E5534B; }
+  .dq-card { background: rgba(255, 255, 255, .05); border-top: 3px solid var(--areia); padding: 18px 18px 20px; display: grid; gap: 6px; }
+  .dq-card h3 { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--complementar-2); font-weight: 600; margin-top: 8px; }
+  .dq-card h3:first-child { margin-top: 0; }
+  .dq-card p, .dq-card li { line-height: 1.55; color: var(--nevoa); }
+  .dq .dq-servico { color: var(--areia); font-weight: 600; font-size: 1.1rem; }
+  .dq-card ul { margin: 0; padding-left: 18px; }
+  .dq-next { display: grid; gap: 12px; }
+  .dq-next[hidden] { display: none; }
+  .dq .dq-urg { font-size: .92rem; color: var(--areia); }
+  .dq-news { display: grid; gap: 10px; padding: 14px 0 4px; }
+  .dq-news-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+  .dq .dq-code { font-size: .85rem; color: var(--complementar-2); text-align: center; }
+  .dq-code strong { color: var(--nevoa); letter-spacing: .08em; }
+
+  .dq-nav { padding: 0 16px 8px; display: flex; justify-content: center; }
+  .dq-nav[hidden] { display: none; }
+  .dq-back { font: inherit; font-size: .92rem; color: var(--nevoa); background: transparent; border: 1px solid var(--complementar-1); padding: 10px 16px; cursor: pointer; min-height: 44px; }
+  .dq-back:hover { border-color: var(--areia); color: var(--areia); }
+  .dq-foot { padding: 20px 16px 28px; text-align: center; font-size: .78rem; line-height: 1.6; color: var(--complementar-2); display: grid; gap: 4px; }
+  .dq-foot p { color: var(--complementar-2); }
+</style>
+
+<script>
+  import type { Diagnostico } from '../data/diagnosticos/types';
+  import { avaliaResultado, limpaRespostas, normalizaWhatsapp, perguntasVisiveis, proximaPergunta, resumoRespostas, EMOJI_COR, type Avaliacao, type Respostas } from '../lib/diagnostico';
+  import { capturaAtribuicao, track } from '../lib/tracking';
+  import { diagStart, diagUpdate, diagComplete, diagNewsletter } from '../lib/api';
+
+  const root = document.querySelector<HTMLElement>('[data-dq]');
+  if (root) {
+    const cfg: Diagnostico = JSON.parse(root.querySelector('[data-dq-config]')!.textContent || '{}');
+    const variante = document.documentElement.dataset.v === 'b' ? 'b' : 'a';
+    const attr = capturaAtribuicao();
+    const KEY = `seven_diag_${cfg.slug}`;
+    type Estado = { id: string; token: string; codigo: string; email?: string; respostas: Respostas; fim?: boolean };
+    let st: Estado | null = null;
+    try { st = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch {}
+    const guarda = () => { try { sessionStorage.setItem(KEY, JSON.stringify(st)); } catch {} };
+
+    const $ = <T extends HTMLElement = HTMLElement>(s: string, el: ParentNode = root) => el.querySelector<T>(s)!;
+    const screens = Array.from(root.querySelectorAll<HTMLElement>('[data-dq-screen]'));
+    const bar = $('[data-dq-bar]'), prog = $('[data-dq-progress]'), nav = $('[data-dq-nav]');
+    let tela = 'intro';
+    const progresso = (pct: number) => { bar.style.width = `${pct}%`; prog.setAttribute('aria-valuenow', String(Math.round(pct))); };
+    function mostra(nome: string, foco?: HTMLElement) {
+      tela = nome;
+      screens.forEach((s) => (s.hidden = s.dataset.dqScreen !== nome));
+      window.scrollTo({ top: 0 });
+      foco?.focus({ preventScroll: true });
+    }
+    const erro = (el: HTMLElement, txt: string, ok = false) => { const m = $('[data-dq-msg]', el); m.textContent = txt; m.classList.toggle('ok', ok); m.hidden = !txt; };
+
+    // Gravação das respostas em fila: avançar não espera a rede; a ordem dos envios é mantida.
+    let fila: Promise<unknown> = Promise.resolve();
+    const envia = (fn: () => Promise<unknown>) => (fila = fila.then(fn).catch(() => fn().catch(() => {})));
+
+    // --- Abertura → captura ---
+    $('[data-dq-start]').addEventListener('click', () => { mostra('captura', $('[name="nome"]')); progresso(4); nav.hidden = false; });
+
+    // --- Captura (etapa 1): o lead nasce aqui ---
+    const fCap = $<HTMLFormElement>('[data-dq-screen="captura"]');
+    const sel = $<HTMLSelectElement>('[name="ddi_outro"]', fCap);
+    const tel = $<HTMLInputElement>('[name="whatsapp"]', fCap);
+    const PH: Record<string, string> = { '+351': '912 345 678', '+55': '11 91234 5678' };
+    fCap.querySelectorAll<HTMLInputElement>('[name="ddi_opt"]').forEach((r) => r.addEventListener('change', () => {
+      sel.hidden = r.value !== 'outro';
+      tel.placeholder = PH[r.value] ?? 'Número';
+      if (r.value === 'outro') sel.focus();
+    }));
+    fCap.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(fCap);
+      const nome = String(fd.get('nome') || '').trim();
+      const opt = String(fd.get('ddi_opt'));
+      const ddi = opt === 'outro' ? String(fd.get('ddi_outro')) : opt;
+      const whatsapp = normalizaWhatsapp(ddi, String(fd.get('whatsapp') || ''));
+      const email = String(fd.get('email') || '').trim();
+      if (nome.length < 2) return erro(fCap, 'Escreva o seu nome para continuar.');
+      if (!whatsapp) return erro(fCap, ddi === '+351' ? 'Confira o número: em Portugal são 9 dígitos, começando por 9.' : ddi === '+55' ? 'Confira o número: DDD + número (ex.: 11 91234 5678).' : 'Confira o número de WhatsApp.');
+      if (email && !/^\S+@\S+\.\S+$/.test(email)) return erro(fCap, 'Confira o e-mail ou deixe em branco.');
+      if (fd.get('consentimento') !== '1') return erro(fCap, 'Para continuar, marque a autorização de uso dos dados.');
+      erro(fCap, '');
+      const btn = $<HTMLButtonElement>('button[type="submit"]', fCap);
+      btn.disabled = true;
+      try {
+        const r = await diagStart({
+          landing: cfg.slug, variante, nome, whatsapp, email: email || undefined, consentimento: true,
+          ...attr, turnstile_token: String(fd.get('cf-turnstile-response') || '') || undefined, company: String(fd.get('company') || '') || undefined,
+        });
+        st = { id: r.id, token: r.token, codigo: r.codigo, email: email || undefined, respostas: {} };
+        guarda();
+        track('Lead', { content_name: cfg.slug }, r.id);
+        proxima();
+      } catch {
+        erro(fCap, 'Não deu para continuar. Tente de novo ou fale com a gente no WhatsApp.');
+      } finally { btn.disabled = false; }
+    });
+
+    // --- Perguntas ---
+    // A ordem e a visibilidade vêm da configuração (showIf). Voltar = pergunta visível anterior;
+    // ao mudar uma resposta, as perguntas que deixaram de se aplicar perdem a resposta.
+    const opts = $('[data-dq-opts]');
+    let atual = '';
+    function proxima() {
+      if (!st) return mostra('intro');
+      st.respostas = limpaRespostas(cfg, st.respostas);
+      const p = proximaPergunta(cfg, st.respostas);
+      if (!p) return conclui();
+      renderPergunta(p.id);
+    }
+    function renderPergunta(id: string) {
+      const vis = perguntasVisiveis(cfg, st!.respostas);
+      const i = vis.findIndex((x) => x.id === id), p = vis[i];
+      atual = id;
+      $('[data-dq-step]').textContent = `Pergunta ${i + 1} de ${vis.length}`;
+      $('[data-dq-q]').textContent = p.texto;
+      const help = $('[data-dq-help]'); help.textContent = p.ajuda || ''; help.hidden = !p.ajuda;
+      opts.replaceChildren(...p.opcoes.map((o) => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'dq-opt'; b.setAttribute('role', 'radio'); b.dataset.v = o.valor; b.textContent = o.texto;
+        b.setAttribute('aria-checked', String(st!.respostas[p.id] === o.valor));
+        b.addEventListener('click', () => responde(p.id, o.valor, b));
+        return b;
+      }));
+      progresso(8 + (i / vis.length) * 88);
+      nav.hidden = i === 0; // não volta para a captura: o lead já foi gravado
+      mostra('pergunta', $('[data-dq-q]'));
+    }
+    function responde(id: string, valor: string, b: HTMLButtonElement) {
+      if (!st) return;
+      opts.querySelectorAll<HTMLButtonElement>('.dq-opt').forEach((o) => { o.setAttribute('aria-checked', String(o === b)); o.disabled = true; });
+      st.respostas = limpaRespostas(cfg, { ...st.respostas, [id]: valor });
+      guarda();
+      const { id: lid, token, respostas } = st;
+      envia(() => diagUpdate({ id: lid, token, respostas: { ...respostas }, ultima_etapa: id }));
+      const vis = perguntasVisiveis(cfg, st.respostas);
+      const seguinte = vis[vis.findIndex((x) => x.id === id) + 1];
+      setTimeout(() => (seguinte ? renderPergunta(seguinte.id) : proxima()), 160);
+    }
+    $('[data-dq-back]').addEventListener('click', () => {
+      if (tela === 'captura') { mostra('intro'); nav.hidden = true; progresso(0); return; }
+      if (tela !== 'pergunta' || !st) return;
+      const vis = perguntasVisiveis(cfg, st.respostas);
+      const anterior = vis[vis.findIndex((x) => x.id === atual) - 1];
+      if (anterior) renderPergunta(anterior.id);
+    });
+
+    // --- Resultado ---
+    let av: Avaliacao;
+    async function conclui() {
+      if (!st) return;
+      av = avaliaResultado(cfg, st.respostas);
+      const resumo = resumoRespostas(cfg, st.respostas);
+      renderResultado();
+      if (!st.fim) {
+        st.fim = true; guarda();
+        track('CompleteRegistration', { content_name: cfg.slug, status: av.principal.cor }, `${st.id}-done`);
+        const { id, token, respostas } = st;
+        envia(() => diagComplete({
+          id, token, respostas: { ...respostas },
+          resultado_cor: av.principal.cor, resultado_id: av.principal.id, servico_recomendado: av.principal.servico,
+          servicos_tambem: av.tambem.map((t) => t.servico), temperatura: av.temperatura, high_ticket: av.highTicket,
+          resumo: [`${EMOJI_COR[av.principal.cor]} ${av.titulo}`, `Serviço: ${av.principal.servico}`, ...av.tambem.map((t) => `Também: ${t.servico}`), '', ...resumo.map((r) => `${r.pergunta} ${r.resposta}`)].join('\n'),
+        }));
+      }
+    }
+    function renderResultado() {
+      const p = av.principal;
+      $('[data-dq-cor]').dataset.cor = p.cor;
+      $('[data-dq-titulo]').textContent = `${av.titulo}`;
+      $('[data-dq-desc]').textContent = p.descricao;
+      $('[data-dq-servico]').textContent = p.servico;
+      const tb = $('[data-dq-tambem]');
+      tb.hidden = !av.tambem.length;
+      $('ul', tb).replaceChildren(...av.tambem.map((t) => Object.assign(document.createElement('li'), { textContent: t.servico })));
+      $('[data-dq-codigo]').textContent = st!.codigo;
+      const quente = av.temperatura === 'quente';
+      $('[data-dq-quente]').hidden = !quente;
+      $('[data-dq-frio]').hidden = quente;
+      const msg = `Olá, fiz o diagnóstico de ${cfg.nome} e o resultado foi: ${av.titulo} (${p.servico}). Código: ${st!.codigo}`;
+      root!.querySelectorAll<HTMLAnchorElement>('[data-dq-wa]').forEach((a) => (a.href = `https://wa.me/${root!.dataset.wa}?text=${encodeURIComponent(msg)}`));
+      const ag = root!.querySelector<HTMLAnchorElement>('[data-dq-agendar]');
+      if (ag) { const u = new URL(root!.dataset.booking!, location.href); u.searchParams.set('lead', st!.codigo); ag.href = u.toString(); }
+      const ne = $<HTMLInputElement>('[data-dq-news] [name="email"]');
+      if (st!.email && !ne.value) ne.value = st!.email;
+      progresso(100);
+      nav.hidden = true;
+      mostra('resultado', $('[data-dq-titulo]'));
+    }
+    root.querySelectorAll('[data-dq-wa]').forEach((a) => a.addEventListener('click', () => track('Contact', { content_name: cfg.slug }, `${st?.id}-wa`)));
+    root.querySelector('[data-dq-agendar]')?.addEventListener('click', () => track('Schedule', { content_name: cfg.slug }, `${st?.id}-agenda`));
+
+    $('[data-dq-pdf]').addEventListener('click', async () => {
+      if (!st || !av) return;
+      const { gerarPdf } = await import('../lib/pdf-mini');
+      const COR: Record<string, [number, number, number]> = { verde: [0.25, 0.7, 0.5], amarelo: [0.91, 0.73, 0.19], vermelho: [0.9, 0.33, 0.29] };
+      const oceano: [number, number, number] = [1 / 255, 32 / 255, 63 / 255], cinza: [number, number, number] = [0.4, 0.45, 0.5];
+      const blocos = [
+        { texto: 'SEVEN · Diagnóstico gratuito', size: 10, cor: cinza },
+        { texto: cfg.nome, size: 20, bold: true, cor: oceano, espaco: 10 },
+        { texto: av.titulo, size: 15, bold: true, circulo: COR[av.principal.cor], espaco: 18 },
+        { texto: 'O que identificamos', size: 10, bold: true, cor: cinza, espaco: 16 },
+        { texto: av.principal.descricao },
+        { texto: 'Serviço indicado', size: 10, bold: true, cor: cinza, espaco: 14 },
+        { texto: av.principal.servico, size: 13, bold: true, cor: oceano },
+        ...(av.tambem.length ? [{ texto: 'Também se aplica', size: 10, bold: true, cor: cinza, espaco: 14 }, ...av.tambem.map((t) => ({ texto: `• ${t.servico}` }))] : []),
+        { texto: 'As suas respostas', size: 10, bold: true, cor: cinza, espaco: 18 },
+        ...resumoRespostas(cfg, st.respostas).map((r) => ({ texto: `${r.pergunta} ${r.resposta}`, size: 10, espaco: 3 })),
+        { texto: `Fale com um especialista: wa.me/${root.dataset.wa} · Código: ${st.codigo}`, size: 11, bold: true, cor: oceano, espaco: 22 },
+        { texto: 'Diagnóstico informativo. Não constitui aconselhamento jurídico.' + (cfg.rodapeJuridico ? ` ${cfg.rodapeJuridico}` : ''), size: 9, cor: cinza, espaco: 14 },
+      ];
+      const url = URL.createObjectURL(gerarPdf(blocos));
+      const a = Object.assign(document.createElement('a'), { href: url, download: `diagnostico-seven-${cfg.slug}.pdf` });
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    });
+
+    const fNews = $<HTMLFormElement>('[data-dq-news]');
+    fNews.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!st) return;
+      const fd = new FormData(fNews);
+      const email = String(fd.get('email') || '').trim();
+      if (fd.get('optin') !== '1') return erro(fNews, 'Marque a caixa para autorizar o envio por e-mail.');
+      if (!/^\S+@\S+\.\S+$/.test(email)) return erro(fNews, 'Confira o e-mail.');
+      const btn = $<HTMLButtonElement>('button', fNews); btn.disabled = true;
+      try { await diagNewsletter({ id: st.id, token: st.token, email }); erro(fNews, 'Pronto! Você vai receber os conteúdos no seu e-mail.', true); }
+      catch { erro(fNews, 'Não deu para guardar agora. Tente de novo.'); btn.disabled = false; }
+    });
+
+    // Retoma de onde parou (recarregar a página não cria um lead novo).
+    if (st?.id) proxima();
+  }
+</script>

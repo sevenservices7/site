@@ -136,3 +136,33 @@ export function createCustomCheckout(input: {
 }): Promise<{ url: string; emailed?: boolean }> {
   return callFn('create-checkout-session', { mode: 'custom', ...input });
 }
+
+// --- Landing pages de diagnóstico (Edge Function "landing-lead") ---
+
+/** Diagnóstico, etapa 1: grava o lead (nome, WhatsApp, e-mail, consentimento, UTMs). */
+export function diagStart(input: {
+  landing: string; variante: string; nome: string; whatsapp: string; email?: string; consentimento: boolean;
+  utm_source?: string; utm_medium?: string; utm_campaign?: string; utm_content?: string; utm_term?: string;
+  fbclid?: string; referrer?: string; turnstile_token?: string; company?: string;
+}): Promise<{ ok: boolean; id: string; token: string; codigo: string }> {
+  return callFn('landing-lead', { action: 'start', ...input });
+}
+
+/** Diagnóstico: grava as respostas até agora e a última etapa (quem desiste a meio fica registado). */
+export function diagUpdate(input: { id: string; token: string; respostas: Record<string, string>; ultima_etapa: string }): Promise<{ ok: boolean }> {
+  return callFn('landing-lead', { action: 'update', ...input });
+}
+
+/** Diagnóstico: resultado final (semáforo, serviço, temperatura). */
+export function diagComplete(input: {
+  id: string; token: string; respostas: Record<string, string>;
+  resultado_cor: string; resultado_id: string; servico_recomendado: string; servicos_tambem: string[];
+  temperatura: string; high_ticket: boolean; resumo: string;
+}): Promise<{ ok: boolean }> {
+  return callFn('landing-lead', { action: 'complete', ...input });
+}
+
+/** Diagnóstico (lead frio): pedido para receber conteúdos por e-mail. */
+export function diagNewsletter(input: { id: string; token: string; email: string }): Promise<{ ok: boolean }> {
+  return callFn('landing-lead', { action: 'newsletter', ...input });
+}

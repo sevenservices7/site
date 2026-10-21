@@ -1,0 +1,24 @@
+---
+// Landing pages de diagnóstico para tráfego pago (Meta Ads). Uma página por configuração em
+// src/data/diagnosticos/. Sempre noindex (não competem com o site institucional) e sem menu.
+// Rascunhos (publicado: false) só são gerados em `npm run dev` ou com PUBLIC_DIAG_PREVIEW=true.
+import Base from '../../layouts/Base.astro';
+import DiagnosticQuiz from '../../components/DiagnosticQuiz.astro';
+import { diagnosticosNoBuild } from '../../data/diagnosticos';
+import type { Diagnostico } from '../../data/diagnosticos/types';
+
+export function getStaticPaths() {
+  const preview = import.meta.env.DEV || import.meta.env.PUBLIC_DIAG_PREVIEW === 'true';
+  return diagnosticosNoBuild(preview).map((config) => ({ params: { slug: config.slug }, props: { config } }));
+}
+
+const { config } = Astro.props as { config: Diagnostico };
+---
+<Base title={config.seo.title} description={config.seo.description} noindex bare>
+  <!-- Variante A/B (?v=b) escolhida antes da pintura, sem piscar. -->
+  <script is:inline slot="head" define:vars={{ temB: Boolean(config.textos.b) }}>
+    try { if (temB && new URLSearchParams(location.search).get('v') === 'b') document.documentElement.dataset.v = 'b'; } catch (e) {}
+  </script>
+  {!config.publicado && <meta slot="head" name="robots" content="noindex, nofollow" />}
+  <DiagnosticQuiz config={config} />
+</Base>

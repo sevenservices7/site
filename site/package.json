@@ -10,7 +10,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:diagnosticos": "esbuild scripts/test-diagnosticos.ts --bundle --platform=node --format=esm --outfile=.astro/test-diagnosticos.mjs --log-level=warning && node .astro/test-diagnosticos.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
