@@ -41,6 +41,7 @@ const UNITS = [['albufeira', 'Albufeira'], ['faro', 'Faro'], ['porto', 'Porto']]
       <!-- 4. Link pronto -->
       <div class="tp-step tp-out" data-tp-step="out" hidden>
         <p><strong>Link pronto</strong> (válido por 24 horas):</p>
+        <p class="tp-test" data-tp-test role="alert" hidden><strong>ATENÇÃO: link em modo de TESTE.</strong> Não cobra o cliente. Não envie este link. Avise o responsável pelo site para trocar as chaves da Stripe.</p>
         <p class="tp-sent" data-tp-sent hidden></p>
         <input data-tp-url readonly />
         <div class="tp-actions">
@@ -58,6 +59,8 @@ const UNITS = [['albufeira', 'Albufeira'], ['faro', 'Faro'], ['porto', 'Porto']]
   .tp-card { width: 100%; max-width: 460px; background: var(--surface); border-top: 4px solid var(--accent); padding: 28px; }
   .tp-logo { display: block; height: 30px; width: auto; margin-bottom: 22px; }
   .tp-step { display: grid; gap: 12px; }
+  .tp-test { background: #FDECEC; color: #8A1C1C; border-left: 4px solid #C62828; padding: 10px 12px; font-size: .92rem; line-height: 1.5; }
+  .tp-test[hidden] { display: none; }
   .tp-step[hidden] { display: none; }
   .tp-q { font-family: var(--font-head); font-weight: 600; font-size: 1.2rem; color: var(--heading); }
   .tp-pin { font: inherit; font-size: 1.8rem; letter-spacing: .5em; text-align: center; padding: 12px; border: 1px solid var(--border-strong); background: var(--surface-alt); width: 100%; }
@@ -135,12 +138,14 @@ const UNITS = [['albufeira', 'Albufeira'], ['faro', 'Faro'], ['porto', 'Porto']]
     if (!g('name') || !g('service') || !(amount >= 1)) return fail('form', 'Preencha nome, serviço e um valor válido.');
     const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!; btn.disabled = true;
     try {
-      const { url, emailed } = await createCustomCheckout({ team_code: code, unit_slug: unit, service: g('service'), amount: g('amount'), locale: g('locale') || 'pt', customer: { name: g('name'), email: g('email') || undefined } });
+      const { url, emailed, test_mode } = await createCustomCheckout({ team_code: code, unit_slug: unit, service: g('service'), amount: g('amount'), locale: g('locale') || 'pt', customer: { name: g('name'), email: g('email') || undefined } });
       urlEl.value = url; open.href = url;
       const sent = $('[data-tp-sent]');
       sent.hidden = !g('email');
       sent.textContent = emailed ? `✓ Também enviado por e-mail para ${g('email')}.` : `Não foi possível enviar o e-mail para ${g('email')}. Envie o link manualmente.`;
       sent.classList.toggle('tp-sent--fail', !emailed);
+      $('[data-tp-test]').hidden = !test_mode;
+      if (test_mode) sent.hidden = true; // em modo de teste o link não é enviado ao cliente
       show('out');
     } catch (err) {
       if (String((err as Error).message).includes('403')) { try { sessionStorage.removeItem(KEY); } catch {} show('login'); return fail('login', 'Senha incorreta.'); }

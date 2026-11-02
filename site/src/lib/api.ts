@@ -133,6 +133,6 @@ export function teamLogin(team_code: string): Promise<{ ok: boolean }> {
 export function createCustomCheckout(input: {
   team_code: string; service: string; amount: string; locale: string; unit_slug: string;
   customer: { name: string; email?: string };
-}): Promise<{ url: string; emailed?: boolean }> {
+}): Promise<{ url: string; emailed?: boolean; test_mode?: boolean }> {
   return callFn('create-checkout-session', { mode: 'custom', ...input });
 }

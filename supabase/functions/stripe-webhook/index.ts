@@ -25,7 +25,9 @@ Deno.serve(async (req) => {
       case 'checkout.session.async_payment_succeeded': {
         const session = event.data.object as Stripe.Checkout.Session;
         if (session.payment_status !== 'paid') break;
-        await fulfill(sb, session);
+        // Modo de teste da Stripe: nada foi cobrado. Não é venda, não avisa o cliente nem o Kommo.
+        if (!event.livemode) await markTest(sb, session);
+        else await fulfill(sb, session, stripe);
         break;
       }
       case 'checkout.session.async_payment_failed':
@@ -41,11 +43,25 @@ Deno.serve(async (req) => {
   return new Response('ok', { status: 200 });
 });
 
-async function fulfill(sb: any, session: Stripe.Checkout.Session) {
+/** Método realmente usado (mb_way, multibanco, card...), não o primeiro da lista de métodos aceites. */
+async function paymentMethod(stripe: Stripe, session: Stripe.Checkout.Session, intent?: string): Promise<string> {
+  const fallback = session.payment_method_types?.[0] || '';
+  if (!intent) return fallback;
+  try {
+    const pi = await stripe.paymentIntents.retrieve(intent, { expand: ['latest_charge'] });
+    const charge = pi.latest_charge as Stripe.Charge | null;
+    return charge?.payment_method_details?.type || fallback;
+  } catch (e) {
+    console.error('payment method', e);
+    return fallback;
+  }
+}
+
+async function fulfill(sb: any, session: Stripe.Checkout.Session, stripe: Stripe) {
   const orderId = session.metadata?.order_id;
   const bookingId = session.metadata?.booking_id;
-  const pm = session.payment_method_types?.[0] || '';
   const intent = typeof session.payment_intent === 'string' ? session.payment_intent : session.payment_intent?.id;
+  const pm = await paymentMethod(stripe, session, intent);
   if (orderId) {
     const { data: order } = await sb.from('orders').select('*').eq('id', orderId).single();
     if (!order || order.status === 'paid') return;
@@ -111,6 +127,24 @@ async function tryKommo(sb: any, table: string, id: string, lead: any): Promise<
 
 async function markFailed(sb: any, session: Stripe.Checkout.Session) {
   const status = session.status === 'expired' ? 'cancelled' : 'failed';
-  if (session.metadata?.order_id) await sb.from('orders').update({ status }).eq('id', session.metadata.order_id).neq('status', 'paid');
-  if (session.metadata?.booking_id) await sb.from('bookings').update({ status }).eq('id', session.metadata.booking_id).neq('status', 'confirmed');
+  if (session.metadata?.order_id) await sb.from('orders').update({ status }).eq('id', session.metadata.order_id).not('status', 'in', '(paid,test)');
+  if (session.metadata?.booking_id) await sb.from('bookings').update({ status }).eq('id', session.metadata.booking_id).not('status', 'in', '(confirmed,test)');
+}
+
+/**
+ * Pagamento concluído em modo de teste (chave sk_test_/rk_test_): grava como 'test' e avisa só a equipa.
+ * Sem e-mail ao cliente, sem Kommo e sem agenda — foi assim que um pagamento simulado de €700 virou "venda".
+ */
+async function markTest(sb: any, session: Stripe.Checkout.Session) {
+  const orderId = session.metadata?.order_id;
+  const bookingId = session.metadata?.booking_id;
+  const intent = typeof session.payment_intent === 'string' ? session.payment_intent : session.payment_intent?.id;
+  const amount = (session.amount_total ?? 0) / 100;
+  if (orderId) await sb.from('orders').update({ status: 'test', stripe_payment_intent: intent }).eq('id', orderId).neq('status', 'paid');
+  if (bookingId) await sb.from('bookings').update({ status: 'test', stripe_payment_intent: intent }).eq('id', bookingId).neq('status', 'confirmed');
+  await sb.from('payments').insert({ order_id: orderId || null, booking_id: bookingId || null, provider: 'stripe', stripe_session_id: session.id, stripe_payment_intent: intent, payment_method: session.payment_method_types?.[0] || '', amount, status: 'test', raw_event: { id: session.id, livemode: false } });
+  const to = Deno.env.get('LEAD_NOTIFY_EMAIL') || 'contato@seveneu.com';
+  const who = session.customer_details?.name || session.customer_details?.email || 'cliente sem nome';
+  const html = `<p><b>Pagamento de TESTE recebido pelo site</b> (€${amount.toFixed(2)} · ${who}).</p><p>O site está a usar uma chave de <b>teste</b> da Stripe: <b>nenhum valor foi cobrado</b> e o cliente não recebeu e-mail de confirmação.</p><p>Troque STRIPE_SECRET_KEY e STRIPE_WEBHOOK_SECRET pelas chaves live (Supabase → Edge Functions → Secrets) e reenvie o link ao cliente.</p><p>Sessão: ${session.id}</p>`;
+  await sendEmail(to, `[ATENÇÃO] Pagamento de TESTE: €${amount.toFixed(2)} não foi cobrado`, html).catch(() => {});
 }

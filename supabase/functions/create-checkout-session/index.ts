@@ -125,14 +125,18 @@ Deno.serve(async (req) => {
     });
     if (metadata.order_id) await sb.from('orders').update({ stripe_session_id: session.id }).eq('id', metadata.order_id);
     if (metadata.booking_id) await sb.from('bookings').update({ stripe_session_id: session.id }).eq('id', metadata.booking_id);
+    // Chave de teste da Stripe: o link não cobra ninguém (MB Way é aprovado sem cobrança).
+    // Não enviamos o link por e-mail ao cliente e a página da equipe mostra o aviso.
+    const testMode = !session.livemode;
+    if (testMode) console.warn('create-checkout-session: chave de TESTE da Stripe em uso', origin);
     let emailed = false;
     const email = String(body.customer?.email || '').trim();
-    if (mode === 'custom' && /^\S+@\S+\.\S+$/.test(email) && session.url) {
+    if (mode === 'custom' && !testMode && /^\S+@\S+\.\S+$/.test(email) && session.url) {
       const c = PAY_MAIL[locale] ?? PAY_MAIL.pt;
       const item = lineItems[0];
       emailed = await sendEmail(email, c.subject, payMailHtml(locale, String(body.customer?.name || ''), item.price_data.product_data.name, item.price_data.unit_amount / 100, session.url), { replyTo: Deno.env.get('LEAD_NOTIFY_EMAIL') || 'contato@seveneu.com' }).catch(() => false);
     }
-    return json({ url: session.url, emailed }, 200, origin);
+    return json({ url: session.url, emailed, test_mode: testMode }, 200, origin);
   } catch (e) {
     console.error('create-checkout-session', e);
     return json({ error: 'internal_error' }, 500, origin);
