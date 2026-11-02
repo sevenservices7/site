@@ -1,21 +1,23 @@
 import Stripe from 'npm:stripe@17';
-import { adminClient, stripeClient } from '../_shared/clients.ts';
+import { adminClient, stripeFor, webhookSecrets } from '../_shared/clients.ts';
 import { createKommoLead, markKommoLeadWon, updateKommoLead, createKommoTask, SITE_STAGE, KOMMO_USERS, KOMMO_TASK } from '../_shared/kommo.ts';
 import { createCalendarEvent } from '../_shared/google.ts';
 import { sendEmail, orderEmail, bookingEmail } from '../_shared/email.ts';
-
-const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET')!;
 
 Deno.serve(async (req) => {
   if (req.method !== 'POST') return new Response('method_not_allowed', { status: 405 });
   const sig = req.headers.get('stripe-signature');
   const raw = await req.text();
-  const stripe = stripeClient();
-  let event: Stripe.Event;
-  try {
-    event = await stripe.webhooks.constructEventAsync(raw, sig!, webhookSecret);
-  } catch (e) {
-    console.error('webhook signature', e);
+  // As 3 contas (uma por unidade) enviam para este mesmo endereço: o segredo que valida a
+  // assinatura diz de que conta veio o evento, e é com essa conta que lemos o pagamento.
+  let event: Stripe.Event | null = null;
+  let stripe: Stripe | null = null;
+  for (const [unit, secret] of webhookSecrets()) {
+    const client = stripeFor(unit);
+    try { event = await client.webhooks.constructEventAsync(raw, sig!, secret); stripe = client; break; } catch { /* tenta a próxima conta */ }
+  }
+  if (!event || !stripe) {
+    console.error('webhook signature: nenhum segredo validou');
     return new Response('invalid_signature', { status: 400 });
   }
   const sb = adminClient();

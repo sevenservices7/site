@@ -57,6 +57,8 @@ export function createSingleCheckout(input: {
   quantity?: number;
   locale: string;
   kommo_lead_id?: string;
+  /** Unidade que recebe o pagamento (conta Stripe da unidade). Vazio = unidade padrão. */
+  unit_slug?: string;
 }): Promise<{ url: string }> {
   return callFn('create-checkout-session', {
     mode: 'single',
@@ -64,6 +66,7 @@ export function createSingleCheckout(input: {
     quantity: input.quantity,
     locale: input.locale,
     kommo_lead_id: input.kommo_lead_id,
+    unit_slug: input.unit_slug,
   });
 }
 
@@ -133,6 +136,6 @@ export function teamLogin(team_code: string): Promise<{ ok: boolean }> {
 export function createCustomCheckout(input: {
   team_code: string; service: string; amount: string; locale: string; unit_slug: string;
   customer: { name: string; email?: string };
-}): Promise<{ url: string; emailed?: boolean; test_mode?: boolean }> {
+}): Promise<{ url: string; emailed?: boolean; test_mode?: boolean; account?: string }> {
   return callFn('create-checkout-session', { mode: 'custom', ...input });
 }

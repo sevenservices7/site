@@ -66,6 +66,8 @@ const copy = {
   const serv = params.get('serv') || params.get('service') || '';
   const qty = Number(params.get('qty') || '1') || 1;
   const lead = params.get('lead') || undefined;
+  // Unidade que recebe o pagamento (ex.: &unidade=faro). Sem ela, vale a unidade padrão.
+  const unit = (params.get('unidade') || params.get('unit') || '').toLowerCase() || undefined;
 
   function showError() {
     (document.querySelector('[data-pay-spin]') as HTMLElement).style.display = 'none';
@@ -77,7 +79,7 @@ const copy = {
   (async () => {
     if (!serv) { showError(); return; }
     try {
-      const { url } = await createSingleCheckout({ service_code: serv, quantity: qty, locale: lang, kommo_lead_id: lead });
+      const { url } = await createSingleCheckout({ service_code: serv, quantity: qty, locale: lang, kommo_lead_id: lead, unit_slug: unit });
       window.location.href = url;
     } catch {
       showError();

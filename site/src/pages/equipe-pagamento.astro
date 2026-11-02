@@ -24,6 +24,7 @@ const UNITS = [['albufeira', 'Albufeira'], ['faro', 'Faro'], ['porto', 'Porto']]
         <div class="tp-units">
           {UNITS.map(([slug, name]) => <button type="button" class="tp-unit" data-unit={slug}>{name}</button>)}
         </div>
+        <p class="tp-note">O dinheiro cai na conta Stripe da unidade escolhida. Pagamento presencial? Use o terminal <strong>Viva</strong> da loja: este formulário é só para links online.</p>
       </div>
 
       <!-- 3. Cobrança -->
@@ -41,6 +42,7 @@ const UNITS = [['albufeira', 'Albufeira'], ['faro', 'Faro'], ['porto', 'Porto']]
       <!-- 4. Link pronto -->
       <div class="tp-step tp-out" data-tp-step="out" hidden>
         <p><strong>Link pronto</strong> (válido por 24 horas):</p>
+        <p class="tp-account" data-tp-account></p>
         <p class="tp-test" data-tp-test role="alert" hidden><strong>ATENÇÃO: link em modo de TESTE.</strong> Não cobra o cliente. Não envie este link. Avise o responsável pelo site para trocar as chaves da Stripe.</p>
         <p class="tp-sent" data-tp-sent hidden></p>
         <input data-tp-url readonly />
@@ -61,6 +63,8 @@ const UNITS = [['albufeira', 'Albufeira'], ['faro', 'Faro'], ['porto', 'Porto']]
   .tp-step { display: grid; gap: 12px; }
   .tp-test { background: #FDECEC; color: #8A1C1C; border-left: 4px solid #C62828; padding: 10px 12px; font-size: .92rem; line-height: 1.5; }
   .tp-test[hidden] { display: none; }
+  .tp-note { font-size: .82rem; line-height: 1.5; color: var(--ink-muted); }
+  .tp-account { font-size: .9rem; font-weight: 600; color: var(--heading); }
   .tp-step[hidden] { display: none; }
   .tp-q { font-family: var(--font-head); font-weight: 600; font-size: 1.2rem; color: var(--heading); }
   .tp-pin { font: inherit; font-size: 1.8rem; letter-spacing: .5em; text-align: center; padding: 12px; border: 1px solid var(--border-strong); background: var(--surface-alt); width: 100%; }
@@ -138,13 +142,19 @@ const UNITS = [['albufeira', 'Albufeira'], ['faro', 'Faro'], ['porto', 'Porto']]
     if (!g('name') || !g('service') || !(amount >= 1)) return fail('form', 'Preencha nome, serviço e um valor válido.');
     const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!; btn.disabled = true;
     try {
-      const { url, emailed, test_mode } = await createCustomCheckout({ team_code: code, unit_slug: unit, service: g('service'), amount: g('amount'), locale: g('locale') || 'pt', customer: { name: g('name'), email: g('email') || undefined } });
+      const { url, emailed, test_mode, account } = await createCustomCheckout({ team_code: code, unit_slug: unit, service: g('service'), amount: g('amount'), locale: g('locale') || 'pt', customer: { name: g('name'), email: g('email') || undefined } });
       urlEl.value = url; open.href = url;
       const sent = $('[data-tp-sent]');
       sent.hidden = !g('email');
       sent.textContent = emailed ? `✓ Também enviado por e-mail para ${g('email')}.` : `Não foi possível enviar o e-mail para ${g('email')}. Envie o link manualmente.`;
       sent.classList.toggle('tp-sent--fail', !emailed);
       $('[data-tp-test]').hidden = !test_mode;
+      // Confirma em que conta o dinheiro vai cair (se a unidade ainda não tiver conta própria, avisa).
+      const unitName = $('[data-tp-unit-name]').textContent;
+      const NAMES: Record<string, string> = { albufeira: 'Albufeira', faro: 'Faro', porto: 'Porto' };
+      $('[data-tp-account]').textContent = account === unit
+        ? `Recebe em: conta Stripe de ${unitName}.`
+        : `Atenção: ${unitName} ainda não tem conta Stripe própria. O pagamento cai na conta ${NAMES[account || ''] ? `de ${NAMES[account!]}` : 'geral'}.`;
       if (test_mode) sent.hidden = true; // em modo de teste o link não é enviado ao cliente
       show('out');
     } catch (err) {

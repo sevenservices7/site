@@ -1,5 +1,5 @@
 import { preflight, json } from '../_shared/cors.ts';
-import { adminClient, stripeClient, checkoutUrls } from '../_shared/clients.ts';
+import { adminClient, stripeFor, paymentUnit, checkoutUrls } from '../_shared/clients.ts';
 import { sendEmail } from '../_shared/email.ts';
 
 // E-mail com o link de pagamento gerado pela equipa (modo custom, quando há e-mail do cliente).
@@ -36,13 +36,14 @@ Deno.serve(async (req) => {
       return json({ ok: true }, 200, origin);
     }
     const sb = adminClient();
-    const stripe = stripeClient();
     const urls = checkoutUrls(locale);
     let lineItems: any[] = [];
     let metadata: Record<string, string> = {};
     // No modo "single" (link de pagamento para WhatsApp) os dados do cliente
     // não são pré-recolhidos, por isso pedimos ao Stripe para os recolher.
     let collectInStripe = false;
+    // Unidade que recebe o dinheiro (cada unidade tem a sua conta Stripe). A consultoria lê a do agendamento.
+    let unitSlug = String(body.unit_slug || '');
     if (mode === 'cart') {
       const items: { service_code: string; quantity: number }[] = body.items || [];
       if (!items.length) return json({ error: 'empty_cart' }, 400, origin);
@@ -83,10 +84,11 @@ Deno.serve(async (req) => {
       if (body.kommo_lead_id) metadata.kommo_lead_id = String(body.kommo_lead_id);
       collectInStripe = true;
     } else if (mode === 'booking') {
-      const { data: booking, error } = await sb.from('bookings').select('id,amount,service_code,language,slot_start,consult_type').eq('id', body.booking_id).single();
+      const { data: booking, error } = await sb.from('bookings').select('id,amount,service_code,language,slot_start,consult_type,unit_slug').eq('id', body.booking_id).single();
       if (error || !booking) return json({ error: 'booking_not_found' }, 404, origin);
       lineItems = [{ quantity: 1, price_data: { currency: 'eur', unit_amount: Math.round(Number(booking.amount) * 100), product_data: { name: `${CONSULT_NAMES[booking.consult_type as string] ?? 'Consultoria'} (${String(booking.language).toUpperCase()})` } } }];
       metadata = { booking_id: booking.id };
+      unitSlug = booking.unit_slug || '';
     } else if (mode === 'custom') {
       // Cobrança avulsa gerada pela equipa (página oculta /equipe-pagamento): serviço e valor livres,
       // protegida pelo código da equipa (secret TEAM_PAY_CODE). Sem código configurado, fica bloqueada.
@@ -106,9 +108,13 @@ Deno.serve(async (req) => {
     } else {
       return json({ error: 'invalid_mode' }, 400, origin);
     }
+    const account = paymentUnit(unitSlug);
+    const stripe = stripeFor(account);
+    if (account) metadata.unit = account;
     // Sem payment_method_types fixos: o Stripe mostra os métodos ativos no
     // Dashboard (cartão sempre; MB Way/Multibanco/Klarna quando ativados).
-    const session = await stripe.checkout.sessions.create({
+    // Adaptive Pricing: cartão estrangeiro (ex.: brasileiro) paga na sua moeda; a unidade recebe em euros.
+    const params: any = {
       mode: 'payment',
       line_items: lineItems,
       locale: locale as any,
@@ -122,9 +128,12 @@ Deno.serve(async (req) => {
         phone_number_collection: { enabled: true },
         custom_fields: [{ key: 'nif', label: { type: 'custom', custom: 'NIF (opcional)' }, type: 'text', optional: true }],
       } : {}),
-    });
-    if (metadata.order_id) await sb.from('orders').update({ stripe_session_id: session.id }).eq('id', metadata.order_id);
-    if (metadata.booking_id) await sb.from('bookings').update({ stripe_session_id: session.id }).eq('id', metadata.booking_id);
+    };
+    // Se a conta não suportar Adaptive Pricing, o link sai só em euros em vez de falhar.
+    const session = await stripe.checkout.sessions.create({ ...params, adaptive_pricing: { enabled: true } })
+      .catch((e: any) => { console.warn('adaptive_pricing indisponível', e?.message); return stripe.checkout.sessions.create(params); });
+    if (metadata.order_id) await sb.from('orders').update({ stripe_session_id: session.id, stripe_account: account || 'geral' }).eq('id', metadata.order_id);
+    if (metadata.booking_id) await sb.from('bookings').update({ stripe_session_id: session.id, stripe_account: account || 'geral' }).eq('id', metadata.booking_id);
     // Chave de teste da Stripe: o link não cobra ninguém (MB Way é aprovado sem cobrança).
     // Não enviamos o link por e-mail ao cliente e a página da equipe mostra o aviso.
     const testMode = !session.livemode;
@@ -136,7 +145,7 @@ Deno.serve(async (req) => {
       const item = lineItems[0];
       emailed = await sendEmail(email, c.subject, payMailHtml(locale, String(body.customer?.name || ''), item.price_data.product_data.name, item.price_data.unit_amount / 100, session.url), { replyTo: Deno.env.get('LEAD_NOTIFY_EMAIL') || 'contato@seveneu.com' }).catch(() => false);
     }
-    return json({ url: session.url, emailed, test_mode: testMode }, 200, origin);
+    return json({ url: session.url, emailed, test_mode: testMode, account: account || 'geral' }, 200, origin);
   } catch (e) {
     console.error('create-checkout-session', e);
     return json({ error: 'internal_error' }, 500, origin);
