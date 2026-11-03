@@ -1,0 +1,13 @@
+{
+  "name": "sevenservices-backoffice-migrations",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Scripts de migração e manutenção do BackOffice (ex.: etapa 13). Não é runtime — o BackOffice corre como site estático (index.html).",
+  "scripts": {
+    "migrate:etapa13": "node migrate-etapa13.js",
+    "extract:ae": "node extract-ae.js"
+  },
+  "devDependencies": {
+    "xlsx": "^0.18.5"
+  }
+}
