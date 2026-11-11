@@ -68,6 +68,18 @@ export const solution: Solution = {
       title: "Comptabilité dès le premier jour",
       body: "L'entreprise naît avec une comptabilité organisée, tenue par un expert-comptable certifié. Vous n'êtes pas seul après la création.",
     },
+    {
+      title: "Siège social et adresse fiscale",
+      body: "Toute société a besoin d'un siège. Si vous n'avez pas de bureau, il peut se trouver au centre de Faro, avec le courrier reçu et signalé par e-mail.",
+    },
+    {
+      title: "Sécurité sociale et gérants",
+      body: "Nous inscrivons la société à la Sécurité sociale et réglons le statut des gérants, pour que personne ne démarre avec un dossier en suspens.",
+    },
+    {
+      title: "Associés hors du Portugal",
+      body: "NIF, représentant fiscal et procuration : nous organisons ce dont chaque associé a besoin pour que la société naisse sans que personne ne prenne l'avion.",
+    },
   ],
   stepsTitle: "Comment nous créons votre entreprise",
   steps: [
@@ -91,12 +103,6 @@ export const solution: Solution = {
   important: {
     title: "Avoir une entreprise ne donne pas la résidence",
     body: "Créer une entreprise au Portugal ne donne pas, à lui seul, le droit d'y vivre. Pour les ressortissants hors UE, il existe un chemin propre aux entrepreneurs, avec visa et autorisation de résidence. Nous étudions les deux procédures ensemble, pour que l'une ne gêne pas l'autre. Les citoyens de l'UE, de l'EEE et de Suisse n'ont pas besoin de visa : ils s'enregistrent auprès de la câmara municipal.",
-  },
-  external: {
-    title: "Siège de l'entreprise à Faro",
-    body: "Besoin d'un siège pour votre entreprise ? C'est D'Faro, partenaire de SEVEN dans le centre de Faro, qui s'en charge.",
-    label: "Découvrir D'Faro",
-    href: "https://dfaro.pt/morada-fiscal/",
   },
   faqs: [
     {
@@ -124,6 +130,10 @@ export const solution: Solution = {
       a: "Oui, avec une procuration pour la personne qui vous représente dans les actes. Vous signez dans votre pays, avec certification ou apostille selon le document. Nous vous indiquons exactement ce qu'il faut.",
     },
     {
+      q: "Faut-il louer un bureau pour créer une entreprise au Portugal ?",
+      a: "Non. La société a besoin d'un siège, mais il peut se trouver dans un centre d'affaires. Nous proposons un siège social et une adresse fiscale au centre de Faro, dès 49 € + TVA par mois, avec l'attestation de siège prête en 1 jour ouvré.",
+    },
+    {
       q: "Une entreprise au Portugal doit-elle avoir un expert-comptable ?",
       a: "Oui. Toute société est tenue d'avoir une comptabilité organisée, tenue par un expert-comptable certifié. C'est pourquoi nous planifions la comptabilité en même temps que la création.",
     },
@@ -136,7 +146,7 @@ export const solution: Solution = {
       a: "Le dépôt de marque est une démarche à part, distincte du nom de la société. Avant de déposer, mieux vaut vérifier s'il existe déjà une marque proche. Nous faisons la recherche, le dépôt et suivons la demande jusqu'à la décision.",
     },
   ],
-  related: ["contabilidade-em-portugal", "vistos-para-portugal", "nif-portugal", "advogada-de-imigracao"],
+  related: ["morada-fiscal-para-empresas", "contabilidade-em-portugal", "vistos-para-portugal", "nif-portugal"],
   ctaTitle: "Entreprendre au Portugal, il y a un chemin. Il y a toujours un chemin.",
   ctaBody: "De votre arrivée à votre propre entreprise, SEVEN vous accompagne à chaque étape. Réservez la consultation initiale et repartez avec un plan clair pour créer votre entreprise dans les règles.",
 };

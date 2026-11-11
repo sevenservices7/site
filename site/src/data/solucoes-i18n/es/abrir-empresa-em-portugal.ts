@@ -68,6 +68,18 @@ export const solution: Solution = {
       title: "Contabilidad desde el primer día",
       body: "La empresa nace con contabilidad organizada, hecha por un contable certificado. No te quedas solo después de la apertura.",
     },
+    {
+      title: "Sede y domicilio fiscal",
+      body: "Toda empresa necesita una sede. Si no tienes oficina, puede estar en el centro de Faro, con la correspondencia recibida y avisada por correo electrónico.",
+    },
+    {
+      title: "Seguridad Social y administradores",
+      body: "Inscribimos la empresa en la Seguridad Social y hacemos el encuadre de los administradores, para que nadie empiece con algo pendiente.",
+    },
+    {
+      title: "Socios fuera de Portugal",
+      body: "NIF, representante fiscal y poder notarial: organizamos lo que cada socio necesita para que la empresa nazca sin que nadie tenga que viajar.",
+    },
   ],
   stepsTitle: "Cómo abrimos tu empresa",
   steps: [
@@ -91,12 +103,6 @@ export const solution: Solution = {
   important: {
     title: "Tener empresa no es lo mismo que tener residencia",
     body: "Abrir una empresa en Portugal no da, por sí solo, derecho a vivir en el país. Existe un camino propio para emprendedores, con visado y autorización de residencia. Evaluamos los dos procesos juntos, para que uno no estorbe al otro. Si eres ciudadano de la UE, no necesitas ese visado.",
-  },
-  external: {
-    title: "Sede de la empresa en Faro",
-    body: "¿Necesitas sede para tu empresa? De eso se ocupa D'Faro, socia de SEVEN en el centro de Faro.",
-    label: "Conocer D'Faro",
-    href: "https://dfaro.pt/morada-fiscal/",
   },
   faqs: [
     {
@@ -124,6 +130,10 @@ export const solution: Solution = {
       a: "Sí, con un poder para quien te va a representar en los actos. Firmas en tu país, con certificación de firma o apostilla según el documento. Te indicamos exactamente lo que hace falta.",
     },
     {
+      q: "¿Necesito alquilar una oficina para abrir una empresa en Portugal?",
+      a: "No. La empresa necesita una sede, pero puede estar en un centro de negocios. Ofrecemos sede y domicilio fiscal en el centro de Faro, desde 49 € + IVA al mes, con la declaración de sede lista en 1 día hábil.",
+    },
+    {
       q: "¿Una empresa en Portugal necesita contable?",
       a: "Sí. Toda sociedad está obligada a tener contabilidad organizada, hecha por un contable certificado. Por eso planificamos la contabilidad junto con la apertura.",
     },
@@ -136,7 +146,7 @@ export const solution: Solution = {
       a: "El registro de marca es una solicitud propia, separada del nombre de la empresa. Antes de pedirlo, conviene investigar si ya existe una marca parecida. Hacemos la búsqueda, la solicitud y la seguimos hasta la decisión.",
     },
   ],
-  related: ["contabilidade-em-portugal", "vistos-para-portugal", "nif-portugal", "advogada-de-imigracao"],
+  related: ["morada-fiscal-para-empresas", "contabilidade-em-portugal", "vistos-para-portugal", "nif-portugal"],
   ctaTitle: "Emprender en otro país tiene camino. Siempre hay un camino.",
   ctaBody: "De la llegada a tu propio negocio, SEVEN te acompaña en cada etapa. Reserva la consultoría inicial y sal con un plan claro para abrir tu empresa como debe ser.",
 };

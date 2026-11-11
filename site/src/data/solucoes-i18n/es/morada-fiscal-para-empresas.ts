@@ -1,0 +1,140 @@
+import type { Solution } from '../../solution-types';
+
+export const solution: Solution = {
+  key: "morada-fiscal-para-empresas",
+  slug: "domicilio-fiscal-para-empresas",
+  stage: "empresa",
+  navLabel: "Domicilio fiscal y sede",
+  cardSummary: "Sede y domicilio fiscal para tu empresa en el centro de Faro, sin alquilar oficina, desde 49 € + IVA al mes.",
+  seoTitle: "Domicilio fiscal y sede para empresa en Portugal | SEVEN",
+  metaDescription: "Domicilio fiscal y sede social para tu empresa en Portugal, en el centro de Faro. Declaración de sede en 1 día hábil, todo a distancia, desde 49 € + IVA al mes.",
+  eyebrow: "Empresas · Faro",
+  h1: "Domicilio fiscal y sede para tu empresa, sin alquilar oficina",
+  lede: "Toda empresa en Portugal necesita una sede. La tuya puede estar en el centro de Faro, con la correspondencia gestionada y la declaración de sede lista en 1 día hábil.",
+  highlights: [
+    { value: "Desde 49 €", label: "+ IVA al mes, con contrato anual" },
+    { value: "1 día hábil", label: "para recibir la declaración de sede" },
+    { value: "100% a distancia", label: "con firma electrónica" },
+    { value: "Centro de Faro", label: "dirección real, con recepción" },
+  ],
+  forWhoTitle: "La sede de la empresa es pública. La dirección de tu casa no tiene por qué serlo.",
+  forWho: [
+    {
+      title: "Quien va a abrir una empresa",
+      body: "La sede aparece en el registro mercantil, en las facturas y en la web. Con la dirección en Faro, tu casa queda fuera de eso, y no alquilas oficina antes de facturar.",
+    },
+    {
+      title: "Quien ya tiene empresa",
+      body: "La sede está en casa de un socio y las cartas se pierden por el camino. Puedes cambiar a una dirección comercial estable y tener la correspondencia en orden.",
+    },
+    {
+      title: "Socios que viven fuera de Portugal",
+      body: "Vives en otro país y la empresa necesita una dirección portuguesa. Basta con tener NIF portugués, y todo se hace a distancia.",
+    },
+    {
+      title: "Quien trabaja desde casa u online",
+      body: "Consultoría, tienda online, prestación de servicios. El negocio no necesita un local abierto, pero la empresa necesita una dirección.",
+    },
+  ],
+  dictionary: [
+    { term: "Morada fiscal", meaning: "el domicilio fiscal, el que queda registrado en Finanças, la Agencia Tributaria portuguesa" },
+    { term: "Sede social", meaning: "el domicilio social, la dirección oficial de la empresa en los estatutos y en el registro mercantil" },
+    { term: "Declaração de sede", meaning: "el documento que autoriza a la empresa a usar la dirección, exigido en el registro" },
+    { term: "Conservatória do Registo Comercial", meaning: "el registro mercantil, donde se inscriben las empresas" },
+  ],
+  includedTitle: "Una dirección que trabaja por ti.",
+  included: [
+    {
+      title: "Sede social y domicilio fiscal",
+      body: "La misma dirección sirve para el registro mercantil y para Finanças. Es una dirección real, en el centro de Faro, con recepción.",
+    },
+    {
+      title: "Declaración de sede en 1 día hábil",
+      body: "Con los documentos completos y el primer pago, sale la declaración que autoriza el uso de la dirección, exigida en el registro de la empresa.",
+    },
+    {
+      title: "Correspondencia recibida y avisada",
+      body: "Cuando llega una carta, recibes un aviso por correo electrónico en 1 día hábil. La correspondencia se guarda durante 90 días.",
+    },
+    {
+      title: "Cartas digitalizadas",
+      body: "En los planes Business y Executive, la carta se digitaliza y se envía a tu correo electrónico. La lees estés donde estés.",
+    },
+    {
+      title: "Contratación a distancia",
+      body: "El contrato se firma de forma electrónica y el pago se hace por transferencia. Sin desplazamientos y sin fianza.",
+    },
+    {
+      title: "Cambio de sede",
+      body: "Si la empresa ya existe, nos ocupamos del cambio de sede en el registro mercantil y en Finanças. Es un servicio aparte, presupuestado antes de empezar.",
+    },
+  ],
+  stepsTitle: "Cómo contratar el domicilio fiscal",
+  steps: [
+    {
+      title: "Habla con nosotros",
+      body: "Eliges el plan y envías tu documento de identidad, tarjeta de ciudadano o pasaporte, y el NIF portugués.",
+    },
+    {
+      title: "Firma a distancia",
+      body: "El contrato se firma de forma electrónica y el primer pago se hace por transferencia.",
+    },
+    {
+      title: "Recibe la declaración de sede",
+      body: "En 1 día hábil, con los documentos completos y el pago hecho, recibes la declaración para usar en el registro.",
+    },
+    {
+      title: "Registra o cambia la sede",
+      body: "Con la declaración, la sede se inscribe en el registro mercantil y en Finanças. Si lo prefieres, esa parte la hacemos nosotros.",
+    },
+  ],
+  important: {
+    title: "La dirección es de la empresa, no de la persona",
+    body: "Esta dirección sirve solo para uso empresarial. No vale como dirección personal, por ejemplo para sacar tu NIF, pedir la residencia o recibir cartas a tu nombre. Para tu domicilio fiscal personal el camino es otro, y te explicamos cuál.",
+  },
+  faqs: [
+    {
+      q: "¿Puedo usar la dirección como sede de mi empresa en Portugal?",
+      a: "Sí. Sirve como sede social y como domicilio fiscal, en Finanças, en el registro mercantil y en otras entidades. Con el contrato recibes la declaración que autoriza el uso de la dirección, exigida en el registro.",
+    },
+    {
+      q: "¿Es legal tener la sede de la empresa en un centro de negocios?",
+      a: "Sí. Es una práctica legal y habitual en Portugal, que usan empresas de todos los tamaños. Lo importante es que la correspondencia oficial te llegue, y eso es lo que garantiza el servicio.",
+    },
+    {
+      q: "¿Cuánto cuesta el domicilio fiscal para una empresa?",
+      a: "Hay tres planes: Base, por 49 € al mes, Business, por 65 €, y Executive, por 89 €, siempre más IVA. El contrato es anual y el pago es por adelantado: trimestral, semestral, con un 5% de descuento, o anual, con un 10% de descuento.",
+    },
+    {
+      q: "¿Qué diferencia hay entre sede social y domicilio fiscal?",
+      a: "La sede social es la dirección que consta en los estatutos y en el registro mercantil. El domicilio fiscal es la dirección registrada en Finanças. En la mayoría de los casos coinciden, y la misma dirección sirve para ambos.",
+    },
+    {
+      q: "¿Cómo funciona la correspondencia de la empresa?",
+      a: "Todas las cartas se reciben en recepción y se te avisa por correo electrónico en 1 día hábil. En el plan Base, la carta queda guardada para que la recojas. En los planes Business y Executive, se digitaliza y se envía a tu correo. Todo se guarda durante 90 días.",
+    },
+    {
+      q: "¿Puedo contratar la dirección antes de abrir la empresa?",
+      a: "Sí, y tiene sentido, porque la declaración de sede se pide en el registro. Contratas a tu nombre y la empresa asume el contrato una vez constituida. Si la empresa no se constituye en 90 días, puedes cancelar sin penalización.",
+    },
+    {
+      q: "Vivo fuera de Portugal. ¿Puedo contratar sin viajar?",
+      a: "Sí. El envío de documentos, la firma del contrato y el pago se hacen a distancia. Quien no reside en Portugal solo necesita tener NIF portugués. Si todavía no lo tienes, lo tramitamos nosotros.",
+    },
+    {
+      q: "¿Puedo usar esta dirección como mi dirección personal?",
+      a: "No. La dirección es exclusivamente empresarial y no sirve como domicilio de una persona. Para tu NIF, tu residencia o tu carné de conducir, la dirección es la del lugar donde vives.",
+    },
+    {
+      q: "¿Cuál es la duración del contrato?",
+      a: "El contrato es anual y se renueva automáticamente por períodos iguales. Para cancelar, basta con avisar con 30 días de antelación.",
+    },
+    {
+      q: "¿Dónde está la dirección?",
+      a: "En la Rua Infante Dom Henrique, 111, en el centro de Faro, en el D'Faro Business Center. Es el mismo edificio de la sede SEVEN de Faro, así que quien te atiende está al lado de la sede de tu empresa.",
+    },
+  ],
+  related: ["abrir-empresa-em-portugal", "contabilidade-em-portugal", "nif-portugal"],
+  ctaTitle: "Una empresa con la dirección correcta. Siempre hay un camino.",
+  ctaBody: "De la sede a la contabilidad, SEVEN acompaña a tu empresa en cada etapa. Habla con nosotros y deja resuelta la dirección de tu empresa.",
+};

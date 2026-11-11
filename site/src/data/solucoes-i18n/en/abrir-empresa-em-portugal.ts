@@ -68,6 +68,18 @@ export const solution: Solution = {
       title: "Accounting from day one",
       body: "Your company starts with proper accounts, kept by a certified accountant. You're not on your own after the setup.",
     },
+    {
+      title: "Registered office and tax address",
+      body: "Every company needs a registered office. If you don't have premises, it can be in central Faro, with mail received and notified by email.",
+    },
+    {
+      title: "Social Security and directors",
+      body: "We register the company with Social Security and set up the directors' status, so nobody starts with something pending.",
+    },
+    {
+      title: "Partners outside Portugal",
+      body: "NIF, fiscal representative and power of attorney: we organise what each partner needs so the company is set up without anyone catching a flight.",
+    },
   ],
   stepsTitle: "How we set up your company",
   steps: [
@@ -91,12 +103,6 @@ export const solution: Solution = {
   important: {
     title: "Having a company isn't the same as having residence",
     body: "Opening a company in Portugal doesn't, on its own, give you the right to live here. There's a specific route for entrepreneurs, with a visa and a residence permit. We look at both processes together, so one doesn't get in the way of the other. Citizens of EU/EEA countries and Switzerland don't need a visa to live and work here.",
-  },
-  external: {
-    title: "Company address in Faro",
-    body: "Need a registered address for your company? That's handled by D'Faro, SEVEN's partner in central Faro.",
-    label: "Visit D'Faro",
-    href: "https://dfaro.pt/morada-fiscal/",
   },
   faqs: [
     {
@@ -124,6 +130,10 @@ export const solution: Solution = {
       a: "Yes, with a power of attorney for whoever will represent you. You sign where you live, with certification or an apostille depending on the document. We tell you exactly what's needed.",
     },
     {
+      q: "Do I need to rent an office to open a company in Portugal?",
+      a: "No. The company needs a registered office, but it can be in a business centre. We offer a registered office and tax address in central Faro, from 49 € + VAT a month, with the address declaration ready in 1 working day.",
+    },
+    {
       q: "Does a company in Portugal need an accountant?",
       a: "Yes. Every company must keep full accounts, prepared by a certified accountant. That's why we plan the accounting together with the setup.",
     },
@@ -136,7 +146,7 @@ export const solution: Solution = {
       a: "Trademark registration is a separate application from the company name. Before applying, it's worth checking whether a similar mark already exists. We do the search, file the application and follow it until the decision.",
     },
   ],
-  related: ["contabilidade-em-portugal", "vistos-para-portugal", "nif-portugal", "advogada-de-imigracao"],
+  related: ["morada-fiscal-para-empresas", "contabilidade-em-portugal", "vistos-para-portugal", "nif-portugal"],
   ctaTitle: "Building a business abroad has a way. There's always a way.",
   ctaBody: "From your arrival to your own business, SEVEN is with you at every stage. Book the initial consultation and leave with a clear plan to open your company the right way.",
 };
