@@ -1,7 +1,6 @@
 import type { Solution } from '../solution-types';
 
-// Valores e condições: os mesmos publicados em dfaro.pt/morada-fiscal (D'Faro Business Center,
-// o prédio da unidade SEVEN de Faro). Se mudarem lá, atualizar aqui e nas traduções.
+// Valores e condições dos planos de morada fiscal. Ao mudar aqui, atualizar também as traduções.
 export const solution: Solution = {
   slug: "morada-fiscal-para-empresas",
   stage: "empresa",
@@ -90,8 +89,8 @@ export const solution: Solution = {
     },
   ],
   important: {
-    title: "A morada é da empresa, não da pessoa",
-    body: "Essa morada serve só para uso empresarial. Ela não vale como endereço pessoal, por exemplo para tirar o seu NIF, pedir residência ou receber cartas em seu nome. Para a sua morada fiscal pessoal o caminho é outro, e a gente explica qual.",
+    title: "Morada fiscal também para pessoa física",
+    body: "Esta página fala da morada da empresa. A SEVEN também cuida da morada fiscal de pessoa física, como a alteração do seu endereço nas Finanças. É um serviço próprio, com condições diferentes. Fale com a gente e veja qual é o seu caso.",
   },
   faqs: [
     {
@@ -123,8 +122,8 @@ export const solution: Solution = {
       a: "Pode. O envio dos documentos, a assinatura do contrato e o pagamento são feitos à distância. Quem não mora em Portugal só precisa ter NIF português. Se você ainda não tem, a gente tira.",
     },
     {
-      q: "Posso usar essa morada como meu endereço pessoal?",
-      a: "Não. A morada é exclusivamente empresarial e não serve como domicílio de pessoa física. Para o seu NIF, a sua residência ou a sua carta de condução, o endereço é o de onde você mora.",
+      q: "A SEVEN também faz morada fiscal para pessoa física?",
+      a: "Faz. É um serviço próprio, com condições diferentes das da empresa. Conte para a gente a sua situação, se você já mora em Portugal ou ainda está fora, e a gente indica o caminho certo para a sua morada fiscal.",
     },
     {
       q: "Qual é o prazo do contrato da morada fiscal?",
@@ -132,7 +131,7 @@ export const solution: Solution = {
     },
     {
       q: "Onde fica a morada?",
-      a: "Na Rua Infante Dom Henrique, 111, no centro de Faro, no D'Faro Business Center. É o mesmo prédio da unidade SEVEN de Faro, então quem atende você está ao lado da sede da sua empresa.",
+      a: "Na Rua Infante Dom Henrique, 111, no centro de Faro, o mesmo endereço da unidade SEVEN de Faro. Quem atende você está ao lado da sede da sua empresa.",
     },
   ],
   related: ["abrir-empresa-em-portugal", "contabilidade-em-portugal", "nif-portugal"],

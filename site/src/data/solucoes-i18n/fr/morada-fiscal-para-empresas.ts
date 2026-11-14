@@ -89,8 +89,8 @@ export const solution: Solution = {
     },
   ],
   important: {
-    title: "L'adresse est celle de l'entreprise, pas la vôtre",
-    body: "Cette adresse est réservée à un usage professionnel. Elle ne vaut pas comme adresse personnelle, par exemple pour obtenir votre NIF, demander un titre de séjour ou recevoir du courrier à votre nom. Pour votre adresse fiscale personnelle, la démarche est différente, et nous vous expliquons laquelle.",
+    title: "L'adresse fiscale pour les particuliers aussi",
+    body: "Cette page concerne l'adresse de l'entreprise. SEVEN s'occupe aussi de l'adresse fiscale des particuliers, comme le changement de votre adresse auprès des Finanças. C'est un service à part, avec des conditions différentes. Parlez-nous et nous verrons quel est votre cas.",
   },
   faqs: [
     {
@@ -122,8 +122,8 @@ export const solution: Solution = {
       a: "Oui. L'envoi des documents, la signature du contrat et le paiement se font à distance. Les non-résidents ont seulement besoin d'un NIF portugais. Si vous ne l'avez pas encore, nous l'obtenons pour vous.",
     },
     {
-      q: "Puis-je utiliser cette adresse comme adresse personnelle ?",
-      a: "Non. L'adresse est strictement professionnelle et ne peut pas servir de domicile à un particulier. Pour votre NIF, votre titre de séjour ou votre permis de conduire, l'adresse est celle où vous vivez.",
+      q: "SEVEN s'occupe-t-elle aussi de l'adresse fiscale des particuliers ?",
+      a: "Oui. C'est un service à part, avec des conditions différentes de celles de l'entreprise. Expliquez-nous votre situation, que vous viviez déjà au Portugal ou encore à l'étranger, et nous vous indiquons la bonne démarche pour votre adresse fiscale.",
     },
     {
       q: "Quelle est la durée du contrat ?",
@@ -131,7 +131,7 @@ export const solution: Solution = {
     },
     {
       q: "Où se trouve l'adresse ?",
-      a: "Rua Infante Dom Henrique, 111, au centre de Faro, au D'Faro Business Center. C'est le même immeuble que l'agence SEVEN de Faro : les personnes qui vous accompagnent sont donc juste à côté du siège de votre entreprise.",
+      a: "Rua Infante Dom Henrique, 111, au centre de Faro, la même adresse que l'agence SEVEN de Faro. Les personnes qui vous accompagnent sont juste à côté du siège de votre entreprise.",
     },
   ],
   related: ["abrir-empresa-em-portugal", "contabilidade-em-portugal", "nif-portugal"],

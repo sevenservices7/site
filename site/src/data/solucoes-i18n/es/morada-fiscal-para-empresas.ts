@@ -89,8 +89,8 @@ export const solution: Solution = {
     },
   ],
   important: {
-    title: "La dirección es de la empresa, no de la persona",
-    body: "Esta dirección sirve solo para uso empresarial. No vale como dirección personal, por ejemplo para sacar tu NIF, pedir la residencia o recibir cartas a tu nombre. Para tu domicilio fiscal personal el camino es otro, y te explicamos cuál.",
+    title: "Domicilio fiscal también para particulares",
+    body: "Esta página habla de la dirección de la empresa. SEVEN también se ocupa del domicilio fiscal de particulares, como el cambio de tu dirección en Finanças. Es un servicio propio, con condiciones diferentes. Habla con nosotros y vemos cuál es tu caso.",
   },
   faqs: [
     {
@@ -122,8 +122,8 @@ export const solution: Solution = {
       a: "Sí. El envío de documentos, la firma del contrato y el pago se hacen a distancia. Quien no reside en Portugal solo necesita tener NIF portugués. Si todavía no lo tienes, lo tramitamos nosotros.",
     },
     {
-      q: "¿Puedo usar esta dirección como mi dirección personal?",
-      a: "No. La dirección es exclusivamente empresarial y no sirve como domicilio de una persona. Para tu NIF, tu residencia o tu carné de conducir, la dirección es la del lugar donde vives.",
+      q: "¿SEVEN también gestiona el domicilio fiscal de particulares?",
+      a: "Sí. Es un servicio propio, con condiciones diferentes a las de la empresa. Cuéntanos tu situación, si ya vives en Portugal o todavía estás fuera, y te indicamos el camino correcto para tu domicilio fiscal.",
     },
     {
       q: "¿Cuál es la duración del contrato?",
@@ -131,7 +131,7 @@ export const solution: Solution = {
     },
     {
       q: "¿Dónde está la dirección?",
-      a: "En la Rua Infante Dom Henrique, 111, en el centro de Faro, en el D'Faro Business Center. Es el mismo edificio de la sede SEVEN de Faro, así que quien te atiende está al lado de la sede de tu empresa.",
+      a: "En la Rua Infante Dom Henrique, 111, en el centro de Faro, la misma dirección de la sede SEVEN de Faro. Quien te atiende está al lado de la sede de tu empresa.",
     },
   ],
   related: ["abrir-empresa-em-portugal", "contabilidade-em-portugal", "nif-portugal"],

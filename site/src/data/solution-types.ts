@@ -42,7 +42,7 @@ export interface Solution {
   steps: TextItem[];
   /** Caixa "Importante" (mudança de lei, prazos, alertas), tom sereno. */
   important?: TextItem;
-  /** Indicação externa opcional (ex.: morada fiscal → dfaro.pt). */
+  /** Indicação externa opcional (ex.: link para um parceiro). */
   external?: { title: string; body: string; label: string; href: string };
   /** 6–10 perguntas reais, redigidas como a pessoa pesquisa no Google. */
   faqs: Faq[];

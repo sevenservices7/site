@@ -89,8 +89,8 @@ export const solution: Solution = {
     },
   ],
   important: {
-    title: "The address is for the company, not for you personally",
-    body: "This address is for business use only. It can't be used as a personal address, for example to get your NIF, apply for residence or receive letters in your own name. Your personal tax address follows a different route, and we explain which one.",
+    title: "Tax address for individuals too",
+    body: "This page is about your company's address. SEVEN also handles the tax address for individuals, such as changing your address with Finanças. It's a separate service, with different conditions. Talk to us and we'll see which one fits your case.",
   },
   faqs: [
     {
@@ -122,8 +122,8 @@ export const solution: Solution = {
       a: "Yes. Sending documents, signing the contract and paying are all done remotely. Non-residents only need a Portuguese NIF. If you don't have one yet, we get it for you.",
     },
     {
-      q: "Can I use this address as my personal address?",
-      a: "No. The address is strictly for business and can't be used as an individual's home address. For your NIF, your residence permit or your driving licence, the address is where you actually live.",
+      q: "Does SEVEN also handle the tax address for individuals?",
+      a: "Yes. It's a separate service, with different conditions from the company one. Tell us your situation, whether you already live in Portugal or are still abroad, and we'll point you to the right route for your tax address.",
     },
     {
       q: "How long is the contract?",
@@ -131,7 +131,7 @@ export const solution: Solution = {
     },
     {
       q: "Where is the address?",
-      a: "At Rua Infante Dom Henrique, 111, in central Faro, in the D'Faro Business Center. It's the same building as SEVEN's Faro office, so the people looking after you are right next to your company's registered office.",
+      a: "At Rua Infante Dom Henrique, 111, in central Faro, the same address as SEVEN's Faro office. The people looking after you are right next to your company's registered office.",
     },
   ],
   related: ["abrir-empresa-em-portugal", "contabilidade-em-portugal", "nif-portugal"],
