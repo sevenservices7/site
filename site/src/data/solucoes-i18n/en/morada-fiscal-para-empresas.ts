@@ -5,23 +5,23 @@ export const solution: Solution = {
   slug: "registered-office-address-portugal",
   stage: "empresa",
   navLabel: "Registered office address",
-  cardSummary: "A registered office and tax address for your company in central Faro, with no office to rent, from 49 € + VAT a month.",
+  cardSummary: "A registered office and tax address for your company in Portugal, with no office to rent, from 49 € + VAT a month.",
   seoTitle: "Registered office address in Portugal | SEVEN",
-  metaDescription: "Registered office and tax address for your company in Portugal, in central Faro. Address declaration in 1 working day, fully remote, from 49 € + VAT a month.",
-  eyebrow: "Business · Faro",
+  metaDescription: "Registered office and tax address for companies with no address in Portugal. Address declaration in 1 working day, fully remote, from 49 € + VAT a month.",
+  eyebrow: "Business · Portugal",
   h1: "A registered office address for your company, without renting an office",
-  lede: "Every company in Portugal needs a registered office. Yours can be in central Faro, with the mail handled and the address declaration ready in 1 working day.",
+  lede: "Every company in Portugal needs a registered office. If you have no address here, SEVEN has the solution, with the mail handled and the address declaration ready in 1 working day.",
   highlights: [
     { value: "From 49 €", label: "+ VAT a month, on a yearly contract" },
     { value: "1 working day", label: "to receive the address declaration" },
     { value: "100% remote", label: "with electronic signature" },
-    { value: "Central Faro", label: "a real address, with a reception" },
+    { value: "No office", label: "the solution if you have no address here" },
   ],
   forWhoTitle: "Your company's address is public. Your home address doesn't have to be.",
   forWho: [
     {
       title: "People about to start a company",
-      body: "The registered office shows up in the commercial register, on invoices and on your website. With the address in Faro, your home stays out of it, and you don't rent an office before you invoice.",
+      body: "The registered office shows up in the commercial register, on invoices and on your website. With SEVEN's address, your home stays out of it, and you don't rent an office before you invoice.",
     },
     {
       title: "People who already have a company",
@@ -46,7 +46,7 @@ export const solution: Solution = {
   included: [
     {
       title: "Registered office and tax address",
-      body: "The same address works for the commercial register and for Finanças. It's a real address in central Faro, with a reception.",
+      body: "The same address works for the commercial register and for Finanças.",
     },
     {
       title: "Address declaration in 1 working day",
@@ -98,7 +98,7 @@ export const solution: Solution = {
       a: "Yes. It works as the registered office and as the tax address, with Finanças, the commercial registry and other entities. With the contract you receive the declaration authorising the use of the address, which is required at registration.",
     },
     {
-      q: "Is it legal to have a company's registered office in a business centre?",
+      q: "Is it legal to use a contracted address as a company's registered office?",
       a: "Yes. It's a legal and common practice in Portugal, used by companies of all sizes. What matters is that official mail reaches you, and that's what the service guarantees.",
     },
     {
@@ -111,7 +111,7 @@ export const solution: Solution = {
     },
     {
       q: "How does the company's mail work?",
-      a: "Every letter is received at reception and you're notified by email within 1 working day. On the Base plan, the letter is kept for you to collect. On the Business and Executive plans, it's scanned and sent to your email. Everything is kept for 90 days.",
+      a: "Every letter is received by our team and you're notified by email within 1 working day. On the Base plan, the letter is kept for you to collect. On the Business and Executive plans, it's scanned and sent to your email. Everything is kept for 90 days.",
     },
     {
       q: "Can I sign up for the address before the company exists?",
@@ -128,10 +128,6 @@ export const solution: Solution = {
     {
       q: "How long is the contract?",
       a: "The contract is yearly and renews automatically for equal periods. To cancel, you give 30 days' notice.",
-    },
-    {
-      q: "Where is the address?",
-      a: "At Rua Infante Dom Henrique, 111, in central Faro, the same address as SEVEN's Faro office. The people looking after you are right next to your company's registered office.",
     },
   ],
   related: ["abrir-empresa-em-portugal", "contabilidade-em-portugal", "nif-portugal"],

@@ -5,23 +5,23 @@ export const solution: Solution = {
   slug: "domicilio-fiscal-para-empresas",
   stage: "empresa",
   navLabel: "Domicilio fiscal y sede",
-  cardSummary: "Sede y domicilio fiscal para tu empresa en el centro de Faro, sin alquilar oficina, desde 49 € + IVA al mes.",
+  cardSummary: "Sede y domicilio fiscal para tu empresa en Portugal, sin alquilar oficina, desde 49 € + IVA al mes.",
   seoTitle: "Domicilio fiscal y sede para empresa en Portugal | SEVEN",
-  metaDescription: "Domicilio fiscal y sede social para tu empresa en Portugal, en el centro de Faro. Declaración de sede en 1 día hábil, todo a distancia, desde 49 € + IVA al mes.",
-  eyebrow: "Empresas · Faro",
+  metaDescription: "Domicilio fiscal y sede social para empresas sin dirección en Portugal. Declaración de sede en 1 día hábil, todo a distancia, desde 49 € + IVA al mes.",
+  eyebrow: "Empresas · Portugal",
   h1: "Domicilio fiscal y sede para tu empresa, sin alquilar oficina",
-  lede: "Toda empresa en Portugal necesita una sede. La tuya puede estar en el centro de Faro, con la correspondencia gestionada y la declaración de sede lista en 1 día hábil.",
+  lede: "Toda empresa en Portugal necesita una sede. Si no tienes dirección aquí, SEVEN tiene la solución, con la correspondencia gestionada y la declaración de sede lista en 1 día hábil.",
   highlights: [
     { value: "Desde 49 €", label: "+ IVA al mes, con contrato anual" },
     { value: "1 día hábil", label: "para recibir la declaración de sede" },
     { value: "100% a distancia", label: "con firma electrónica" },
-    { value: "Centro de Faro", label: "dirección real, con recepción" },
+    { value: "Sin oficina", label: "la solución para quien no tiene dirección aquí" },
   ],
   forWhoTitle: "La sede de la empresa es pública. La dirección de tu casa no tiene por qué serlo.",
   forWho: [
     {
       title: "Quien va a abrir una empresa",
-      body: "La sede aparece en el registro mercantil, en las facturas y en la web. Con la dirección en Faro, tu casa queda fuera de eso, y no alquilas oficina antes de facturar.",
+      body: "La sede aparece en el registro mercantil, en las facturas y en la web. Con la dirección de SEVEN, tu casa queda fuera de eso, y no alquilas oficina antes de facturar.",
     },
     {
       title: "Quien ya tiene empresa",
@@ -46,7 +46,7 @@ export const solution: Solution = {
   included: [
     {
       title: "Sede social y domicilio fiscal",
-      body: "La misma dirección sirve para el registro mercantil y para Finanças. Es una dirección real, en el centro de Faro, con recepción.",
+      body: "La misma dirección sirve para el registro mercantil y para Finanças.",
     },
     {
       title: "Declaración de sede en 1 día hábil",
@@ -98,7 +98,7 @@ export const solution: Solution = {
       a: "Sí. Sirve como sede social y como domicilio fiscal, en Finanças, en el registro mercantil y en otras entidades. Con el contrato recibes la declaración que autoriza el uso de la dirección, exigida en el registro.",
     },
     {
-      q: "¿Es legal tener la sede de la empresa en un centro de negocios?",
+      q: "¿Es legal usar una dirección contratada como sede de la empresa?",
       a: "Sí. Es una práctica legal y habitual en Portugal, que usan empresas de todos los tamaños. Lo importante es que la correspondencia oficial te llegue, y eso es lo que garantiza el servicio.",
     },
     {
@@ -111,7 +111,7 @@ export const solution: Solution = {
     },
     {
       q: "¿Cómo funciona la correspondencia de la empresa?",
-      a: "Todas las cartas se reciben en recepción y se te avisa por correo electrónico en 1 día hábil. En el plan Base, la carta queda guardada para que la recojas. En los planes Business y Executive, se digitaliza y se envía a tu correo. Todo se guarda durante 90 días.",
+      a: "Todas las cartas las recibe nuestro equipo y se te avisa por correo electrónico en 1 día hábil. En el plan Base, la carta queda guardada para que la recojas. En los planes Business y Executive, se digitaliza y se envía a tu correo. Todo se guarda durante 90 días.",
     },
     {
       q: "¿Puedo contratar la dirección antes de abrir la empresa?",
@@ -128,10 +128,6 @@ export const solution: Solution = {
     {
       q: "¿Cuál es la duración del contrato?",
       a: "El contrato es anual y se renueva automáticamente por períodos iguales. Para cancelar, basta con avisar con 30 días de antelación.",
-    },
-    {
-      q: "¿Dónde está la dirección?",
-      a: "En la Rua Infante Dom Henrique, 111, en el centro de Faro, la misma dirección de la sede SEVEN de Faro. Quien te atiende está al lado de la sede de tu empresa.",
     },
   ],
   related: ["abrir-empresa-em-portugal", "contabilidade-em-portugal", "nif-portugal"],

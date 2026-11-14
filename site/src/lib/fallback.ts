@@ -11,13 +11,14 @@ export const fallbackOffices: Office[] = [
   {
     slug: 'albufeira',
     name: 'Albufeira',
-    address: 'Rua do MFA, 111 G, 8200-157 Albufeira',
+    address: 'Rua Fernão Magalhães, LT 21 - G, 8200-129 Albufeira',
     phone: '351939146298',
     email: 'albufeira@sevenservicess.com',
     whatsapp: '351939146298',
-    lat: 37.0891,
-    lng: -8.253,
-    maps_url: 'https://maps.app.goo.gl/tSGdReHa7WLs3pa79',
+    // Sede nova: sem coordenadas nem link curto confirmados; o link do mapa sai da morada.
+    lat: null,
+    lng: null,
+    maps_url: '',
     opening_date: '2022-08-01',
     hero_photo: '',
     coordinator_code: 'GR',

@@ -70,7 +70,7 @@ export const solution: Solution = {
     },
     {
       title: "Registered office and tax address",
-      body: "Every company needs a registered office. If you don't have premises, it can be in central Faro, with mail received and notified by email.",
+      body: "Every company needs a registered office. If you don't have premises, it can be at SEVEN's address, with mail received and notified by email.",
     },
     {
       title: "Social Security and directors",
@@ -131,7 +131,7 @@ export const solution: Solution = {
     },
     {
       q: "Do I need to rent an office to open a company in Portugal?",
-      a: "No. The company needs a registered office, but it can be in a business centre. We offer a registered office and tax address in central Faro, from 49 € + VAT a month, with the address declaration ready in 1 working day.",
+      a: "No. The company needs a registered office, but it doesn't have to be your own office. We offer a registered office and tax address, from 49 € + VAT a month, with the address declaration ready in 1 working day.",
     },
     {
       q: "Does a company in Portugal need an accountant?",

@@ -5,23 +5,23 @@ export const solution: Solution = {
   slug: "morada-fiscal-para-empresas",
   stage: "empresa",
   navLabel: "Morada fiscal e sede",
-  cardSummary: "Sede e morada fiscal para a sua empresa no centro de Faro, sem alugar escritório, desde 49 € + IVA por mês.",
+  cardSummary: "Sede e morada fiscal para a sua empresa em Portugal, sem alugar escritório, desde 49 € + IVA por mês.",
   seoTitle: "Morada fiscal e sede para empresa em Portugal | SEVEN",
-  metaDescription: "Morada fiscal e sede social para empresa em Portugal, no centro de Faro. Declaração de sede em 1 dia útil, tudo à distância, desde 49 € + IVA por mês.",
-  eyebrow: "Empresas · Faro",
+  metaDescription: "Morada fiscal e sede social para empresa em Portugal, para quem não tem endereço aqui. Declaração de sede em 1 dia útil, tudo à distância, desde 49 € + IVA por mês.",
+  eyebrow: "Empresas · Portugal",
   h1: "Morada fiscal e sede para a sua empresa, sem alugar escritório",
-  lede: "Toda empresa em Portugal precisa de uma sede. A sua pode ficar no centro de Faro, com a correspondência tratada e a declaração de sede pronta em 1 dia útil.",
+  lede: "Toda empresa em Portugal precisa de uma sede. Se você não tem endereço aqui, a SEVEN tem a solução, com a correspondência tratada e a declaração de sede pronta em 1 dia útil.",
   highlights: [
     { value: "Desde 49 €", label: "+ IVA por mês, em contrato anual" },
     { value: "1 dia útil", label: "para receber a declaração de sede" },
     { value: "100% à distância", label: "com assinatura eletrônica" },
-    { value: "Centro de Faro", label: "morada real, com recepção" },
+    { value: "Sem escritório", label: "a solução para quem não tem morada aqui" },
   ],
   forWhoTitle: "A sede da empresa é pública. O endereço da sua casa não precisa ser.",
   forWho: [
     {
       title: "Quem vai abrir empresa",
-      body: "A sede aparece no registro comercial, nas faturas e no site. Com a morada em Faro, o endereço da sua casa fica fora disso, e você não aluga escritório antes de faturar.",
+      body: "A sede aparece no registro comercial, nas faturas e no site. Com a morada da SEVEN, o endereço da sua casa fica fora disso, e você não aluga escritório antes de faturar.",
     },
     {
       title: "Quem já tem empresa",
@@ -46,7 +46,7 @@ export const solution: Solution = {
   included: [
     {
       title: "Sede social e domicílio fiscal",
-      body: "A mesma morada serve para o registro comercial e para as Finanças. É uma morada real, no centro de Faro, com recepção.",
+      body: "A mesma morada serve para o registro comercial e para as Finanças.",
     },
     {
       title: "Declaração de sede em 1 dia útil",
@@ -98,7 +98,7 @@ export const solution: Solution = {
       a: "Pode. Ela serve como sede social e como domicílio fiscal, nas Finanças, na Conservatória do Registo Comercial e em outras entidades. Com o contrato, você recebe a declaração que autoriza o uso da morada, exigida no registro.",
     },
     {
-      q: "Ter a sede da empresa em um centro de negócios é legal?",
+      q: "É legal usar uma morada contratada como sede da empresa?",
       a: "É. Trata-se de uma prática legal e comum em Portugal, usada por empresas de todos os tamanhos. O que importa é a correspondência oficial chegar até você, e é isso que o serviço garante.",
     },
     {
@@ -111,7 +111,7 @@ export const solution: Solution = {
     },
     {
       q: "Como funciona a correspondência da empresa?",
-      a: "Toda carta é recebida na recepção e você é avisado por e-mail em 1 dia útil. No plano Base, a carta fica guardada para você buscar. Nos planos Business e Executive, ela é digitalizada e enviada para o seu e-mail. Tudo fica guardado por 90 dias.",
+      a: "Toda carta é recebida pela nossa equipe e você é avisado por e-mail em 1 dia útil. No plano Base, a carta fica guardada para você buscar. Nos planos Business e Executive, ela é digitalizada e enviada para o seu e-mail. Tudo fica guardado por 90 dias.",
     },
     {
       q: "Posso contratar a morada antes de abrir a empresa?",
@@ -128,10 +128,6 @@ export const solution: Solution = {
     {
       q: "Qual é o prazo do contrato da morada fiscal?",
       a: "O contrato é anual e renova automaticamente por períodos iguais. Para cancelar, basta avisar com 30 dias de antecedência.",
-    },
-    {
-      q: "Onde fica a morada?",
-      a: "Na Rua Infante Dom Henrique, 111, no centro de Faro, o mesmo endereço da unidade SEVEN de Faro. Quem atende você está ao lado da sede da sua empresa.",
     },
   ],
   related: ["abrir-empresa-em-portugal", "contabilidade-em-portugal", "nif-portugal"],

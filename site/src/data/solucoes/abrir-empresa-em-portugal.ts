@@ -69,7 +69,7 @@ export const solution: Solution = {
     },
     {
       title: "Sede e morada fiscal",
-      body: "Toda empresa precisa de uma sede. Se você não tem escritório, ela pode ficar no centro de Faro, com a correspondência recebida e avisada por e-mail.",
+      body: "Toda empresa precisa de uma sede. Se você não tem escritório, ela pode ficar na morada da SEVEN, com a correspondência recebida e avisada por e-mail.",
     },
     {
       title: "Segurança Social e gerência",
@@ -130,7 +130,7 @@ export const solution: Solution = {
     },
     {
       q: "Preciso alugar um escritório para abrir empresa em Portugal?",
-      a: "Não. A empresa precisa de uma sede, mas ela pode ficar em um centro de negócios. A gente oferece sede e morada fiscal no centro de Faro, a partir de 49 € + IVA por mês, com a declaração de sede pronta em 1 dia útil.",
+      a: "Não. A empresa precisa de uma sede, mas não precisa ser um escritório seu. A gente oferece sede e morada fiscal, a partir de 49 € + IVA por mês, com a declaração de sede pronta em 1 dia útil.",
     },
     {
       q: "Empresa em Portugal precisa de contabilista?",

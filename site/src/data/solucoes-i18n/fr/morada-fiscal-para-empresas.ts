@@ -5,23 +5,23 @@ export const solution: Solution = {
   slug: "domiciliation-entreprise-portugal",
   stage: "empresa",
   navLabel: "Domiciliation d'entreprise",
-  cardSummary: "Siège social et adresse fiscale pour votre entreprise au centre de Faro, sans louer de bureau, dès 49 € + TVA par mois.",
+  cardSummary: "Siège social et adresse fiscale pour votre entreprise au Portugal, sans louer de bureau, dès 49 € + TVA par mois.",
   seoTitle: "Domiciliation d'entreprise au Portugal | SEVEN",
-  metaDescription: "Siège social et adresse fiscale pour votre entreprise au Portugal, au centre de Faro. Attestation de siège en 1 jour ouvré, à distance, dès 49 € + TVA par mois.",
-  eyebrow: "Entreprises · Faro",
+  metaDescription: "Siège social et adresse fiscale pour les entreprises sans adresse au Portugal. Attestation de siège en 1 jour ouvré, à distance, dès 49 € + TVA par mois.",
+  eyebrow: "Entreprises · Portugal",
   h1: "Un siège social pour votre entreprise, sans louer de bureau",
-  lede: "Toute entreprise au Portugal a besoin d'un siège. Le vôtre peut se trouver au centre de Faro, avec le courrier géré et l'attestation de siège prête en 1 jour ouvré.",
+  lede: "Toute entreprise au Portugal a besoin d'un siège. Si vous n'avez pas d'adresse ici, SEVEN a la solution, avec le courrier géré et l'attestation de siège prête en 1 jour ouvré.",
   highlights: [
     { value: "Dès 49 €", label: "+ TVA par mois, en contrat annuel" },
     { value: "1 jour ouvré", label: "pour recevoir l'attestation de siège" },
     { value: "100 % à distance", label: "avec signature électronique" },
-    { value: "Centre de Faro", label: "adresse réelle, avec accueil" },
+    { value: "Sans bureau", label: "la solution si vous n'avez pas d'adresse ici" },
   ],
   forWhoTitle: "Le siège de l'entreprise est public. Votre adresse personnelle n'a pas à l'être.",
   forWho: [
     {
       title: "Ceux qui vont créer une entreprise",
-      body: "Le siège figure au registre du commerce, sur les factures et sur le site. Avec l'adresse à Faro, votre domicile reste en dehors de tout cela, et vous ne louez pas de bureau avant de facturer.",
+      body: "Le siège figure au registre du commerce, sur les factures et sur le site. Avec l'adresse de SEVEN, votre domicile reste en dehors de tout cela, et vous ne louez pas de bureau avant de facturer.",
     },
     {
       title: "Ceux qui ont déjà une entreprise",
@@ -46,7 +46,7 @@ export const solution: Solution = {
   included: [
     {
       title: "Siège social et adresse fiscale",
-      body: "La même adresse sert pour le registre du commerce et pour les Finanças. C'est une adresse réelle, au centre de Faro, avec un accueil.",
+      body: "La même adresse sert pour le registre du commerce et pour les Finanças.",
     },
     {
       title: "Attestation de siège en 1 jour ouvré",
@@ -98,7 +98,7 @@ export const solution: Solution = {
       a: "Oui. Elle sert de siège social et d'adresse fiscale, auprès des Finanças, du registre du commerce et d'autres organismes. Avec le contrat, vous recevez l'attestation qui autorise l'utilisation de l'adresse, exigée lors de l'immatriculation.",
     },
     {
-      q: "Est-il légal d'avoir le siège de son entreprise dans un centre d'affaires ?",
+      q: "Est-il légal d'utiliser une adresse de domiciliation comme siège de l'entreprise ?",
       a: "Oui. C'est une pratique légale et courante au Portugal, utilisée par des entreprises de toutes tailles. L'essentiel est que le courrier officiel vous parvienne, et c'est ce que le service garantit.",
     },
     {
@@ -111,7 +111,7 @@ export const solution: Solution = {
     },
     {
       q: "Comment fonctionne le courrier de l'entreprise ?",
-      a: "Chaque lettre est reçue à l'accueil et vous êtes prévenu par e-mail sous 1 jour ouvré. Avec la formule Base, la lettre est conservée pour que vous veniez la chercher. Avec les formules Business et Executive, elle est numérisée et envoyée sur votre e-mail. Tout est conservé pendant 90 jours.",
+      a: "Chaque lettre est reçue par notre équipe et vous êtes prévenu par e-mail sous 1 jour ouvré. Avec la formule Base, la lettre est conservée pour que vous veniez la chercher. Avec les formules Business et Executive, elle est numérisée et envoyée sur votre e-mail. Tout est conservé pendant 90 jours.",
     },
     {
       q: "Puis-je souscrire avant que l'entreprise existe ?",
@@ -128,10 +128,6 @@ export const solution: Solution = {
     {
       q: "Quelle est la durée du contrat ?",
       a: "Le contrat est annuel et se renouvelle automatiquement par périodes égales. Pour résilier, il suffit de prévenir 30 jours à l'avance.",
-    },
-    {
-      q: "Où se trouve l'adresse ?",
-      a: "Rua Infante Dom Henrique, 111, au centre de Faro, la même adresse que l'agence SEVEN de Faro. Les personnes qui vous accompagnent sont juste à côté du siège de votre entreprise.",
     },
   ],
   related: ["abrir-empresa-em-portugal", "contabilidade-em-portugal", "nif-portugal"],

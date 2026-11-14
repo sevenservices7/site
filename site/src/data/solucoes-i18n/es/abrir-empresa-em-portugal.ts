@@ -70,7 +70,7 @@ export const solution: Solution = {
     },
     {
       title: "Sede y domicilio fiscal",
-      body: "Toda empresa necesita una sede. Si no tienes oficina, puede estar en el centro de Faro, con la correspondencia recibida y avisada por correo electrónico.",
+      body: "Toda empresa necesita una sede. Si no tienes oficina, puede estar en la dirección de SEVEN, con la correspondencia recibida y avisada por correo electrónico.",
     },
     {
       title: "Seguridad Social y administradores",
@@ -131,7 +131,7 @@ export const solution: Solution = {
     },
     {
       q: "¿Necesito alquilar una oficina para abrir una empresa en Portugal?",
-      a: "No. La empresa necesita una sede, pero puede estar en un centro de negocios. Ofrecemos sede y domicilio fiscal en el centro de Faro, desde 49 € + IVA al mes, con la declaración de sede lista en 1 día hábil.",
+      a: "No. La empresa necesita una sede, pero no tiene que ser una oficina tuya. Ofrecemos sede y domicilio fiscal, desde 49 € + IVA al mes, con la declaración de sede lista en 1 día hábil.",
     },
     {
       q: "¿Una empresa en Portugal necesita contable?",

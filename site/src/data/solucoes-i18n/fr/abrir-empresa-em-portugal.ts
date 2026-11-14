@@ -70,7 +70,7 @@ export const solution: Solution = {
     },
     {
       title: "Siège social et adresse fiscale",
-      body: "Toute société a besoin d'un siège. Si vous n'avez pas de bureau, il peut se trouver au centre de Faro, avec le courrier reçu et signalé par e-mail.",
+      body: "Toute société a besoin d'un siège. Si vous n'avez pas de bureau, il peut se trouver à l'adresse de SEVEN, avec le courrier reçu et signalé par e-mail.",
     },
     {
       title: "Sécurité sociale et gérants",
@@ -131,7 +131,7 @@ export const solution: Solution = {
     },
     {
       q: "Faut-il louer un bureau pour créer une entreprise au Portugal ?",
-      a: "Non. La société a besoin d'un siège, mais il peut se trouver dans un centre d'affaires. Nous proposons un siège social et une adresse fiscale au centre de Faro, dès 49 € + TVA par mois, avec l'attestation de siège prête en 1 jour ouvré.",
+      a: "Non. La société a besoin d'un siège, mais ce n'est pas forcément votre propre bureau. Nous proposons un siège social et une adresse fiscale, dès 49 € + TVA par mois, avec l'attestation de siège prête en 1 jour ouvré.",
     },
     {
       q: "Une entreprise au Portugal doit-elle avoir un expert-comptable ?",
