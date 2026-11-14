@@ -5,14 +5,14 @@ export const solution: Solution = {
   slug: "domiciliation-entreprise-portugal",
   stage: "empresa",
   navLabel: "Domiciliation d'entreprise",
-  cardSummary: "Siège social et adresse fiscale pour votre entreprise au Portugal, sans louer de bureau, dès 49 € + TVA par mois.",
+  cardSummary: "Siège social et adresse fiscale pour votre entreprise au Portugal, sans louer de bureau, avec des formules dès 450 € par an.",
   seoTitle: "Domiciliation d'entreprise au Portugal | SEVEN",
-  metaDescription: "Siège social et adresse fiscale pour les entreprises sans adresse au Portugal. Attestation de siège en 1 jour ouvré, à distance, dès 49 € + TVA par mois.",
+  metaDescription: "Siège social et adresse fiscale pour les entreprises sans adresse au Portugal. Attestation de siège en 1 jour ouvré, à distance, dès 450 € par an.",
   eyebrow: "Entreprises · Portugal",
   h1: "Un siège social pour votre entreprise, sans louer de bureau",
   lede: "Toute entreprise au Portugal a besoin d'un siège. Si vous n'avez pas d'adresse ici, SEVEN a la solution, avec le courrier géré et l'attestation de siège prête en 1 jour ouvré.",
   highlights: [
-    { value: "Dès 49 €", label: "+ TVA par mois, en contrat annuel" },
+    { value: "Dès 450 €", label: "par an, selon la formule" },
     { value: "1 jour ouvré", label: "pour recevoir l'attestation de siège" },
     { value: "100 % à distance", label: "avec signature électronique" },
     { value: "Sans bureau", label: "la solution si vous n'avez pas d'adresse ici" },
@@ -58,7 +58,7 @@ export const solution: Solution = {
     },
     {
       title: "Lettres numérisées",
-      body: "Avec les formules Business et Executive, la lettre est numérisée et envoyée sur votre e-mail. Vous la lisez où que vous soyez.",
+      body: "Selon la formule, la lettre est numérisée et envoyée sur votre e-mail. Vous la lisez où que vous soyez.",
     },
     {
       title: "Souscription à distance",
@@ -103,7 +103,7 @@ export const solution: Solution = {
     },
     {
       q: "Combien coûte une domiciliation d'entreprise ?",
-      a: "Il y a trois formules : Base à 49 € par mois, Business à 65 € et Executive à 89 €, toujours hors TVA. Le contrat est annuel et le paiement se fait d'avance : par trimestre, par semestre avec 5 % de remise, ou par an avec 10 % de remise.",
+      a: "Les formules commencent à 450 € par an. Le prix final dépend des besoins de votre entreprise, comme la numérisation du courrier. Nous vous remettons un devis ferme avant la signature.",
     },
     {
       q: "Quelle est la différence entre siège social et adresse fiscale ?",
@@ -111,7 +111,7 @@ export const solution: Solution = {
     },
     {
       q: "Comment fonctionne le courrier de l'entreprise ?",
-      a: "Chaque lettre est reçue par notre équipe et vous êtes prévenu par e-mail sous 1 jour ouvré. Avec la formule Base, la lettre est conservée pour que vous veniez la chercher. Avec les formules Business et Executive, elle est numérisée et envoyée sur votre e-mail. Tout est conservé pendant 90 jours.",
+      a: "Chaque lettre est reçue par notre équipe et vous êtes prévenu par e-mail sous 1 jour ouvré. Selon la formule, la lettre est conservée pour que vous veniez la chercher ou numérisée et envoyée sur votre e-mail. Tout est conservé pendant 90 jours.",
     },
     {
       q: "Puis-je souscrire avant que l'entreprise existe ?",

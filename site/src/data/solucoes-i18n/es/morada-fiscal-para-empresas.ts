@@ -5,14 +5,14 @@ export const solution: Solution = {
   slug: "domicilio-fiscal-para-empresas",
   stage: "empresa",
   navLabel: "Domicilio fiscal y sede",
-  cardSummary: "Sede y domicilio fiscal para tu empresa en Portugal, sin alquilar oficina, desde 49 € + IVA al mes.",
+  cardSummary: "Sede y domicilio fiscal para tu empresa en Portugal, sin alquilar oficina, con paquetes desde 450 € al año.",
   seoTitle: "Domicilio fiscal y sede para empresa en Portugal | SEVEN",
-  metaDescription: "Domicilio fiscal y sede social para empresas sin dirección en Portugal. Declaración de sede en 1 día hábil, todo a distancia, desde 49 € + IVA al mes.",
+  metaDescription: "Domicilio fiscal y sede social para empresas sin dirección en Portugal. Declaración de sede en 1 día hábil, todo a distancia, desde 450 € al año.",
   eyebrow: "Empresas · Portugal",
   h1: "Domicilio fiscal y sede para tu empresa, sin alquilar oficina",
   lede: "Toda empresa en Portugal necesita una sede. Si no tienes dirección aquí, SEVEN tiene la solución, con la correspondencia gestionada y la declaración de sede lista en 1 día hábil.",
   highlights: [
-    { value: "Desde 49 €", label: "+ IVA al mes, con contrato anual" },
+    { value: "Desde 450 €", label: "al año, en paquetes" },
     { value: "1 día hábil", label: "para recibir la declaración de sede" },
     { value: "100% a distancia", label: "con firma electrónica" },
     { value: "Sin oficina", label: "la solución para quien no tiene dirección aquí" },
@@ -58,7 +58,7 @@ export const solution: Solution = {
     },
     {
       title: "Cartas digitalizadas",
-      body: "En los planes Business y Executive, la carta se digitaliza y se envía a tu correo electrónico. La lees estés donde estés.",
+      body: "Según el paquete, la carta se digitaliza y se envía a tu correo electrónico. La lees estés donde estés.",
     },
     {
       title: "Contratación a distancia",
@@ -73,7 +73,7 @@ export const solution: Solution = {
   steps: [
     {
       title: "Habla con nosotros",
-      body: "Eliges el plan y envías tu documento de identidad, tarjeta de ciudadano o pasaporte, y el NIF portugués.",
+      body: "Eliges el paquete y envías tu documento de identidad, tarjeta de ciudadano o pasaporte, y el NIF portugués.",
     },
     {
       title: "Firma a distancia",
@@ -103,7 +103,7 @@ export const solution: Solution = {
     },
     {
       q: "¿Cuánto cuesta el domicilio fiscal para una empresa?",
-      a: "Hay tres planes: Base, por 49 € al mes, Business, por 65 €, y Executive, por 89 €, siempre más IVA. El contrato es anual y el pago es por adelantado: trimestral, semestral, con un 5% de descuento, o anual, con un 10% de descuento.",
+      a: "Los paquetes empiezan en 450 € al año. El precio final depende de lo que necesite tu empresa, como la digitalización de la correspondencia. Te damos un presupuesto cerrado antes de firmar.",
     },
     {
       q: "¿Qué diferencia hay entre sede social y domicilio fiscal?",
@@ -111,7 +111,7 @@ export const solution: Solution = {
     },
     {
       q: "¿Cómo funciona la correspondencia de la empresa?",
-      a: "Todas las cartas las recibe nuestro equipo y se te avisa por correo electrónico en 1 día hábil. En el plan Base, la carta queda guardada para que la recojas. En los planes Business y Executive, se digitaliza y se envía a tu correo. Todo se guarda durante 90 días.",
+      a: "Todas las cartas las recibe nuestro equipo y se te avisa por correo electrónico en 1 día hábil. Según el paquete, la carta queda guardada para que la recojas o se digitaliza y se envía a tu correo. Todo se guarda durante 90 días.",
     },
     {
       q: "¿Puedo contratar la dirección antes de abrir la empresa?",

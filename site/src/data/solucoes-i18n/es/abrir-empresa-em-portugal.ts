@@ -131,7 +131,7 @@ export const solution: Solution = {
     },
     {
       q: "¿Necesito alquilar una oficina para abrir una empresa en Portugal?",
-      a: "No. La empresa necesita una sede, pero no tiene que ser una oficina tuya. Ofrecemos sede y domicilio fiscal, desde 49 € + IVA al mes, con la declaración de sede lista en 1 día hábil.",
+      a: "No. La empresa necesita una sede, pero no tiene que ser una oficina tuya. Ofrecemos sede y domicilio fiscal, con paquetes desde 450 € al año y la declaración de sede lista en 1 día hábil.",
     },
     {
       q: "¿Una empresa en Portugal necesita contable?",

@@ -5,14 +5,14 @@ export const solution: Solution = {
   slug: "registered-office-address-portugal",
   stage: "empresa",
   navLabel: "Registered office address",
-  cardSummary: "A registered office and tax address for your company in Portugal, with no office to rent, from 49 € + VAT a month.",
+  cardSummary: "A registered office and tax address for your company in Portugal, with no office to rent, with packages from 450 € a year.",
   seoTitle: "Registered office address in Portugal | SEVEN",
-  metaDescription: "Registered office and tax address for companies with no address in Portugal. Address declaration in 1 working day, fully remote, from 49 € + VAT a month.",
+  metaDescription: "Registered office and tax address for companies with no address in Portugal. Address declaration in 1 working day, fully remote, from 450 € a year.",
   eyebrow: "Business · Portugal",
   h1: "A registered office address for your company, without renting an office",
   lede: "Every company in Portugal needs a registered office. If you have no address here, SEVEN has the solution, with the mail handled and the address declaration ready in 1 working day.",
   highlights: [
-    { value: "From 49 €", label: "+ VAT a month, on a yearly contract" },
+    { value: "From 450 €", label: "a year, in packages" },
     { value: "1 working day", label: "to receive the address declaration" },
     { value: "100% remote", label: "with electronic signature" },
     { value: "No office", label: "the solution if you have no address here" },
@@ -58,7 +58,7 @@ export const solution: Solution = {
     },
     {
       title: "Scanned letters",
-      body: "On the Business and Executive plans, each letter is scanned and sent to your email. You read it wherever you are.",
+      body: "Depending on the package, each letter is scanned and sent to your email. You read it wherever you are.",
     },
     {
       title: "Remote sign-up",
@@ -73,7 +73,7 @@ export const solution: Solution = {
   steps: [
     {
       title: "Talk to us",
-      body: "You choose the plan and send your ID, citizen card or passport, and your Portuguese NIF.",
+      body: "You choose the package and send your ID, citizen card or passport, and your Portuguese NIF.",
     },
     {
       title: "Sign remotely",
@@ -103,7 +103,7 @@ export const solution: Solution = {
     },
     {
       q: "How much does a registered office address cost?",
-      a: "There are three plans: Base at 49 € a month, Business at 65 € and Executive at 89 €, always plus VAT. The contract is yearly and payment is made in advance: quarterly, half-yearly with a 5% discount, or yearly with a 10% discount.",
+      a: "Packages start at 450 € a year. The final price depends on what your company needs, such as having the mail scanned. We give you a fixed quote before you sign.",
     },
     {
       q: "What's the difference between the registered office and the tax address?",
@@ -111,7 +111,7 @@ export const solution: Solution = {
     },
     {
       q: "How does the company's mail work?",
-      a: "Every letter is received by our team and you're notified by email within 1 working day. On the Base plan, the letter is kept for you to collect. On the Business and Executive plans, it's scanned and sent to your email. Everything is kept for 90 days.",
+      a: "Every letter is received by our team and you're notified by email within 1 working day. Depending on the package, the letter is kept for you to collect or scanned and sent to your email. Everything is kept for 90 days.",
     },
     {
       q: "Can I sign up for the address before the company exists?",

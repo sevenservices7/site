@@ -5,14 +5,14 @@ export const solution: Solution = {
   slug: "morada-fiscal-para-empresas",
   stage: "empresa",
   navLabel: "Morada fiscal e sede",
-  cardSummary: "Sede e morada fiscal para a sua empresa em Portugal, sem alugar escritório, desde 49 € + IVA por mês.",
+  cardSummary: "Sede e morada fiscal para a sua empresa em Portugal, sem alugar escritório, com pacotes a partir de 450 € por ano.",
   seoTitle: "Morada fiscal e sede para empresa em Portugal | SEVEN",
-  metaDescription: "Morada fiscal e sede social para empresa em Portugal, para quem não tem endereço aqui. Declaração de sede em 1 dia útil, tudo à distância, desde 49 € + IVA por mês.",
+  metaDescription: "Morada fiscal e sede social para empresa em Portugal, para quem não tem endereço aqui. Declaração de sede em 1 dia útil, à distância, a partir de 450 € por ano.",
   eyebrow: "Empresas · Portugal",
   h1: "Morada fiscal e sede para a sua empresa, sem alugar escritório",
   lede: "Toda empresa em Portugal precisa de uma sede. Se você não tem endereço aqui, a SEVEN tem a solução, com a correspondência tratada e a declaração de sede pronta em 1 dia útil.",
   highlights: [
-    { value: "Desde 49 €", label: "+ IVA por mês, em contrato anual" },
+    { value: "Desde 450 €", label: "por ano, em pacotes" },
     { value: "1 dia útil", label: "para receber a declaração de sede" },
     { value: "100% à distância", label: "com assinatura eletrônica" },
     { value: "Sem escritório", label: "a solução para quem não tem morada aqui" },
@@ -58,7 +58,7 @@ export const solution: Solution = {
     },
     {
       title: "Cartas digitalizadas",
-      body: "Nos planos Business e Executive, a carta é digitalizada e enviada para o seu e-mail. Você lê de onde estiver.",
+      body: "Conforme o pacote, a carta é digitalizada e enviada para o seu e-mail. Você lê de onde estiver.",
     },
     {
       title: "Contratação à distância",
@@ -73,7 +73,7 @@ export const solution: Solution = {
   steps: [
     {
       title: "Fale com a gente",
-      body: "Você escolhe o plano e envia o documento de identificação, cartão de cidadão ou passaporte, e o NIF português.",
+      body: "Você escolhe o pacote e envia o documento de identificação, cartão de cidadão ou passaporte, e o NIF português.",
     },
     {
       title: "Assine à distância",
@@ -103,7 +103,7 @@ export const solution: Solution = {
     },
     {
       q: "Quanto custa a morada fiscal para empresa?",
-      a: "São três planos: Base, por 49 € por mês, Business, por 65 €, e Executive, por 89 €, sempre mais IVA. O contrato é anual e o pagamento é antecipado: por trimestre, por semestre, com 5% de desconto, ou por ano, com 10% de desconto.",
+      a: "Os pacotes começam em 450 € por ano. O valor final depende do que a sua empresa precisa, como a digitalização da correspondência. A gente passa o orçamento fechado antes de você assinar.",
     },
     {
       q: "Qual a diferença entre sede social e domicílio fiscal?",
@@ -111,7 +111,7 @@ export const solution: Solution = {
     },
     {
       q: "Como funciona a correspondência da empresa?",
-      a: "Toda carta é recebida pela nossa equipe e você é avisado por e-mail em 1 dia útil. No plano Base, a carta fica guardada para você buscar. Nos planos Business e Executive, ela é digitalizada e enviada para o seu e-mail. Tudo fica guardado por 90 dias.",
+      a: "Toda carta é recebida pela nossa equipe e você é avisado por e-mail em 1 dia útil. Conforme o pacote, a carta fica guardada para você buscar ou é digitalizada e enviada para o seu e-mail. Tudo fica guardado por 90 dias.",
     },
     {
       q: "Posso contratar a morada antes de abrir a empresa?",
