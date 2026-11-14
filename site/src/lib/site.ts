@@ -42,7 +42,7 @@ export const PODCAST_LINKS = {
 
 /** Redes sociais da SEVEN (rodapé). Vazio = ícone escondido até ter o link. */
 export const SOCIAL: { key: string; label: string; href: string }[] = [
-  { key: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/_sevenservices' },
+  { key: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/seven.business7' },
   { key: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/sevenservices7' },
   { key: 'youtube', label: 'YouTube', href: 'https://www.youtube.com/@canaldaseven' },
   { key: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/company/sevenservicesac/' },

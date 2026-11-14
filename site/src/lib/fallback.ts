@@ -15,10 +15,10 @@ export const fallbackOffices: Office[] = [
     phone: '351939146298',
     email: 'albufeira@sevenservicess.com',
     whatsapp: '351939146298',
-    // Sede nova: sem coordenadas nem link curto confirmados; o link do mapa sai da morada.
+    // Sede nova: coordenadas ainda por confirmar; o botão do mapa usa o link abaixo.
     lat: null,
     lng: null,
-    maps_url: '',
+    maps_url: 'https://maps.app.goo.gl/CUFgGvXjxKeX7fYP8',
     opening_date: '2022-08-01',
     hero_photo: '',
     coordinator_code: 'GR',
