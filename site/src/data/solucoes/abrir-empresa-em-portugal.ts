@@ -130,7 +130,7 @@ export const solution: Solution = {
     },
     {
       q: "Preciso alugar um escritório para abrir empresa em Portugal?",
-      a: "Não. A empresa precisa de uma sede, mas não precisa ser um escritório seu. A gente oferece sede e morada fiscal, com pacotes a partir de 450 € por ano e a declaração de sede pronta em 1 dia útil.",
+      a: "Não. A empresa precisa de uma sede, mas não precisa ser um escritório seu. A gente oferece sede e morada fiscal, com valor sob consulta e a declaração de sede pronta em 1 dia útil.",
     },
     {
       q: "Empresa em Portugal precisa de contabilista?",

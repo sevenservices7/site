@@ -5,14 +5,14 @@ export const solution: Solution = {
   slug: "domiciliation-entreprise-portugal",
   stage: "empresa",
   navLabel: "Domiciliation d'entreprise",
-  cardSummary: "Siège social et adresse fiscale pour votre entreprise au Portugal, sans louer de bureau, avec des formules dès 450 € par an.",
+  cardSummary: "Siège social et adresse fiscale pour votre entreprise au Portugal, sans louer de bureau et entièrement à distance.",
   seoTitle: "Domiciliation d'entreprise au Portugal | SEVEN",
-  metaDescription: "Siège social et adresse fiscale pour les entreprises sans adresse au Portugal. Attestation de siège en 1 jour ouvré, à distance, dès 450 € par an.",
+  metaDescription: "Siège social et adresse fiscale pour les entreprises sans adresse au Portugal. Attestation de siège en 1 jour ouvré, tout à distance. Demandez votre devis.",
   eyebrow: "Entreprises · Portugal",
   h1: "Un siège social pour votre entreprise, sans louer de bureau",
   lede: "Toute entreprise au Portugal a besoin d'un siège. Si vous n'avez pas d'adresse ici, SEVEN a la solution, avec le courrier géré et l'attestation de siège prête en 1 jour ouvré.",
   highlights: [
-    { value: "Dès 450 €", label: "par an, selon la formule" },
+    { value: "Sur devis", label: "un devis ferme avant la signature" },
     { value: "1 jour ouvré", label: "pour recevoir l'attestation de siège" },
     { value: "100 % à distance", label: "avec signature électronique" },
     { value: "Sans bureau", label: "la solution si vous n'avez pas d'adresse ici" },
@@ -103,7 +103,7 @@ export const solution: Solution = {
     },
     {
       q: "Combien coûte une domiciliation d'entreprise ?",
-      a: "Les formules commencent à 450 € par an. Le prix final dépend des besoins de votre entreprise, comme la numérisation du courrier. Nous vous remettons un devis ferme avant la signature.",
+      a: "Le prix est sur devis, car il dépend de la formule et des besoins de votre entreprise, comme la numérisation du courrier. Nous vous remettons un devis ferme, TVA comprise, avant la signature.",
     },
     {
       q: "Quelle est la différence entre siège social et adresse fiscale ?",

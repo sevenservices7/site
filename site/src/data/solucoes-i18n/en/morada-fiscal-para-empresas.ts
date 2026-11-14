@@ -5,14 +5,14 @@ export const solution: Solution = {
   slug: "registered-office-address-portugal",
   stage: "empresa",
   navLabel: "Registered office address",
-  cardSummary: "A registered office and tax address for your company in Portugal, with no office to rent, with packages from 450 € a year.",
+  cardSummary: "A registered office and tax address for your company in Portugal, with no office to rent and everything done remotely.",
   seoTitle: "Registered office address in Portugal | SEVEN",
-  metaDescription: "Registered office and tax address for companies with no address in Portugal. Address declaration in 1 working day, fully remote, from 450 € a year.",
+  metaDescription: "Registered office and tax address for companies with no address in Portugal. Address declaration in 1 working day, fully remote. Ask for your quote.",
   eyebrow: "Business · Portugal",
   h1: "A registered office address for your company, without renting an office",
   lede: "Every company in Portugal needs a registered office. If you have no address here, SEVEN has the solution, with the mail handled and the address declaration ready in 1 working day.",
   highlights: [
-    { value: "From 450 €", label: "a year, in packages" },
+    { value: "On request", label: "a fixed quote before you sign" },
     { value: "1 working day", label: "to receive the address declaration" },
     { value: "100% remote", label: "with electronic signature" },
     { value: "No office", label: "the solution if you have no address here" },
@@ -103,7 +103,7 @@ export const solution: Solution = {
     },
     {
       q: "How much does a registered office address cost?",
-      a: "Packages start at 450 € a year. The final price depends on what your company needs, such as having the mail scanned. We give you a fixed quote before you sign.",
+      a: "The price is on request, because it depends on the package and on what your company needs, such as having the mail scanned. We give you a fixed quote, VAT included, before you sign.",
     },
     {
       q: "What's the difference between the registered office and the tax address?",

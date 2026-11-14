@@ -131,7 +131,7 @@ export const solution: Solution = {
     },
     {
       q: "Do I need to rent an office to open a company in Portugal?",
-      a: "No. The company needs a registered office, but it doesn't have to be your own office. We offer a registered office and tax address, with packages from 450 € a year and the address declaration ready in 1 working day.",
+      a: "No. The company needs a registered office, but it doesn't have to be your own office. We offer a registered office and tax address, with pricing on request and the address declaration ready in 1 working day.",
     },
     {
       q: "Does a company in Portugal need an accountant?",
