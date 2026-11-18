@@ -36,7 +36,7 @@ const waText = {
 
   <div class="unit-btns">
     {office.is_open && (
-      <WhatsAppButton whatsapp={office.whatsapp} text={waText} label={t('common.whatsapp')} small block />
+      <WhatsAppButton unit={office.slug} whatsapp={office.whatsapp} text={waText} label={t('common.whatsapp')} small block />
     )}
     <a href={mapsLink(office)} target="_blank" rel="noopener" class="btn btn-ghost btn-sm btn-block">
       {t('common.maps')}

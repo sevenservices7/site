@@ -34,7 +34,7 @@ const emailSubject = { pt: 'Pedido de contato', en: 'Contact request', es: 'Soli
             </p>
           )}
           <div style="display:grid;gap:8px;margin-top:14px">
-            {o.is_open && <WhatsAppButton whatsapp={o.whatsapp} label={t('common.whatsapp')} small block />}
+            {o.is_open && <WhatsAppButton unit={o.slug} whatsapp={o.whatsapp} label={t('common.whatsapp')} small block />}
             {o.email && <a href={`mailto:${o.email}?subject=${encodeURIComponent(emailSubject)}`} class="btn btn-ghost btn-sm btn-block">Email</a>}
             <a href={mapsLink(o)} target="_blank" rel="noopener" class="btn btn-ghost btn-sm btn-block">{t('common.maps')}</a>
           </div>

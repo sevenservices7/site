@@ -278,6 +278,7 @@ const waLink = buildWaLink(wa, C.waDone);
 
 <script>
   import { leadStart, leadUpdate, leadComplete } from '../lib/api';
+  import { saveUnit } from '../lib/wa-unit';
 
   const norm = (v: string) => v.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
   type Saved = { id: number; token: string; step: number; name?: string };
@@ -408,6 +409,8 @@ const waLink = buildWaLink(wa, C.waDone);
         const num = (r.unit_slug && units[r.unit_slug] || '').replace(/\D/g, '');
         const btn = root.querySelector<HTMLAnchorElement>('[data-qf-wa]');
         if (btn && num) btn.href = `https://wa.me/${num}?text=${encodeURIComponent(root.dataset.waText || '')}`;
+        // A partir daqui, todos os botões de WhatsApp do site levam esta pessoa à mesma unidade.
+        if (num && r.unit_slug) saveUnit(r.unit_slug);
         try { sessionStorage.removeItem(KEY); } catch {}
         lead = null;
         go(total + 1);
