@@ -158,24 +158,58 @@ export async function updateKommoLead(leadId: number, note: string, addTags: str
   if (note) await fetch(`${base}/${leadId}/notes`, { method: 'POST', headers: h, body: JSON.stringify([{ note_type: 'common', params: { text: note } }]) });
 }
 
-/**
- * Unidade que o round robin do Kommo pôs no campo "Unidade" do lead (albufeira, faro, porto).
- * undefined = campo ainda vazio ou valor desconhecido.
- */
-export async function getKommoLeadUnit(leadId: number): Promise<string | undefined> {
+// Funil "Vendas" de cada unidade e a etapa onde o lead do site entra (lidos da API em 18/11/2026).
+// O lead nasce em "Canais Digitais", o round robin do Kommo preenche a Unidade e o site muda-o para cá.
+export const UNIT_PIPELINE: Record<string, { pipeline_id: number; status_id: number }> = {
+  albufeira: { pipeline_id: 10258023, status_id: 103040399 }, // Albufeira - Vendas › 1° Contato
+  faro: { pipeline_id: 12904927, status_id: 103120815 }, // Faro - Vendas › Triagem
+  porto: { pipeline_id: 13590607, status_id: 104870375 }, // Porto - Vendas › 1° Contato
+};
+const sitePipelineId = () => Number(Deno.env.get('KOMMO_PIPELINE_ID') || 0) || SITE_PIPELINE_ID;
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** Funil atual e unidade (campo "Unidade", preenchido pelo round robin) de um lead. */
+async function getKommoLeadInfo(leadId: number): Promise<{ unit?: string; pipeline_id?: number }> {
   const subdomain = Deno.env.get('KOMMO_SUBDOMAIN');
   const token = Deno.env.get('KOMMO_LONG_LIVED_TOKEN');
-  if (!subdomain || !token || !leadId) return undefined;
+  if (!subdomain || !token || !leadId) return {};
   const r = await fetch(`https://${subdomain}.kommo.com/api/v4/leads/${leadId}`, { headers: { Authorization: `Bearer ${token}` } });
   if (!r.ok) throw new Error(`Kommo lead ${r.status}: ${await r.text().catch(() => '')}`);
   const data = await r.json().catch(() => null);
   const v = (data?.custom_fields_values || []).find((f: any) => f.field_id === F.unidade)?.values?.[0];
-  if (!v) return undefined;
-  const byEnum = Object.entries(E.unidade).find(([, id]) => id === v.enum_id)?.[0];
-  if (byEnum) return byEnum;
-  // Opção nova criada no Kommo sem atualizar E.unidade: tenta pelo texto ("Faro" -> "faro").
-  const slug = String(v.value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
-  return slug || undefined;
+  let unit: string | undefined;
+  if (v) {
+    unit = Object.entries(E.unidade).find(([, id]) => id === v.enum_id)?.[0];
+    // Opção nova criada no Kommo sem atualizar E.unidade: tenta pelo texto ("Faro" -> "faro").
+    if (!unit) unit = String(v.value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase() || undefined;
+  }
+  return { unit, pipeline_id: data?.pipeline_id };
+}
+
+/** Unidade que o round robin do Kommo pôs no lead (albufeira, faro, porto); undefined = ainda vazio. */
+export async function getKommoLeadUnit(leadId: number): Promise<string | undefined> {
+  return (await getKommoLeadInfo(leadId)).unit;
+}
+
+/**
+ * Espera o round robin preencher a Unidade e muda o lead de "Canais Digitais" para o funil Vendas dessa unidade.
+ * Só mexe em leads que ainda estão em "Canais Digitais": um lead que a equipa já moveu não volta à primeira etapa.
+ * Devolve a unidade (ou undefined se o campo continuar vazio depois das esperas).
+ */
+export async function routeKommoLeadToUnit(leadId: number, waits = [0, 2000, 4000, 8000, 15000]): Promise<string | undefined> {
+  for (const wait of waits) {
+    if (wait) await sleep(wait);
+    const info = await getKommoLeadInfo(leadId).catch(() => ({} as { unit?: string; pipeline_id?: number }));
+    if (!info.unit) continue;
+    const target = UNIT_PIPELINE[info.unit];
+    if (target && info.pipeline_id === sitePipelineId()) {
+      const subdomain = Deno.env.get('KOMMO_SUBDOMAIN'), token = Deno.env.get('KOMMO_LONG_LIVED_TOKEN');
+      const r = await fetch(`https://${subdomain}.kommo.com/api/v4/leads/${leadId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(target) });
+      if (!r.ok) throw new Error(`Kommo mover funil ${r.status}: ${await r.text().catch(() => '')}`);
+    }
+    return info.unit;
+  }
+  return undefined;
 }
 
 /** Cria uma tarefa (ex.: consultoria marcada) num lead, para o responsável indicado. */

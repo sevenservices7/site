@@ -1,6 +1,6 @@
 import { preflight, json } from '../_shared/cors.ts';
 import { adminClient } from '../_shared/clients.ts';
-import { createKommoLead, updateKommoLead, getKommoLeadUnit, SITE_STAGE } from '../_shared/kommo.ts';
+import { createKommoLead, updateKommoLead, routeKommoLeadToUnit, SITE_STAGE } from '../_shared/kommo.ts';
 import { verifyTurnstile } from '../_shared/turnstile.ts';
 import { sendEmail } from '../_shared/email.ts';
 import { leadSummary, esc, TOPICS, URGENCY, LOCATION, CONSULTED, CONTACT } from '../_shared/lead-copy.ts';
@@ -31,23 +31,30 @@ async function findLead(sb: any, body: any) {
   return data;
 }
 
+// Corre depois de responder ao browser (a pessoa não espera pelo Kommo).
+function background(p: Promise<unknown>) {
+  const job = p.catch((e) => console.error('lead bg', e));
+  try { (globalThis as any).EdgeRuntime?.waitUntil(job); } catch { /* sem EdgeRuntime: corre na mesma */ }
+}
+
+// O round robin preenche a Unidade; o lead passa de "Canais Digitais" para o funil Vendas dessa unidade.
+async function routeToUnit(sb: any, leadRowId: number, kommoLeadId: number, waits?: number[]): Promise<string | undefined> {
+  try {
+    const unit = await routeKommoLeadToUnit(kommoLeadId, waits);
+    if (unit) await sb.from('leads').update({ unit_slug: unit }).eq('id', leadRowId);
+    return unit;
+  } catch (e) { await sb.from('leads').update({ kommo_error: String(e).slice(0, 500) }).eq('id', leadRowId); }
+}
+
 // Kommo (melhor esforço). Criado quando há telefone, porque a deduplicação de contatos é pelo telefone.
 async function syncKommo(sb: any, lead: any) {
   try {
     const { lead_id } = await createKommoLead({ name: lead.name, email: lead.email, phone: lead.phone || '', language: lead.language, source: 'website-prequal', whatsapp_consent: lead.whatsapp_consent === true, tags: [SITE_STAGE.incompleto] });
-    if (lead_id) await sb.from('leads').update({ kommo_lead_id: lead_id }).eq('id', lead.id);
+    if (lead_id) {
+      await sb.from('leads').update({ kommo_lead_id: lead_id }).eq('id', lead.id);
+      background(routeToUnit(sb, lead.id, lead_id)); // mesmo que a pessoa desista a meio, o lead vai para a unidade
+    }
   } catch (e) { await sb.from('leads').update({ kommo_error: String(e).slice(0, 500) }).eq('id', lead.id); }
-}
-
-// Unidade escolhida pelo round robin do Kommo. O lead entra no Kommo no passo do WhatsApp, por isso o campo
-// costuma já estar preenchido; se ainda não estiver, tenta mais 2 vezes antes de desistir (o site usa o número padrão).
-async function kommoUnit(kommoLeadId: number): Promise<string | undefined> {
-  for (const wait of [0, 1000, 2000]) {
-    if (wait) await new Promise((r) => setTimeout(r, wait));
-    const unit = await getKommoLeadUnit(kommoLeadId).catch(() => undefined);
-    if (unit) return unit;
-  }
-  return undefined;
 }
 
 async function notifyTeam(subject: string, lead: any) {
@@ -119,9 +126,8 @@ Deno.serve(async (req) => {
         if (fresh?.kommo_lead_id) {
           await updateKommoLead(fresh.kommo_lead_id, leadSummary(lead), [SITE_STAGE.completo], [SITE_STAGE.incompleto, SITE_STAGE.qualificado]);
           // O botão "Chamar no WhatsApp agora" tem de abrir o WhatsApp da unidade que ficou com o lead,
-          // senão o cliente fala com Albufeira e o lead duplica noutra unidade.
-          unit = await kommoUnit(fresh.kommo_lead_id);
-          if (unit) await sb.from('leads').update({ unit_slug: unit }).eq('id', lead.id);
+          // senão o cliente fala com Albufeira e o lead duplica noutra unidade. (Também garante a mudança de funil.)
+          unit = await routeToUnit(sb, lead.id, fresh.kommo_lead_id, [0, 1000, 2000]);
         }
       } catch (e) { await sb.from('leads').update({ kommo_error: String(e).slice(0, 500) }).eq('id', lead.id); }
       const urgent = lead.urgency === 'urgente' ? '[URGENTE] ' : '';
