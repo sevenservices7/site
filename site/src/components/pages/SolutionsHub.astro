@@ -22,7 +22,7 @@ const stages = STAGES.map((st) => ({ ...st, ...u.stages[st.id], items: solutions
     <div class="ctas">
       <a href={expert} class="btn btn-gold">{u.common.talkToExpert}</a>
       <a href={booking} class="btn btn-ghost">{u.common.bookConsult}</a>
-      <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
+      <WhatsAppButton auto whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
     </div>
   </div>
   <div class="pg-hero-mark" aria-hidden="true"></div>
@@ -53,7 +53,7 @@ const stages = STAGES.map((st) => ({ ...st, ...u.stages[st.id], items: solutions
     <div class="ctas">
       <a href={expert} class="btn btn-gold">{u.common.talkToExpert}</a>
       <a href={booking} class="btn btn-ghost">{u.common.bookConsult}</a>
-      <WhatsAppButton whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
+      <WhatsAppButton auto whatsapp={wa} text={waText(undefined, lang)} label={u.common.whatsapp} />
     </div>
   </div>
 </section>

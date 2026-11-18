@@ -5,12 +5,16 @@
 import { getRoute, type Lang } from '../i18n/ui';
 import { countryList } from '../lib/countries';
 import { mainWhatsapp } from '../lib/site';
+import { getOffices } from '../lib/data';
+import { waLink as buildWaLink } from '../lib/format';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const countries = countryList(lang);
 const first = countries[0];
 const wa = await mainWhatsapp();
+// WhatsApp de cada unidade: no fim do formulário o botão abre o da unidade que o Kommo escolheu.
+const unitWa = Object.fromEntries((await getOffices()).filter((o) => o.is_open && o.whatsapp).map((o) => [o.slug, o.whatsapp]));
 const turnstileKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 
 const C = {
@@ -32,6 +36,7 @@ const C = {
     error: 'Não deu para enviar. Tente de novo ou chame a gente no WhatsApp.',
     doneTitle: 'Recebido! A gente fala com você em até 1 dia útil.', doneBody: 'Um especialista vai analisar o seu caso e entrar em contato pelo canal que você escolheu.',
     whatsapp: 'Chamar no WhatsApp agora', home: 'Voltar ao site',
+    waDone: 'Olá, SEVEN! Acabei de preencher o formulário no site e quero falar com um especialista.',
   },
   en: {
     close: 'Back to the site', ok: 'OK', enter: 'press Enter ↵', back: 'Back', send: 'Send', optional: 'optional',
@@ -51,6 +56,7 @@ const C = {
     error: 'We couldn’t send it. Please try again or message us on WhatsApp.',
     doneTitle: 'Received! We’ll get back to you within 1 business day.', doneBody: 'A specialist will review your case and contact you through the channel you chose.',
     whatsapp: 'Message us on WhatsApp now', home: 'Back to the site',
+    waDone: 'Hello, SEVEN! I’ve just filled in the form on the website and would like to talk to an expert.',
   },
   es: {
     close: 'Volver al sitio', ok: 'OK', enter: 'pulsa Enter ↵', back: 'Volver', send: 'Enviar', optional: 'opcional',
@@ -70,6 +76,7 @@ const C = {
     error: 'No se pudo enviar. Inténtalo de nuevo o escríbenos por WhatsApp.',
     doneTitle: '¡Recibido! Te contactamos en 1 día hábil como máximo.', doneBody: 'Un especialista analizará tu caso y te contactará por el canal que elegiste.',
     whatsapp: 'Escribir por WhatsApp ahora', home: 'Volver al sitio',
+    waDone: '¡Hola, SEVEN! Acabo de rellenar el formulario de la web y quiero hablar con un especialista.',
   },
   fr: {
     close: 'Retour au site', ok: 'OK', enter: 'appuyez sur Entrée ↵', back: 'Retour', send: 'Envoyer', optional: 'facultatif',
@@ -89,6 +96,7 @@ const C = {
     error: 'L’envoi a échoué. Réessayez ou écrivez-nous sur WhatsApp.',
     doneTitle: 'Bien reçu ! Nous revenons vers vous sous 1 jour ouvré.', doneBody: 'Un spécialiste va étudier votre situation et vous contacter par le canal choisi.',
     whatsapp: 'Écrire sur WhatsApp maintenant', home: 'Retour au site',
+    waDone: 'Bonjour, SEVEN ! Je viens de remplir le formulaire sur le site et je souhaite parler à un spécialiste.',
   },
 }[lang] as any;
 
@@ -102,9 +110,9 @@ const choices = [
 ];
 const TOTAL = 3 + choices.length + 1; // nome, e-mail, WhatsApp, escolhas, caso
 const home = getRoute('home', lang);
-const waLink = `https://wa.me/${wa.replace(/\D/g, '')}`;
+const waLink = buildWaLink(wa, C.waDone);
 ---
-<div class="qf on-brand" data-qf data-lang={lang} data-total={TOTAL} data-required={C.required} data-invalid-email={C.invalidEmail} data-invalid-phone={C.invalidPhone} data-error={C.error}>
+<div class="qf on-brand" data-qf data-lang={lang} data-total={TOTAL} data-required={C.required} data-invalid-email={C.invalidEmail} data-invalid-phone={C.invalidPhone} data-error={C.error} data-wa-units={JSON.stringify(unitWa)} data-wa-text={C.waDone}>
   <header class="qf-top">
     <a href={home} class="qf-logo"><img src="/brand/seven-horizontal-areia.svg" alt="SEVEN" width="150" height="31" /></a>
     <a href={home} class="qf-x" aria-label={C.close} title={C.close}>&times;</a>
@@ -190,7 +198,7 @@ const waLink = `https://wa.me/${wa.replace(/\D/g, '')}`;
       <h1 class="qf-q">{C.doneTitle}</h1>
       <p class="qf-hint">{C.doneBody}</p>
       <div class="qf-actions">
-        {wa && <a href={waLink} class="btn btn-gold" target="_blank" rel="noopener">{C.whatsapp}</a>}
+        {wa && <a href={waLink} class="btn btn-gold" target="_blank" rel="noopener" data-qf-wa>{C.whatsapp}</a>}
         <a href={home} class="btn btn-ghost">{C.home}</a>
       </div>
     </div>
@@ -270,6 +278,7 @@ const waLink = `https://wa.me/${wa.replace(/\D/g, '')}`;
 
 <script>
   import { leadStart, leadUpdate, leadComplete } from '../lib/api';
+  import { saveUnit } from '../lib/wa-unit';
 
   const norm = (v: string) => v.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
   type Saved = { id: number; token: string; step: number; name?: string };
@@ -394,7 +403,14 @@ const waLink = `https://wa.me/${wa.replace(/\D/g, '')}`;
       if (!lead) return go(1);
       busy(fLast, true);
       try {
-        await leadComplete({ lead_id: lead.id, token: lead.token, message: area.value.trim() });
+        const r = await leadComplete({ lead_id: lead.id, token: lead.token, message: area.value.trim() });
+        // Botão do WhatsApp: número da unidade que ficou com o lead no Kommo (sem unidade, fica o número padrão).
+        const units: Record<string, string> = JSON.parse(root.dataset.waUnits || '{}');
+        const num = (r.unit_slug && units[r.unit_slug] || '').replace(/\D/g, '');
+        const btn = root.querySelector<HTMLAnchorElement>('[data-qf-wa]');
+        if (btn && num) btn.href = `https://wa.me/${num}?text=${encodeURIComponent(root.dataset.waText || '')}`;
+        // A partir daqui, todos os botões de WhatsApp do site levam esta pessoa à mesma unidade.
+        if (num && r.unit_slug) saveUnit(r.unit_slug);
         try { sessionStorage.removeItem(KEY); } catch {}
         lead = null;
         go(total + 1);

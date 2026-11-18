@@ -48,7 +48,13 @@ export interface Service {
 const isEmpty = (a: unknown) => !Array.isArray(a) || a.length === 0;
 
 /** Unidades ativas, ordenadas. Cai no fallback se não houver Supabase/dados. */
-export async function getOffices(): Promise<Office[]> {
+let officesCache: Promise<Office[]> | undefined;
+export function getOffices(): Promise<Office[]> {
+  // Uma consulta por build: os botões do WhatsApp pedem as unidades em todas as páginas.
+  return (officesCache ??= loadOffices());
+}
+
+async function loadOffices(): Promise<Office[]> {
   if (!supabase) return fallbackOffices;
   try {
     const { data, error } = await supabase

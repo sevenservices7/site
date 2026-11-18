@@ -36,7 +36,7 @@ const mapLabel = { pt: 'Mapa', en: 'Map', es: 'Mapa', fr: 'Carte' }[lang];
         <p style="color:var(--complementar-2)">{t('common.openedOn')} {dateLong(office.opening_date, lang)}</p>
       )}
       <div class="unit-hero-cta">
-        {office.is_open && <WhatsAppButton whatsapp={office.whatsapp} text={waText} label={t('common.whatsapp')} />}
+        {office.is_open && <WhatsAppButton unit={office.slug} whatsapp={office.whatsapp} text={waText} label={t('common.whatsapp')} />}
         <a href={mapsLink(office)} target="_blank" rel="noopener" class="btn btn-light">{t('common.maps')}</a>
       </div>
     </div>

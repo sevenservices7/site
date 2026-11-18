@@ -1,5 +1,6 @@
 ---
 import { waLink } from '../lib/format';
+import { getOffices } from '../lib/data';
 
 interface Props {
   whatsapp: string;
@@ -7,10 +8,21 @@ interface Props {
   label: string;
   small?: boolean;
   block?: boolean;
+  /**
+   * Botão genérico (não é de uma unidade): o número é escolhido no navegador.
+   * Quem preencheu o formulário vai para a unidade do Kommo; os outros, para uma unidade sorteada.
+   * `whatsapp` fica como número de reserva (sem JavaScript).
+   */
+  auto?: boolean;
+  /** Botão de uma unidade (slug): ao clicar, a unidade fica guardada para os botões genéricos. */
+  unit?: string;
 }
-const { whatsapp, text = '', label, small = false, block = false } = Astro.props;
+const { whatsapp, text = '', label, small = false, block = false, auto = false, unit } = Astro.props;
 const href = waLink(whatsapp, text);
 const disabled = href === '#';
+const units = auto
+  ? JSON.stringify(Object.fromEntries((await getOffices()).filter((o) => o.is_open && o.whatsapp).map((o) => [o.slug, o.whatsapp])))
+  : undefined;
 ---
 <a
   href={href}
@@ -19,7 +31,41 @@ const disabled = href === '#';
   rel="noopener"
   aria-disabled={disabled ? 'true' : undefined}
   data-wa={disabled ? 'pending' : undefined}
+  data-wa-units={units}
+  data-wa-text={auto ? text : undefined}
+  data-wa-unit={unit || undefined}
 >
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.978-1.043z"/></svg>
   {label}
 </a>
+
+<script>
+  import { pickUnit, saveUnit, savedUnit } from '../lib/wa-unit';
+
+  // Botões de uma unidade (overlay da home, páginas de unidade, contato): quem escolhe Faro fica com Faro.
+  document.querySelectorAll<HTMLAnchorElement>('a[data-wa-unit]').forEach((a) => {
+    const keep = () => saveUnit(a.dataset.waUnit!);
+    a.addEventListener('click', keep);
+    a.addEventListener('auxclick', keep);
+  });
+
+  // Uma unidade por página para todos os botões genéricos; só fica guardada quando a pessoa clica.
+  const links = document.querySelectorAll<HTMLAnchorElement>('a[data-wa-units]');
+  if (links.length) {
+    const units: Record<string, string> = JSON.parse(links[0].dataset.waUnits || '{}');
+    const drawn = pickUnit(units); // guardada ou sorteada ao abrir a página
+    const point = (a: HTMLAnchorElement, unit: string) => {
+      const text = a.dataset.waText || '';
+      a.href = `https://wa.me/${units[unit].replace(/\D/g, '')}${text ? `?text=${encodeURIComponent(text)}` : ''}`;
+    };
+    if (drawn) {
+      links.forEach((a) => {
+        point(a, drawn);
+        // No clique confere de novo: a pessoa pode ter escolhido uma unidade no overlay desta mesma página.
+        const keep = () => { const s = savedUnit(); const unit = s && units[s] ? s : drawn; point(a, unit); saveUnit(unit); };
+        a.addEventListener('click', keep);
+        a.addEventListener('auxclick', keep); // botão do meio / abrir em novo separador
+      });
+    }
+  }
+</script>

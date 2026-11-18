@@ -158,6 +158,26 @@ export async function updateKommoLead(leadId: number, note: string, addTags: str
   if (note) await fetch(`${base}/${leadId}/notes`, { method: 'POST', headers: h, body: JSON.stringify([{ note_type: 'common', params: { text: note } }]) });
 }
 
+/**
+ * Unidade que o round robin do Kommo pôs no campo "Unidade" do lead (albufeira, faro, porto).
+ * undefined = campo ainda vazio ou valor desconhecido.
+ */
+export async function getKommoLeadUnit(leadId: number): Promise<string | undefined> {
+  const subdomain = Deno.env.get('KOMMO_SUBDOMAIN');
+  const token = Deno.env.get('KOMMO_LONG_LIVED_TOKEN');
+  if (!subdomain || !token || !leadId) return undefined;
+  const r = await fetch(`https://${subdomain}.kommo.com/api/v4/leads/${leadId}`, { headers: { Authorization: `Bearer ${token}` } });
+  if (!r.ok) throw new Error(`Kommo lead ${r.status}: ${await r.text().catch(() => '')}`);
+  const data = await r.json().catch(() => null);
+  const v = (data?.custom_fields_values || []).find((f: any) => f.field_id === F.unidade)?.values?.[0];
+  if (!v) return undefined;
+  const byEnum = Object.entries(E.unidade).find(([, id]) => id === v.enum_id)?.[0];
+  if (byEnum) return byEnum;
+  // Opção nova criada no Kommo sem atualizar E.unidade: tenta pelo texto ("Faro" -> "faro").
+  const slug = String(v.value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+  return slug || undefined;
+}
+
 /** Cria uma tarefa (ex.: consultoria marcada) num lead, para o responsável indicado. */
 export async function createKommoTask(leadId: number, t: { text: string; at: string; typeId: number; responsibleUserId: number }): Promise<void> {
   const subdomain = Deno.env.get('KOMMO_SUBDOMAIN');

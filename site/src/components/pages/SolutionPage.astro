@@ -31,7 +31,7 @@ const hub = getRoute('solutions', lang);
     <div class="ctas">
       <a href={expert} class="btn btn-gold">{u.common.talkToExpert}</a>
       <a href={booking} class="btn btn-ghost">{u.common.bookConsult}</a>
-      <WhatsAppButton whatsapp={wa} text={waText(s.navLabel, lang)} label={u.common.whatsapp} />
+      <WhatsAppButton auto whatsapp={wa} text={waText(s.navLabel, lang)} label={u.common.whatsapp} />
     </div>
     {s.highlights.length > 0 && (
       <div class="pg-highlights">
@@ -136,7 +136,7 @@ const hub = getRoute('solutions', lang);
     <div class="ctas">
       <a href={expert} class="btn btn-gold">{u.common.talkToExpert}</a>
       <a href={booking} class="btn btn-ghost">{u.common.bookConsult}</a>
-      <WhatsAppButton whatsapp={wa} text={waText(s.navLabel, lang)} label={u.common.whatsapp} />
+      <WhatsAppButton auto whatsapp={wa} text={waText(s.navLabel, lang)} label={u.common.whatsapp} />
     </div>
   </div>
 </section>
