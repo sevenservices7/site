@@ -37,6 +37,7 @@ const C = {
     doneTitle: 'Recebido! A gente fala com você em até 1 dia útil.', doneBody: 'Um especialista vai analisar o seu caso e entrar em contato pelo canal que você escolheu.',
     whatsapp: 'Chamar no WhatsApp agora', home: 'Voltar ao site',
     waDone: 'Olá, SEVEN! Acabei de preencher o formulário no site e quero falar com um especialista.',
+    waLabels: { name: 'Nome', topic: 'Assunto', urgency: 'Urgência', location: 'Onde estou', preferred_contact: 'Prefiro contato por', message: 'Meu caso' },
   },
   en: {
     close: 'Back to the site', ok: 'OK', enter: 'press Enter ↵', back: 'Back', send: 'Send', optional: 'optional',
@@ -57,6 +58,7 @@ const C = {
     doneTitle: 'Received! We’ll get back to you within 1 business day.', doneBody: 'A specialist will review your case and contact you through the channel you chose.',
     whatsapp: 'Message us on WhatsApp now', home: 'Back to the site',
     waDone: 'Hello, SEVEN! I’ve just filled in the form on the website and would like to talk to an expert.',
+    waLabels: { name: 'Name', topic: 'Subject', urgency: 'Urgency', location: 'Where I am', preferred_contact: 'Preferred contact', message: 'My case' },
   },
   es: {
     close: 'Volver al sitio', ok: 'OK', enter: 'pulsa Enter ↵', back: 'Volver', send: 'Enviar', optional: 'opcional',
@@ -77,6 +79,7 @@ const C = {
     doneTitle: '¡Recibido! Te contactamos en 1 día hábil como máximo.', doneBody: 'Un especialista analizará tu caso y te contactará por el canal que elegiste.',
     whatsapp: 'Escribir por WhatsApp ahora', home: 'Volver al sitio',
     waDone: '¡Hola, SEVEN! Acabo de rellenar el formulario de la web y quiero hablar con un especialista.',
+    waLabels: { name: 'Nombre', topic: 'Asunto', urgency: 'Urgencia', location: 'Dónde estoy', preferred_contact: 'Prefiero contacto por', message: 'Mi caso' },
   },
   fr: {
     close: 'Retour au site', ok: 'OK', enter: 'appuyez sur Entrée ↵', back: 'Retour', send: 'Envoyer', optional: 'facultatif',
@@ -97,6 +100,7 @@ const C = {
     doneTitle: 'Bien reçu ! Nous revenons vers vous sous 1 jour ouvré.', doneBody: 'Un spécialiste va étudier votre situation et vous contacter par le canal choisi.',
     whatsapp: 'Écrire sur WhatsApp maintenant', home: 'Retour au site',
     waDone: 'Bonjour, SEVEN ! Je viens de remplir le formulaire sur le site et je souhaite parler à un spécialiste.',
+    waLabels: { name: 'Nom', topic: 'Sujet', urgency: 'Urgence', location: 'Où je suis', preferred_contact: 'Contact préféré', message: 'Ma situation' },
   },
 }[lang] as any;
 
@@ -112,7 +116,7 @@ const TOTAL = 3 + choices.length + 1; // nome, e-mail, WhatsApp, escolhas, caso
 const home = getRoute('home', lang);
 const waLink = buildWaLink(wa, C.waDone);
 ---
-<div class="qf on-brand" data-qf data-lang={lang} data-total={TOTAL} data-required={C.required} data-invalid-email={C.invalidEmail} data-invalid-phone={C.invalidPhone} data-error={C.error} data-wa-units={JSON.stringify(unitWa)} data-wa-text={C.waDone}>
+<div class="qf on-brand" data-qf data-lang={lang} data-total={TOTAL} data-required={C.required} data-invalid-email={C.invalidEmail} data-invalid-phone={C.invalidPhone} data-error={C.error} data-wa-units={JSON.stringify(unitWa)} data-wa-text={C.waDone} data-wa-labels={JSON.stringify(C.waLabels)}>
   <header class="qf-top">
     <a href={home} class="qf-logo"><img src="/brand/seven-horizontal-areia.svg" alt="SEVEN" width="150" height="31" /></a>
     <a href={home} class="qf-x" aria-label={C.close} title={C.close}>&times;</a>
@@ -382,6 +386,7 @@ const waLink = buildWaLink(wa, C.waDone);
       const n = Number(form.dataset.qfStep);
       const opts = Array.from(form.querySelectorAll<HTMLButtonElement>('.qf-opt'));
       const choose = (b: HTMLButtonElement) => {
+        answers[field] = (b.lastChild?.textContent || '').trim(); // texto da opção, para a mensagem do WhatsApp
         opts.forEach((o) => o.setAttribute('aria-checked', String(o === b)));
         setTimeout(() => saveAnswer(form, { [field]: b.dataset.value! }, n + 1), 180);
       };
@@ -404,11 +409,16 @@ const waLink = buildWaLink(wa, C.waDone);
       busy(fLast, true);
       try {
         const r = await leadComplete({ lead_id: lead.id, token: lead.token, message: area.value.trim() });
-        // Botão do WhatsApp: número da unidade que ficou com o lead no Kommo (sem unidade, fica o número padrão).
+        // Botão do WhatsApp: número da unidade que ficou com o lead no Kommo (sem unidade, fica o número padrão)
+        // e as respostas do formulário já escritas na mensagem, para quem atende não perguntar de novo.
+        answers.message = area.value.trim();
         const units: Record<string, string> = JSON.parse(root.dataset.waUnits || '{}');
-        const num = (r.unit_slug && units[r.unit_slug] || '').replace(/\D/g, '');
+        const labels: Record<string, string> = JSON.parse(root.dataset.waLabels || '{}');
         const btn = root.querySelector<HTMLAnchorElement>('[data-qf-wa]');
-        if (btn && num) btn.href = `https://wa.me/${num}?text=${encodeURIComponent(root.dataset.waText || '')}`;
+        const num = (r.unit_slug && units[r.unit_slug] || btn?.href.match(/wa\.me\/(\d+)/)?.[1] || '').replace(/\D/g, '');
+        const lines = Object.keys(labels).filter((k) => answers[k]).map((k) => `${labels[k]}: ${answers[k]}`);
+        const text = [root.dataset.waText || '', ...(lines.length ? ['', ...lines] : [])].join('\n');
+        if (btn && num) btn.href = `https://wa.me/${num}?text=${encodeURIComponent(text)}`;
         // A partir daqui, todos os botões de WhatsApp do site levam esta pessoa à mesma unidade.
         if (num && r.unit_slug) saveUnit(r.unit_slug);
         try { sessionStorage.removeItem(KEY); } catch {}
