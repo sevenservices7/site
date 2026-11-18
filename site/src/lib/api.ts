@@ -121,7 +121,7 @@ export function leadUpdate(input: { lead_id: number; token: string } & LeadAnswe
 }
 
 /** "Falar com especialista": última resposta, marca o lead como completo. */
-export function leadComplete(input: { lead_id: number; token: string } & LeadAnswers): Promise<{ ok: boolean }> {
+export function leadComplete(input: { lead_id: number; token: string } & LeadAnswers): Promise<{ ok: boolean; unit_slug?: string | null }> {
   return callFn('lead', { action: 'complete', ...input });
 }
 
