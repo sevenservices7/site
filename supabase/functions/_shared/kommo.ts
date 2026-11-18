@@ -174,7 +174,7 @@ export async function getKommoLeadUnit(leadId: number): Promise<string | undefin
   const byEnum = Object.entries(E.unidade).find(([, id]) => id === v.enum_id)?.[0];
   if (byEnum) return byEnum;
   // Opção nova criada no Kommo sem atualizar E.unidade: tenta pelo texto ("Faro" -> "faro").
-  const slug = String(v.value || '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase();
+  const slug = String(v.value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
   return slug || undefined;
 }
 
